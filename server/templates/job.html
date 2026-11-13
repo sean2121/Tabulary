@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>coa-open job {{ job.id[:8] }}</title>
+<link rel="stylesheet" href="/static/pico.min.css">
+<script src="/static/htmx.min.js"></script>
+<style>
+  :root { --pico-font-size: 92%; --pico-line-height: 1.4; --pico-spacing: .6rem; --pico-typography-spacing-vertical: .8rem;
+          --pico-form-element-spacing-vertical: .3rem; --pico-form-element-spacing-horizontal: .7rem; --pico-block-spacing-vertical: .8rem; --pico-block-spacing-horizontal: 1rem; }
+  body.container { max-width: 1400px; padding-top: .5rem; }
+  h1 { font-size: 1.5rem; margin-bottom: .6rem; }
+  table { font-size: .9rem; } th, td { padding: .35rem .5rem; }
+  button, input, select { font-size: .9rem; }
+  input.uri { width: 24rem; margin-top: .2rem; }
+  th, td { vertical-align: top; }
+  .tabs a { margin-right: 1rem; }
+  .tabs a.on { font-weight: bold; }
+  .st-auto { color: #2a7; } .st-review { color: #c80; } .st-approved { color: #27c; } .st-rejected { color: #c33; } .st-novel, .st-none { color: #999; }
+  code { background: #f4f4f4; padding: 0 .2rem; }
+  .muted { color: #777; }
+</style>
+</head>
+<body class="container">
+<p><a href="/">← Jobs</a></p>
+<h1>Job {{ job.id[:8] }} <small class="muted">{{ job.status }} / {{ job.provider }} / {{ job.retriever }} k={{ job.k }}</small></h1>
+{% if job.status == 'running' %}
+<p hx-get="/ui/jobs/{{ job.id }}?status={{ status }}" hx-trigger="every 3s" hx-select="body" hx-target="body" hx-swap="outerHTML">Running… refreshing every 3s</p>
+{% elif job.status == 'failed' %}
+<pre>{{ job.error }}</pre>
+{% endif %}
+<p class="tabs">
+  {% for s in ['review','auto','approved','rejected','novel','none','all'] %}
+  <a class="{{ 'on' if s == status else '' }}" href="/ui/jobs/{{ job.id }}?status={{ s }}">{{ s }} ({{ counts.get(s, 0) if s != 'all' else counts.values()|sum }})</a>
+  {% endfor %}
+  <a href="/api/jobs/{{ job.id }}/export.ttl">export.ttl</a> <a href="/api/jobs/{{ job.id }}/export.obda">export.obda (Ontop)</a>
+</p>
+<table>
+<tr><th>Kind</th><th>Database side (table / column / FK)</th><th>LLM mapping</th><th>conf</th><th>Reason</th><th>Status</th><th>Action</th></tr>
+{% for r in rows %}
+{% include "row.html" %}
+{% endfor %}
+</table>
+</body>
+</html>

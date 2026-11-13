@@ -1,0 +1,56 @@
+# Gold set (derived by hand)
+# Source: data.world cwd-benchmark ACME_Insurance/ontology/insurance.ttl (11 classes, 10 object properties, 18 datatype properties)
+# Schema: the 13 tables of the same benchmark (from the OMG P&C data model)
+# The R2RML mapping was not on GitHub at the time, so this was derived from the ontology's meaning. Multiple answers allowed. Superseded by gold_r2rml.yaml.
+# "none" = correct answer is that no class corresponds (abstract parent, join table, ...).
+prefix: "http://data.world/schema/insurance/"
+
+tables:
+  Claim: [Claim]
+  Claim_Amount: [none]
+  Loss_Payment: [LossPayment]
+  Loss_Reserve: [LossReserve]
+  Expense_Payment: [ExpensePayment]
+  Expense_Reserve: [ExpenseReserve]
+  Claim_Coverage: [none]
+  Policy_Coverage_Detail: [PolicyCoverageDetail]
+  Policy: [Policy]
+  Policy_Amount: [none]
+  Agreement_Party_Role: [PolicyHolder, Agent]
+  Premium: [Premium]
+  Catastrophe: [Catastrophe]
+
+# Column -> datatype property. Columns not listed are not evaluated (no gold, so correctness cannot be judged).
+columns:
+  Claim.Company_Claim_Number: [claimNumber]
+  Claim.Claim_Open_Date: [claimOpenDate]
+  Claim.Claim_Close_Date: [claimCloseDate]
+  Catastrophe.Catastrophe_Name: [catastropheName]
+  Policy.Policy_Number: [policyNumber]
+  Policy.Effective_Date: [policyEffectiveDate]
+  Policy.Expiration_Date: [policyExpirationDate]
+  Policy_Coverage_Detail.Effective_Date: [policyCoverageEffectiveDate]
+  Policy_Coverage_Detail.Expiration_Date: [policyCoverageExpirationDate]
+  Claim_Amount.Claim_Amount: [lossPaymentAmount, lossReserveAmount, expensePaymentAmount, expenseReserveAmount]
+  Policy_Amount.Policy_Amount: [premiumAmount, premiumAmountMonthly]
+  Agreement_Party_Role.Party_Identifier: [policyHolderId, agentId]
+  # Identifier columns (PK/FK): none is correct
+  Claim.Claim_Identifier: [none]
+  Policy.Policy_Identifier: [none]
+  Catastrophe.Catastrophe_Identifier: [none]
+  Claim.Claim_Status_Code: [none]
+  Policy.Status_Code: [none]
+
+# FK -> object property. Key is "table.column -> referenced table"
+foreign_keys:
+  "Claim.Catastrophe_Identifier -> Catastrophe": [hasCatastrophe]
+  "Claim_Coverage.Claim_Identifier -> Claim": [against]
+  "Claim_Coverage.Effective_Date,Policy_Coverage_Detail_Identifier -> Policy_Coverage_Detail": [against]
+  "Agreement_Party_Role.Agreement_Identifier -> Agreement": [hasPolicyHolder, soldByAgent]
+  "Claim_Amount.Claim_Identifier -> Claim": [hasLossPayment, hasLossReserve, hasExpensePayment, hasExpenseReserve]
+  # Reversed direction (parent -> child does not match the gold domain), self references and inheritance links: none is correct
+  "Claim.Claim_Identifier -> Claim": [none]
+  "Loss_Payment.Claim_Amount_Identifier -> Claim_Payment": [none]
+  "Loss_Reserve.Claim_Amount_Identifier -> Claim_Reserve": [none]
+  "Premium.Policy_Amount_Identifier -> Policy_Amount": [none]
+  "Policy.Policy_Identifier -> Agreement": [none]

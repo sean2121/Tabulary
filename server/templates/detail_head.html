@@ -1,0 +1,16 @@
+<div id="dhead"{% if oob %} hx-swap-oob="true"{% endif %}>
+<form id="ctx" onsubmit="return false"><input type="hidden" name="view_status" value="{{ status }}"><input type="hidden" name="view_table" value="{{ table }}"></form>
+  <div class="detail-head">
+    <div><strong style="font-size:1.15rem">{{ current.class_name }}</strong> {% if current.shared %}<span class="muted">proposals that span several tables</span>{% else %}<span class="muted">table <code>{{ table|lower }}</code></span>{% endif %}</div>
+    {% if counts.get('review', 0) %}
+    <form hx-post="/ui/drafts/{{ d.id }}/tables/{{ table }}/approve-all" hx-target="#panel" hx-swap="outerHTML" style="margin:0">
+      <input type="hidden" name="status" value="{{ status }}"><button class="outline" style="margin:0">Approve all {{ counts.get('review', 0) }} in review</button>
+    </form>
+    {% endif %}
+  </div>
+  <nav class="tabbar">
+    {% for s in ['all','review','auto','approved','rejected','pruned'] %}
+    <a class="{{ 'on' if s == status else '' }}" href="#" hx-get="/ui/drafts/{{ d.id }}/panel?status={{ s }}&table={{ table }}" hx-target="#panel" hx-swap="outerHTML">{{ s }} ({{ counts.get(s, 0) if s != 'all' else counts.values()|sum }})</a>
+    {% endfor %}
+  </nav>
+</div>

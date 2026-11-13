@@ -1,0 +1,43 @@
+# coa-open: cloud-independent stack. `docker compose up --build` starts everything.
+#   postgres  demo database (stands in for a customer database); the insurance demo is loaded on first start
+#   app       web UI + API (FastAPI), Ontop CLI and psql inside; state is kept in the appdata volume
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: coa
+      POSTGRES_USER: coa
+      POSTGRES_PASSWORD: coa
+    ports:
+      - "${PG_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coa -d coa"]
+      interval: 3s
+      retries: 20
+
+  app:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      DEMO_DB_HOST: postgres
+      DEMO_DB_PORT: "5432"
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434/v1}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-mistral:latest}
+      LOAD_DEMO: ${LOAD_DEMO:-1}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - appdata:/app/data
+
+volumes:
+  pgdata:
+  appdata:

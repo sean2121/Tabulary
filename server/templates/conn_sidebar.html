@@ -1,0 +1,9 @@
+<aside id="connlist"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <div class="cl-head">Connections</div>
+  {% for x in connections %}
+  <a class="cl-item {{ 'on' if conn and x.id == conn.id else '' }}" href="#" hx-get="/ui/connections/{{ x.id }}" hx-target="#conn" hx-swap="outerHTML">
+    <span>{{ x.name }}<br><small class="muted">{{ x.user }}@{{ x.host }}:{{ x.port }}/{{ x.dbname }}</small></span>
+  </a>
+  {% endfor %}
+  <button type="button" class="outline" style="width:100%;margin-top:.5rem" hx-get="/ui/connections/new" hx-target="#conn" hx-swap="outerHTML">+ New connection</button>
+</aside>

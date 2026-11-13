@@ -1,0 +1,119 @@
+@prefix in: <http://data.world/schema/insurance/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+in:ClaimAmount a owl:Class ;
+    rdfs:label "Claim Amount" .
+
+in:addressLine1 a owl:DatatypeProperty ;
+    rdfs:label "address Line1" ;
+    rdfs:domain in:Location .
+
+in:addressLine2 a owl:DatatypeProperty ;
+    rdfs:label "address Line2" ;
+    rdfs:domain in:Location .
+
+in:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:domain in:Location .
+
+in:country a owl:DatatypeProperty ;
+    rdfs:label "country" ;
+    rdfs:domain in:Location .
+
+in:hasClaim a owl:ObjectProperty ;
+    rdfs:label "has Claim" ;
+    rdfs:domain in:PolicyCoverageDetail ;
+    rdfs:range in:Claim .
+
+in:hasInsurableObject a owl:ObjectProperty ;
+    rdfs:label "has Insurable Object" ;
+    rdfs:domain in:PolicyCoverageDetail ;
+    rdfs:range in:InsurableObject .
+
+in:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has Location" ;
+    rdfs:domain in:InsurableObject ;
+    rdfs:range in:Location .
+
+in:hasPolicyAmount a owl:ObjectProperty ;
+    rdfs:label "has Policy Amount" ;
+    rdfs:domain in:PolicyCoverageDetail ;
+    rdfs:range in:PolicyAmount .
+
+in:hasPolicyCoverageDetail a owl:ObjectProperty ;
+    rdfs:label "has Policy Coverage Detail" ;
+    rdfs:domain in:Policy ;
+    rdfs:range in:PolicyCoverageDetail .
+
+in:hasUnderwriter a owl:ObjectProperty ;
+    rdfs:label "has Underwriter" ;
+    rdfs:domain in:UnderwritingAssessment ;
+    rdfs:range in:Underwriter .
+
+in:hasUnderwritingAssessment a owl:ObjectProperty ;
+    rdfs:label "has Underwriting Assessment" ;
+    rdfs:domain in:Policy ;
+    rdfs:range in:UnderwritingAssessment .
+
+in:involvesInsurableObject a owl:ObjectProperty ;
+    rdfs:label "involves Insurable Object" ;
+    rdfs:domain in:Claim ;
+    rdfs:range in:InsurableObject .
+
+in:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:domain in:Location .
+
+in:longitud a owl:DatatypeProperty ;
+    rdfs:label "longitud" ;
+    rdfs:domain in:Location .
+
+in:policyAmount a owl:DatatypeProperty ;
+    rdfs:label "policy Amount" ;
+    rdfs:domain in:PolicyAmount .
+
+in:policyCoverageDetailId a owl:DatatypeProperty ;
+    rdfs:label "policy Coverage Detail Id" ;
+    rdfs:domain in:PolicyCoverageDetail .
+
+in:state a owl:DatatypeProperty ;
+    rdfs:label "state" ;
+    rdfs:domain in:Location .
+
+in:underwriterId a owl:DatatypeProperty ;
+    rdfs:label "underwriter Id" ;
+    rdfs:domain in:Underwriter .
+
+in:underwritesPolicy a owl:ObjectProperty ;
+    rdfs:label "underwrites Policy" ;
+    rdfs:domain in:UnderwritingAssessment ;
+    rdfs:range in:Policy .
+
+in:underwritingBeginDate a owl:DatatypeProperty ;
+    rdfs:label "underwriting Begin Date" ;
+    rdfs:domain in:UnderwritingAssessment .
+
+in:underwritingEndDate a owl:DatatypeProperty ;
+    rdfs:label "underwriting End Date" ;
+    rdfs:domain in:UnderwritingAssessment .
+
+in:zipCode a owl:DatatypeProperty ;
+    rdfs:label "zip Code" ;
+    rdfs:domain in:Location .
+
+in:PolicyAmount a owl:Class ;
+    rdfs:label "Policy Amount" .
+
+in:Underwriter a owl:Class ;
+    rdfs:label "Underwriter" .
+
+in:InsurableObject a owl:Class ;
+    rdfs:label "Insurable Object" .
+
+in:UnderwritingAssessment a owl:Class ;
+    rdfs:label "Underwriting Assessment" .
+
+in:Location a owl:Class ;
+    rdfs:label "Location" .
+

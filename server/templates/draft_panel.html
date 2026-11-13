@@ -1,0 +1,38 @@
+<section id="panel">
+{% if d %}
+<h2 style="font-size:1.1rem">Draft {{ d.id[:8] }} <small class="muted">{{ d.provider }} / profile={{ d.stats_level }}{% if d.domain %} / {{ d.domain }}{% endif %}</small>
+{% if d.status == 'done' %}<button type="button" class="cl-toggle outline secondary" onclick="document.body.classList.toggle('cl-hidden')">Classes</button><span class="exports"><a href="/api/drafts/{{ d.id }}/v1.ttl" target="_blank">v1.ttl</a> <a href="/api/drafts/{{ d.id }}/v1.obda" target="_blank">v1.obda</a></span>{% endif %}</h2>
+{% if d.status == 'running' %}
+<div hx-get="/ui/drafts/{{ d.id }}/panel" hx-trigger="every 2s" hx-target="#panel" hx-swap="outerHTML">
+  <p>{{ d.step or 'starting' }}</p>
+  {% if d.progress_total %}<progress value="{{ d.progress_done or 0 }}" max="{{ d.progress_total }}"></progress>{% else %}<progress></progress>{% endif %}
+</div>
+{% elif d.status == 'failed' %}
+<article>
+<p><strong>Failed at step: {{ d.step or 'unknown' }}</strong></p>
+<p>{{ (d.error or '').strip().splitlines()[-1] if d.error else 'No error message.' }}</p>
+<details><summary class="muted">Full error</summary><pre>{{ d.error }}</pre></details>
+</article>
+{% else %}
+<div class="md">
+{% include "class_list.html" %}
+<div class="detail">
+  {% if current %}
+  {% include "detail_head.html" %}
+  {% with draft_id=d.id, table=table, target=None, history=ask_history %}{% include "ask_box.html" %}{% endwith %}
+  {% if items %}
+  <table>
+  <tr><th>Kind</th><th>Database side</th><th>Name / label / description</th><th>conf</th><th>Notes</th><th>Status</th><th>Action</th></tr>
+  {% for it in items %}
+  {% include "draft_row.html" %}
+  {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">Nothing in "{{ status }}" for this class.</p>
+  {% endif %}
+  {% endif %}
+</div>
+</div>
+{% endif %}
+{% endif %}
+</section>

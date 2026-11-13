@@ -1,0 +1,12 @@
+<div id="askbox" class="askbox">
+  <form hx-post="/ui/drafts/{{ draft_id }}/ask" hx-target="#askbox" hx-swap="outerHTML">
+    <input type="hidden" name="table" value="{{ table }}">
+    <input type="hidden" name="item_id" value="{{ target.id if target else '' }}">
+    <div class="ask-row">
+      <span class="ask-about">Ask the LLM about {% if target %}<code>{{ target.key|lower }}</code> <a href="#" hx-get="/ui/drafts/{{ draft_id }}/ask?table={{ table }}" hx-target="#askbox" hx-swap="outerHTML" title="Ask about the whole table">✕</a>{% else %}this table{% endif %}</span>
+      <textarea name="comment" rows="1" placeholder="e.g. position: 1 = full professor, 2 = associate professor, 3 = assistant professor, 8 = postdoc, 9 = external teacher"></textarea>
+      <button type="submit">Ask</button>
+    </div>
+  </form>
+  {% for h in history %}{% include "ask_request.html" %}{% endfor %}
+</div>

@@ -1,0 +1,11 @@
+<aside id="classlist"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <div class="cl-head">Classes</div>
+  {% for x in classes %}
+  {% if loop.first or (x.referenced and not loop.previtem.referenced) %}{% if x.referenced %}<div class="cl-sep">Referenced (outside the extract)</div>{% endif %}{% endif %}
+  <a class="cl-item {{ 'on' if x.table == table else '' }}" href="#"
+     hx-get="/ui/drafts/{{ d.id }}/panel?table={{ x.table }}&status={{ status }}" hx-target="#panel" hx-swap="outerHTML">
+    <span>{{ x.class_name }}</span>
+    {% if x.review %}<span class="badge">{{ x.review }}</span>{% else %}<span class="ok">✓</span>{% endif %}
+  </a>
+  {% endfor %}
+</aside>

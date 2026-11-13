@@ -1,0 +1,28 @@
+<div class="req req-{{ h.status }}" id="r-{{ h.id }}"{% if h.status == 'pending' %} hx-get="/ui/requests/{{ h.id }}" hx-trigger="every 2s" hx-swap="outerHTML"{% endif %}>
+  <div class="req-head"><span class="req-q">“{{ h.comment }}”</span> <span class="req-st">{{ h.status }}</span></div>
+  {% if h.status == 'pending' %}<progress></progress>
+  {% elif h.status == 'failed' %}<p class="bad">{{ (h.error or '').strip().splitlines()[-1] }}</p>
+  {% else %}
+  {% if h.message %}<p class="req-msg">{{ h.message }}</p>{% endif %}
+  {% if h.ops %}
+  <table class="diff">
+    {% for op in h.ops %}
+    {% if op.op == 'update' %}
+    <tr><td class="op">update</td><td><code>{{ op.db }}</code></td>
+      <td>{% for f in ['name','label','comment'] %}{% if op.before[f] != op.after[f] %}<div><span class="f">{{ f }}</span> <del>{{ op.before[f] }}</del> → <ins>{{ op.after[f] }}</ins></div>{% endif %}{% endfor %}</td></tr>
+    {% elif op.op == 'reject' %}
+    <tr><td class="op">reject</td><td><code>{{ op.db }}</code></td><td><del>{{ op.before.name }}</del> <span class="muted">{{ op.reason }}</span></td></tr>
+    {% else %}
+    <tr><td class="op">add subclass</td><td><code>WHERE {{ op.column }} = '{{ op.value }}'</code></td><td><ins>{{ op.class_name }}</ins> <span class="muted">{{ op.label }} — {{ op.comment }}</span></td></tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+  {% else %}<p class="muted">No changes proposed.</p>{% endif %}
+  {% if h.status == 'proposed' and h.ops %}
+  <div class="req-actions">
+    <button class="ib ok" style="width:auto;padding:0 .7rem" hx-post="/ui/requests/{{ h.id }}/apply" hx-target="#panel" hx-swap="outerHTML">✓ Apply</button>
+    <button class="ib ng" style="width:auto;padding:0 .7rem" hx-post="/ui/requests/{{ h.id }}/discard" hx-target="#panel" hx-swap="outerHTML">✕ Discard</button>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>

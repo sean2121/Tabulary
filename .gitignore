@@ -1,0 +1,7 @@
+/data/
+.env
+**/cache/
+**/__pycache__/
+*.pyc
+dm_proto/out*/
+el_proto/data/schemaorg.ttl

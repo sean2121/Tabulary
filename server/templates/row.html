@@ -1,0 +1,22 @@
+<tr id="m-{{ r.id }}">
+  <td>{{ r.kind }}</td>
+  <td><code>{{ r.source }}</code></td>
+  <td>
+    {% set shown = r.decided_uri if r.decided_uri is not none else r.pred %}
+    {% if shown %}{% for u in shown %}<div>{{ u.replace('http://data.world/schema/insurance/', 'in:').replace('https://schema.org/', 'schema:') }}{% if r.inverse %} <small>[inverse]</small>{% endif %}</div>{% endfor %}{% else %}<span class="muted">none</span>{% endif %}
+  </td>
+  <td>{{ '%.2f'|format(r.confidence) }}</td>
+  <td class="muted">{{ r.reason[:140] }}</td>
+  <td class="st-{{ r.status }}">{{ r.status }}</td>
+  <td>
+    {% if r.status in ['review','novel','none','auto','rejected'] %}
+    <form hx-post="/ui/mappings/{{ r.id }}/decision" hx-target="#m-{{ r.id }}" hx-swap="outerHTML">
+      <div role="group"><button name="decision" value="approve">Approve</button><button class="secondary" name="decision" value="reject">Reject</button></div>
+      <input class="uri" name="uri" list="c-{{ r.id }}" placeholder="Replacement URI (comma-separated allowed)">
+      <datalist id="c-{{ r.id }}">{% for c in r.candidates %}<option value="{{ c.uri }}">{{ c.label }} ({{ c.src }})</option>{% endfor %}</datalist>
+    </form>
+    {% elif r.status == 'approved' %}
+    <form hx-post="/ui/mappings/{{ r.id }}/decision" hx-target="#m-{{ r.id }}" hx-swap="outerHTML"><button name="decision" value="reject">Undo</button></form>
+    {% endif %}
+  </td>
+</tr>

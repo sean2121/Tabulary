@@ -1,0 +1,13 @@
+<div id="tables" class="tbl-list">
+  {% if tables %}
+  <table>
+    <tr><th>Table</th><th>Columns</th><th>Rows (est.)</th><th>FKs</th><th>PK</th></tr>
+    {% for t in tables %}
+    <tr><td><code>{{ t.name }}</code>{% if t.kind == 'view' %} <small class="muted">view</small>{% endif %}</td><td>{{ t.columns }}</td>
+        <td>{{ t.est_rows if t.est_rows not in (none, '') else '?' }}</td><td>{{ t.fks }}</td><td>{{ '✓' if t.has_pk == 't' else '—' }}</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">No tables in this schema.</p>
+  {% endif %}
+</div>

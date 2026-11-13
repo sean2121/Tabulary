@@ -1,0 +1,88 @@
+# Gold set v2: derived from data.world's actual R2RML (data/insurance_v1.r2rml)
+# Source: datadotworld/cwd-benchmark-data ACME_Insurance/data/data.world_P&C_Insurance_Ontology_V1.r2rml
+# Derivation rules:
+#   table -> class:     the logicalTable of a TriplesMap with rr:class (for SQL views, the main table in FROM) maps to that class
+#   column -> property: the (table, column) of a predicateObjectMap with rr:column maps to its predicate
+#   FK -> relation:     a predicate whose object is an rr:template maps to the FK used for that join (the reverse direction also counts)
+#   tables, columns and FKs the R2RML does not touch: none is correct
+# Target vocabulary: insurance.ttl + insurance_r2rml_extra.ttl (terms that appear only in the R2RML)
+prefix: "http://data.world/schema/insurance/"
+
+tables:
+  Claim: [Claim]
+  Catastrophe: [Catastrophe]
+  Policy: [Policy]
+  Policy_Coverage_Detail: [PolicyCoverageDetail]
+  Premium: [Premium]                      # policy_amount JOIN premium → Premium
+  Policy_Amount: [PolicyAmount]           # rows not in premium -> PolicyAmount
+  Agreement_Party_Role: [PolicyHolder, Agent]   # split by party_role_code = 'PH' / 'AG'
+  Claim_Amount: [none, ClaimAmount]       # R2RML makes ClaimAmount-{id} individuals but declares no rr:class
+  Loss_Payment: [none, LossPayment]       # R2RML expresses it via hasLossPayment and lossPaymentAmount, not as a class (the ttl has the class)
+  Loss_Reserve: [none, LossReserve]
+  Expense_Payment: [none, ExpensePayment]
+  Expense_Reserve: [none, ExpenseReserve]
+  Claim_Coverage: [none]                  # join table -> against / hasClaim
+
+columns:
+  Claim.Company_Claim_Number: [claimNumber]
+  Claim.Claim_Open_Date: [claimOpenDate]
+  Claim.Claim_Close_Date: [claimCloseDate]
+  Catastrophe.Catastrophe_Name: [catastropheName]
+  Policy.Policy_Number: [policyNumber]
+  Policy.Effective_Date: [policyEffectiveDate]
+  Policy.Expiration_Date: [policyExpirationDate]
+  Policy_Coverage_Detail.Effective_Date: [policyCoverageEffectiveDate]
+  Policy_Coverage_Detail.Expiration_Date: [policyCoverageExpirationDate]
+  Policy_Coverage_Detail.Policy_Coverage_Detail_Identifier: [policyCoverageDetailId]   # an identifier, but mapped to a property
+  Claim_Amount.Claim_Amount: [lossPaymentAmount, lossReserveAmount, expensePaymentAmount, expenseReserveAmount]
+  Policy_Amount.Policy_Amount: [policyAmount, premiumAmount]
+  Policy_Amount.Amount_Type_Code: [premiumPeriod]
+  Agreement_Party_Role.Party_Identifier: [policyHolderId, agentId]
+  # columns the R2RML does not touch (representative sample, none is correct)
+  Claim.Claim_Identifier: [none]
+  Claim.Claim_Description: [none]
+  Claim.Claims_Made_Date: [none]
+  Claim.Claim_Status_Code: [none]
+  Claim.Claim_Reported_Date: [none]
+  Claim.Claim_Reopen_Date: [none]
+  Catastrophe.Catastrophe_Identifier: [none]
+  Catastrophe.Catastrophe_Type_Code: [none]
+  Policy.Policy_Identifier: [none]
+  Policy.Status_Code: [none]
+  Policy_Coverage_Detail.Coverage_Description: [none]
+  Policy_Coverage_Detail.Coverage_Part_Code: [none]
+  Policy_Amount.Earning_Begin_Date: [none]
+  Policy_Amount.Earning_End_Date: [none]
+  Policy_Amount.Effective_Date: [none]
+  Agreement_Party_Role.Party_Role_Code: [none]
+  Agreement_Party_Role.Effective_Date: [none]
+  Claim_Amount.Event_Date: [none]
+  Claim_Amount.Amount_Type_Code: [none]
+
+foreign_keys:
+  "Claim.Catastrophe_Identifier -> Catastrophe": [hasCatastrophe]
+  "Claim.Insurable_Object_Identifier -> Insurable_Object": [involvesInsurableObject]
+  "Claim_Coverage.Claim_Identifier -> Claim": [against, hasClaim]
+  "Claim_Coverage.Effective_Date,Policy_Coverage_Detail_Identifier -> Policy_Coverage_Detail": [against, hasClaim]
+  "Policy_Coverage_Detail.Insurable_Object_Identifier -> Insurable_Object": [hasInsurableObject]
+  "Policy_Coverage_Detail.Coverage_Part_Code,Policy_Identifier -> Policy_Coverage_Part": [hasPolicy, hasPolicyCoverageDetail]  # via policy_identifier
+  "Policy_Amount.Effective_Date,Policy_Coverage_Detail_Identifier -> Policy_Coverage_Detail": [hasPolicyAmount, hasPremiumAmount]  # reversed (PCD -> Amount)
+  "Claim_Amount.Claim_Identifier -> Claim": [hasLossPayment, hasLossReserve, hasExpensePayment, hasExpenseReserve]  # reversed (Claim -> ClaimAmount)
+  "Agreement_Party_Role.Agreement_Identifier -> Agreement": [hasPolicyHolder, soldByAgent]  # joined with policy, reversed
+  # none is correct
+  "Claim.Claim_Identifier -> Claim": [none]
+  "Claim.Occurrence_Identifier -> Occurrence": [none]
+  "Claim_Amount.Claim_Offer_Identifier -> Claim_Offer": [none]
+  "Loss_Payment.Claim_Amount_Identifier -> Claim_Payment": [none]
+  "Loss_Reserve.Claim_Amount_Identifier -> Claim_Reserve": [none]
+  "Expense_Payment.Claim_Amount_Identifier -> Claim_Payment": [none]
+  "Expense_Reserve.Claim_Amount_Identifier -> Claim_Reserve": [none]
+  "Policy.Policy_Identifier -> Agreement": [none]
+  "Policy.Geographic_Location_Identifier -> Geographic_Location": [none]
+  "Policy_Coverage_Detail.Coverage_Identifier -> Coverage": [none]
+  "Policy_Amount.Policy_Identifier -> Policy": [none]
+  "Policy_Amount.Geographic_Location_Identifier -> Geographic_Location": [none]
+  "Policy_Amount.Insurable_Object_Identifier -> Insurable_Object": [none]
+  "Agreement_Party_Role.Party_Identifier -> Party": [none]
+  "Agreement_Party_Role.Party_Role_Code -> Party_Role": [none]
+  "Premium.Policy_Amount_Identifier -> Policy_Amount": [none]

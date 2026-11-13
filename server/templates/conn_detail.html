@@ -1,0 +1,42 @@
+<section id="conn">
+<form id="connform" onsubmit="return false" class="connform">
+  <input type="hidden" name="conn_id" value="{{ conn.id if conn else '' }}">
+  <div class="cf-grid">
+    <label>Name <input name="name" value="{{ conn.name if conn else '' }}" placeholder="e.g. Production CRM"></label>
+    <label>Type <select name="kind">{% for k, lbl, ok in kinds %}<option value="{{ k }}" {{ '' if ok else 'disabled' }} {{ 'selected' if conn and conn.kind == k }}>{{ lbl }}</option>{% endfor %}</select></label>
+    <label>Host <input name="host" value="{{ conn.host if conn else 'localhost' }}"></label>
+    <label>Port <input name="port" value="{{ conn.port if conn else 5432 }}" inputmode="numeric"></label>
+    <label>Database <input name="dbname" value="{{ conn.dbname if conn else '' }}"></label>
+    <label>User <input name="user" value="{{ conn.user if conn else '' }}"></label>
+    <label>Password <input name="password" type="password" value="" placeholder="{{ '(unchanged)' if conn else '' }}"></label>
+  </div>
+  <div class="cf-actions">
+    <button type="button" class="outline secondary" hx-post="/ui/connections/test" hx-include="#connform" hx-target="#testresult" hx-swap="outerHTML">Test connection</button>
+    <button type="button" hx-post="/ui/connections/save" hx-include="#connform" hx-target="#conn" hx-swap="outerHTML">Save</button>
+    {% if conn %}<button type="button" class="outline contrast" hx-post="/ui/connections/{{ conn.id }}/delete" hx-target="#conn" hx-swap="outerHTML" hx-confirm="Delete connection '{{ conn.name }}'?">Delete</button>{% endif %}
+    <span id="testresult"></span>
+  </div>
+</form>
+
+{% if conn %}
+{% if conn_error %}
+<p class="bad">✕ Cannot connect: {{ conn_error }}</p>
+{% else %}
+<form hx-post="/ui/drafts" hx-target="#panel" hx-swap="outerHTML" class="draftform">
+  <input type="hidden" name="connection_id" value="{{ conn.id }}">
+  <div class="cf-grid">
+    <label>Schema
+      <select name="schema_name" hx-get="/ui/connections/{{ conn.id }}/tables" hx-target="#tables" hx-swap="outerHTML" hx-trigger="change">
+        {% for s in schemas %}<option value="{{ s.name }}" {{ 'selected' if s.name == schema }}>{{ s.name }} ({{ s.tables }} tables)</option>{% endfor %}
+      </select></label>
+    <label>LLM <select name="provider"><option value="deepseek">deepseek-chat</option><option value="openai">gpt-4.1-mini</option><option value="ollama">ollama (local)</option></select></label>
+    <label>Profile <select name="stats_level"><option value="none">none: schema only</option><option value="counts" selected>counts: counts only (external LLM)</option><option value="values">values: also top values (in-house LLM)</option></select></label>
+    <label>Business domain hint <input name="domain" placeholder="optional, e.g. P&amp;C insurance"></label>
+  </div>
+  {% include "conn_tables.html" %}
+  <button type="submit">Create draft from this schema</button>
+</form>
+{% endif %}
+{% endif %}
+</section>
+{% if oob %}{% include "conn_sidebar.html" %}{% endif %}

@@ -1,0 +1,30 @@
+<tr id="i-{{ it.id }}" class="{{ it.kind }}">
+  <td><span class="kind">{{ {'class':'Class','subclass':'Subclass (by value)','superclass':'Superclass (proposed)','dtprop':'Datatype property','objprop':'Object property'}[it.kind] }}</span></td>
+  <td><code>{{ it.key|lower }}</code>{% if it.detail.where %}<br><small class="muted">WHERE {{ it.detail.where }}</small>{% endif %}</td>
+  <td>
+    <form id="f-{{ it.id }}" onsubmit="return false">
+      <input class="name" name="name" value="{{ it.decided_name or it.name }}" {% if it.status in ['approved','rejected'] %}readonly{% endif %}>
+      <input class="label" name="label" value="{{ it.decided_label if it.decided_label is not none else it.label }}" placeholder="Label" {% if it.status in ['approved','rejected'] %}readonly{% endif %}><br>
+      <input class="comment" name="comment" value="{{ it.decided_comment if it.decided_comment is not none else it.comment }}" placeholder="Description" {% if it.status in ['approved','rejected'] %}readonly{% endif %}>
+    </form>
+  </td>
+  <td>{{ '%.2f'|format(it.confidence) if it.confidence is not none else '-' }}</td>
+  <td class="muted"><small>
+    {% if it.detail.parent %}Parent: {{ it.detail.parent }}<br>{% endif %}
+    {% if it.detail.members %}Over: {{ it.detail.members|join(', ') }}<br>Shared: {{ it.detail.properties|join(', ') }}<br>{% endif %}
+    {% if it.detail.domain %}{{ it.detail.domain }} → {{ it.detail.range }}{% if it.detail.join %} (join table){% endif %}<br>{% endif %}
+    {% if it.detail.xsd %}{{ it.detail.xsd }}<br>{% endif %}
+    {% if it.detail.pruned_because %}{{ it.detail.pruned_because }}{% endif %}
+    {% if it.detail.technical %}<span class="tech">technical</span> {{ it.detail.technical }}{% endif %}
+    {% if it.detail.kind and it.kind == 'class' %}{{ it.detail.kind }}{% endif %}
+  </small></td>
+  <td class="st-{{ it.status }}">{{ it.status }}</td>
+  <td class="acts">
+    <button type="button" class="ib ask" title="Ask the LLM about this row" hx-get="/ui/drafts/{{ it.draft_id }}/ask?table={{ it.table_name }}&item={{ it.id }}" hx-target="#askbox" hx-swap="outerHTML" onclick="document.getElementById('askbox').scrollIntoView({block:'nearest'})">💬</button>
+    {% if it.status in ['approved','rejected'] %}
+    <button type="button" class="ib undo" hx-post="/ui/draft-items/{{ it.id }}/decision" hx-include="#f-{{ it.id }}, #ctx" hx-target="#i-{{ it.id }}" hx-swap="outerHTML" hx-vals='{% raw %}{"decision": "reset"}{% endraw %}' title="Undo">↶</button>
+    {% else %}
+    <button type="button" class="ib ok" hx-post="/ui/draft-items/{{ it.id }}/decision" hx-include="#f-{{ it.id }}, #ctx" hx-target="#i-{{ it.id }}" hx-swap="outerHTML" hx-vals='{% raw %}{"decision": "approve"}{% endraw %}' title="{{ 'Restore' if it.status == 'pruned' else 'Approve' }}">{{ '↺' if it.status == 'pruned' else '✓' }}</button><button type="button" class="ib ng" hx-post="/ui/draft-items/{{ it.id }}/decision" hx-include="#f-{{ it.id }}, #ctx" hx-target="#i-{{ it.id }}" hx-swap="outerHTML" hx-vals='{% raw %}{"decision": "reject"}{% endraw %}' title="Reject">✕</button>
+    {% endif %}
+  </td>
+</tr>

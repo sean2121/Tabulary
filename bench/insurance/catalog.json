@@ -1,0 +1,2244 @@
+{
+ "source": {
+  "kind": "postgres",
+  "schema": "public",
+  "values_included": true
+ },
+ "tables": [
+  {
+   "name": "agreement",
+   "columns": [
+    {
+     "name": "agreement_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "agreement_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "agreement_party_role",
+   "columns": [
+    {
+     "name": "agreement_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 4,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        2
+       ],
+       [
+        "2",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "party_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 4,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        2
+       ],
+       [
+        "2",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "party_role_code",
+     "type": "character varying(20)",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 4,
+      "distinct": 2,
+      "min": "AG",
+      "max": "PH",
+      "top": [
+       [
+        "AG",
+        2
+       ],
+       [
+        "PH",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "effective_date",
+     "type": "timestamp without time zone",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 4,
+      "distinct": 1,
+      "min": "1900-01-01 00:00:00",
+      "max": "1900-01-01 00:00:00",
+      "top": [
+       [
+        "1900-01-01 00:00:00",
+        4
+       ]
+      ]
+     }
+    },
+    {
+     "name": "expiration_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "agreement_identifier",
+    "party_identifier",
+    "party_role_code",
+    "effective_date"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "party_role_code"
+     ],
+     "ref_table": "party_role",
+     "ref_columns": [
+      "party_role_code"
+     ]
+    },
+    {
+     "columns": [
+      "agreement_identifier"
+     ],
+     "ref_table": "agreement",
+     "ref_columns": [
+      "agreement_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "party_identifier"
+     ],
+     "ref_table": "party",
+     "ref_columns": [
+      "party_identifier"
+     ]
+    }
+   ],
+   "rows": 4
+  },
+  {
+   "name": "catastrophe",
+   "columns": [
+    {
+     "name": "catastrophe_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 4,
+      "distinct": 4,
+      "min": "1",
+      "max": "4",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "3",
+        1
+       ],
+       [
+        "4",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "catastrophe_type_code",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "catastrophe_name",
+     "type": "character varying(100)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 4,
+      "distinct": 4,
+      "min": "Fire",
+      "max": "Tornado",
+      "top": [
+       [
+        "Fire",
+        1
+       ],
+       [
+        "Flood",
+        1
+       ],
+       [
+        "Hurricane",
+        1
+       ],
+       [
+        "Tornado",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "industry_catastrophe_code",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "company_catastrophe_code",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "catastrophe_identifier"
+   ],
+   "fks": [],
+   "rows": 4
+  },
+  {
+   "name": "claim",
+   "columns": [
+    {
+     "name": "claim_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "catastrophe_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 1,
+      "min": "4",
+      "max": "4",
+      "top": [
+       [
+        "4",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "claim_description",
+     "type": "character varying(5000)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "claims_made_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "company_claim_number",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "12312701",
+      "max": "12312702",
+      "top": [
+       [
+        "12312701",
+        1
+       ],
+       [
+        "12312702",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "company_subclaim_number",
+     "type": "character varying(5)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "insurable_object_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "occurrence_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "entry_into_claims_made_program_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "claim_open_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "2019-01-15 00:00:00",
+      "max": "2019-06-02 00:00:00",
+      "top": [
+       [
+        "2019-01-15 00:00:00",
+        1
+       ],
+       [
+        "2019-06-02 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "claim_close_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "2019-01-31 00:00:00",
+      "max": "2019-06-27 00:00:00",
+      "top": [
+       [
+        "2019-01-31 00:00:00",
+        1
+       ],
+       [
+        "2019-06-27 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "claim_reopen_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "claim_status_code",
+     "type": "character varying(5)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "claim_reported_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "claim_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "occurrence_identifier"
+     ],
+     "ref_table": "occurrence",
+     "ref_columns": [
+      "occurrence_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "catastrophe_identifier"
+     ],
+     "ref_table": "catastrophe",
+     "ref_columns": [
+      "catastrophe_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "claim_identifier"
+     ],
+     "ref_table": "claim",
+     "ref_columns": [
+      "claim_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "insurable_object_identifier"
+     ],
+     "ref_table": "insurable_object",
+     "ref_columns": [
+      "insurable_object_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "claim_amount",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 8,
+      "distinct": 8,
+      "min": "1",
+      "max": "8",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "3",
+        1
+       ],
+       [
+        "4",
+        1
+       ],
+       [
+        "5",
+        1
+       ],
+       [
+        "6",
+        1
+       ],
+       [
+        "7",
+        1
+       ],
+       [
+        "8",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "claim_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 8,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        4
+       ],
+       [
+        "2",
+        4
+       ]
+      ]
+     }
+    },
+    {
+     "name": "claim_offer_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "amount_type_code",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "event_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "claim_amount",
+     "type": "numeric(15,2)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 8,
+      "distinct": 8,
+      "min": "1000.00",
+      "max": "2400.00",
+      "top": [
+       [
+        "1000.00",
+        1
+       ],
+       [
+        "1100.00",
+        1
+       ],
+       [
+        "1200.00",
+        1
+       ],
+       [
+        "1300.00",
+        1
+       ],
+       [
+        "2100.00",
+        1
+       ],
+       [
+        "2200.00",
+        1
+       ],
+       [
+        "2300.00",
+        1
+       ],
+       [
+        "2400.00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "insurance_type_code",
+     "type": "character(1)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_identifier"
+     ],
+     "ref_table": "claim",
+     "ref_columns": [
+      "claim_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "claim_offer_identifier"
+     ],
+     "ref_table": "claim_offer",
+     "ref_columns": [
+      "claim_offer_identifier"
+     ]
+    }
+   ],
+   "rows": 8
+  },
+  {
+   "name": "claim_coverage",
+   "columns": [
+    {
+     "name": "claim_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "effective_date",
+     "type": "timestamp without time zone",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 1,
+      "min": "2019-01-01 00:00:00",
+      "max": "2019-01-01 00:00:00",
+      "top": [
+       [
+        "2019-01-01 00:00:00",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_coverage_detail_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 1,
+      "min": "5",
+      "max": "5",
+      "top": [
+       [
+        "5",
+        2
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "claim_identifier",
+    "effective_date",
+    "policy_coverage_detail_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_identifier"
+     ],
+     "ref_table": "claim",
+     "ref_columns": [
+      "claim_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "effective_date",
+      "policy_coverage_detail_identifier"
+     ],
+     "ref_table": "policy_coverage_detail",
+     "ref_columns": [
+      "effective_date",
+      "policy_coverage_detail_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "claim_offer",
+   "columns": [
+    {
+     "name": "claim_offer_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "claim_offer_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "claim_payment",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "claim_reserve",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "coverage",
+   "columns": [
+    {
+     "name": "coverage_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "coverage_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "expense_payment",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "4",
+      "max": "8",
+      "top": [
+       [
+        "4",
+        1
+       ],
+       [
+        "8",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_amount_identifier"
+     ],
+     "ref_table": "claim_payment",
+     "ref_columns": [
+      "claim_amount_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "expense_reserve",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "2",
+      "max": "6",
+      "top": [
+       [
+        "2",
+        1
+       ],
+       [
+        "6",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_amount_identifier"
+     ],
+     "ref_table": "claim_reserve",
+     "ref_columns": [
+      "claim_amount_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "geographic_location",
+   "columns": [
+    {
+     "name": "geographic_location_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 8,
+      "distinct": 8,
+      "min": "1",
+      "max": "8",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "3",
+        1
+       ],
+       [
+        "4",
+        1
+       ],
+       [
+        "5",
+        1
+       ],
+       [
+        "6",
+        1
+       ],
+       [
+        "7",
+        1
+       ],
+       [
+        "8",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "geographic_location_identifier"
+   ],
+   "fks": [],
+   "rows": 8
+  },
+  {
+   "name": "insurable_object",
+   "columns": [
+    {
+     "name": "insurable_object_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "insurable_object_identifier"
+   ],
+   "fks": [],
+   "rows": 2
+  },
+  {
+   "name": "loss_payment",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "3",
+      "max": "7",
+      "top": [
+       [
+        "3",
+        1
+       ],
+       [
+        "7",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_amount_identifier"
+     ],
+     "ref_table": "claim_payment",
+     "ref_columns": [
+      "claim_amount_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "loss_reserve",
+   "columns": [
+    {
+     "name": "claim_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "5",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "5",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "claim_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "claim_amount_identifier"
+     ],
+     "ref_table": "claim_reserve",
+     "ref_columns": [
+      "claim_amount_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "occurrence",
+   "columns": [
+    {
+     "name": "occurrence_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "occurrence_identifier"
+   ],
+   "fks": [],
+   "rows": 2
+  },
+  {
+   "name": "party",
+   "columns": [
+    {
+     "name": "party_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 30,
+      "distinct": 30,
+      "min": "1",
+      "max": "100",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "10",
+        1
+       ],
+       [
+        "100",
+        1
+       ],
+       [
+        "11",
+        1
+       ],
+       [
+        "12",
+        1
+       ],
+       [
+        "13",
+        1
+       ],
+       [
+        "14",
+        1
+       ],
+       [
+        "15",
+        1
+       ],
+       [
+        "16",
+        1
+       ],
+       [
+        "17",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "party_identifier"
+   ],
+   "fks": [],
+   "rows": 30
+  },
+  {
+   "name": "party_role",
+   "columns": [
+    {
+     "name": "party_role_code",
+     "type": "character varying(20)",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 3,
+      "distinct": 3,
+      "min": "AG",
+      "max": "UW",
+      "top": [
+       [
+        "AG",
+        1
+       ],
+       [
+        "PH",
+        1
+       ],
+       [
+        "UW",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "party_role_code"
+   ],
+   "fks": [],
+   "rows": 3
+  },
+  {
+   "name": "policy",
+   "columns": [
+    {
+     "name": "policy_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "effective_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "2015-01-01 00:00:00",
+      "max": "2019-06-01 00:00:00",
+      "top": [
+       [
+        "2015-01-01 00:00:00",
+        1
+       ],
+       [
+        "2019-06-01 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "expiration_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "2019-12-31 00:00:00",
+      "max": "2020-05-31 00:00:00",
+      "top": [
+       [
+        "2019-12-31 00:00:00",
+        1
+       ],
+       [
+        "2020-05-31 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_number",
+     "type": "character varying(50)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 2,
+      "distinct": 2,
+      "min": "31003000336",
+      "max": "31003000337",
+      "top": [
+       [
+        "31003000336",
+        1
+       ],
+       [
+        "31003000337",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "status_code",
+     "type": "character varying(20)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "geographic_location_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "policy_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "geographic_location_identifier"
+     ],
+     "ref_table": "geographic_location",
+     "ref_columns": [
+      "geographic_location_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "policy_identifier"
+     ],
+     "ref_table": "agreement",
+     "ref_columns": [
+      "agreement_identifier"
+     ]
+    }
+   ],
+   "rows": 2
+  },
+  {
+   "name": "policy_amount",
+   "columns": [
+    {
+     "name": "policy_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 12,
+      "distinct": 12,
+      "min": "1",
+      "max": "12",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "10",
+        1
+       ],
+       [
+        "11",
+        1
+       ],
+       [
+        "12",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "3",
+        1
+       ],
+       [
+        "4",
+        1
+       ],
+       [
+        "5",
+        1
+       ],
+       [
+        "6",
+        1
+       ],
+       [
+        "7",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "geographic_location_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 12,
+      "distinct": 1,
+      "min": "0",
+      "max": "0",
+      "top": [
+       [
+        "0",
+        12
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 12,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        10
+       ],
+       [
+        "2",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "effective_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 12,
+      "distinct": 6,
+      "min": "2015-01-01 00:00:00",
+      "max": "2019-06-01 00:00:00",
+      "top": [
+       [
+        "2015-01-01 00:00:00",
+        2
+       ],
+       [
+        "2016-01-01 00:00:00",
+        2
+       ],
+       [
+        "2017-01-01 00:00:00",
+        2
+       ],
+       [
+        "2018-01-01 00:00:00",
+        2
+       ],
+       [
+        "2019-01-01 00:00:00",
+        2
+       ],
+       [
+        "2019-06-01 00:00:00",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "amount_type_code",
+     "type": "character varying(5)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 6,
+      "distinct": 1,
+      "min": "Year",
+      "max": "Year",
+      "top": [
+       [
+        "Year",
+        6
+       ]
+      ]
+     }
+    },
+    {
+     "name": "earning_begin_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "earning_end_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "policy_coverage_detail_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 12,
+      "distinct": 6,
+      "min": "1",
+      "max": "6",
+      "top": [
+       [
+        "1",
+        2
+       ],
+       [
+        "2",
+        2
+       ],
+       [
+        "3",
+        2
+       ],
+       [
+        "4",
+        2
+       ],
+       [
+        "5",
+        2
+       ],
+       [
+        "6",
+        2
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_amount",
+     "type": "numeric(15,2)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 12,
+      "distinct": 8,
+      "min": "12000.00",
+      "max": "1000000.00",
+      "top": [
+       [
+        "1000000.00",
+        5
+       ],
+       [
+        "12000.00",
+        1
+       ],
+       [
+        "15000.00",
+        1
+       ],
+       [
+        "16000.00",
+        1
+       ],
+       [
+        "17000.00",
+        1
+       ],
+       [
+        "18000.00",
+        1
+       ],
+       [
+        "20000.00",
+        1
+       ],
+       [
+        "600000.00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "insurable_object_identifier",
+     "type": "integer",
+     "nullable": true,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "insurance_type_code",
+     "type": "character(1)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "policy_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "geographic_location_identifier"
+     ],
+     "ref_table": "geographic_location",
+     "ref_columns": [
+      "geographic_location_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "insurable_object_identifier"
+     ],
+     "ref_table": "insurable_object",
+     "ref_columns": [
+      "insurable_object_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "effective_date",
+      "policy_coverage_detail_identifier"
+     ],
+     "ref_table": "policy_coverage_detail",
+     "ref_columns": [
+      "effective_date",
+      "policy_coverage_detail_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "policy_identifier"
+     ],
+     "ref_table": "policy",
+     "ref_columns": [
+      "policy_identifier"
+     ]
+    }
+   ],
+   "rows": 12
+  },
+  {
+   "name": "policy_coverage_detail",
+   "columns": [
+    {
+     "name": "effective_date",
+     "type": "timestamp without time zone",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 6,
+      "distinct": 6,
+      "min": "2015-01-01 00:00:00",
+      "max": "2019-06-01 00:00:00",
+      "top": [
+       [
+        "2015-01-01 00:00:00",
+        1
+       ],
+       [
+        "2016-01-01 00:00:00",
+        1
+       ],
+       [
+        "2017-01-01 00:00:00",
+        1
+       ],
+       [
+        "2018-01-01 00:00:00",
+        1
+       ],
+       [
+        "2019-01-01 00:00:00",
+        1
+       ],
+       [
+        "2019-06-01 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_coverage_detail_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 6,
+      "distinct": 6,
+      "min": "1",
+      "max": "6",
+      "top": [
+       [
+        "1",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "3",
+        1
+       ],
+       [
+        "4",
+        1
+       ],
+       [
+        "5",
+        1
+       ],
+       [
+        "6",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "coverage_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 6,
+      "distinct": 1,
+      "min": "0",
+      "max": "0",
+      "top": [
+       [
+        "0",
+        6
+       ]
+      ]
+     }
+    },
+    {
+     "name": "insurable_object_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 6,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        5
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "policy_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 6,
+      "distinct": 2,
+      "min": "1",
+      "max": "2",
+      "top": [
+       [
+        "1",
+        5
+       ],
+       [
+        "2",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "coverage_part_code",
+     "type": "character varying(20)",
+     "nullable": false,
+     "pk": false,
+     "fk": true,
+     "stats": {
+      "non_null": 6,
+      "distinct": 1,
+      "min": "-",
+      "max": "-",
+      "top": [
+       [
+        "-",
+        6
+       ]
+      ]
+     }
+    },
+    {
+     "name": "coverage_description",
+     "type": "character varying(2000)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "expiration_date",
+     "type": "timestamp without time zone",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 6,
+      "distinct": 6,
+      "min": "2015-12-31 00:00:00",
+      "max": "2020-05-31 00:00:00",
+      "top": [
+       [
+        "2015-12-31 00:00:00",
+        1
+       ],
+       [
+        "2016-12-31 00:00:00",
+        1
+       ],
+       [
+        "2017-12-31 00:00:00",
+        1
+       ],
+       [
+        "2018-12-31 00:00:00",
+        1
+       ],
+       [
+        "2019-12-31 00:00:00",
+        1
+       ],
+       [
+        "2020-05-31 00:00:00",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "name": "coverage_inclusion_exclusion_code",
+     "type": "character(1)",
+     "nullable": true,
+     "pk": false,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "effective_date",
+    "policy_coverage_detail_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "coverage_part_code",
+      "policy_identifier"
+     ],
+     "ref_table": "policy_coverage_part",
+     "ref_columns": [
+      "coverage_part_code",
+      "policy_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "coverage_identifier"
+     ],
+     "ref_table": "coverage",
+     "ref_columns": [
+      "coverage_identifier"
+     ]
+    },
+    {
+     "columns": [
+      "insurable_object_identifier"
+     ],
+     "ref_table": "insurable_object",
+     "ref_columns": [
+      "insurable_object_identifier"
+     ]
+    }
+   ],
+   "rows": 6
+  },
+  {
+   "name": "policy_coverage_part",
+   "columns": [
+    {
+     "name": "coverage_part_code",
+     "type": "character varying(20)",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    },
+    {
+     "name": "policy_identifier",
+     "type": "integer",
+     "nullable": false,
+     "pk": true,
+     "fk": false,
+     "stats": {
+      "non_null": 0,
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "top": []
+     }
+    }
+   ],
+   "pk": [
+    "coverage_part_code",
+    "policy_identifier"
+   ],
+   "fks": [],
+   "rows": 0
+  },
+  {
+   "name": "premium",
+   "columns": [
+    {
+     "name": "policy_amount_identifier",
+     "type": "bigint",
+     "nullable": false,
+     "pk": true,
+     "fk": true,
+     "stats": {
+      "non_null": 6,
+      "distinct": 6,
+      "min": "2",
+      "max": "12",
+      "top": [
+       [
+        "10",
+        1
+       ],
+       [
+        "12",
+        1
+       ],
+       [
+        "2",
+        1
+       ],
+       [
+        "4",
+        1
+       ],
+       [
+        "6",
+        1
+       ],
+       [
+        "8",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "pk": [
+    "policy_amount_identifier"
+   ],
+   "fks": [
+    {
+     "columns": [
+      "policy_amount_identifier"
+     ],
+     "ref_table": "policy_amount",
+     "ref_columns": [
+      "policy_amount_identifier"
+     ]
+    }
+   ],
+   "rows": 6
+  }
+ ]
+}

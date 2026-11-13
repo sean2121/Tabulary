@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>coa-open</title>
+<link rel="stylesheet" href="/static/pico.min.css">
+<script src="/static/htmx.min.js"></script>
+<style>
+  :root { --pico-font-size: 92%; --pico-line-height: 1.4; --pico-spacing: .6rem; --pico-typography-spacing-vertical: .8rem;
+          --pico-form-element-spacing-vertical: .3rem; --pico-form-element-spacing-horizontal: .7rem; --pico-block-spacing-vertical: .8rem; --pico-block-spacing-horizontal: 1rem; }
+  body.container { max-width: 1400px; padding-top: .5rem; }
+  :root { --pico-font-weight: 500; }
+  body, input, select, textarea, button, table, code { font-weight: 500; color: #1f2328; }
+  .muted, .kind, small { color: #555; }
+  h1 { font-size: 1.5rem; margin-bottom: .6rem; }
+  table { font-size: .9rem; } th, td { padding: .35rem .5rem; }
+  button, input, select { font-size: .9rem; }
+  input.uri { width: 24rem; margin-top: .2rem; }
+  th, td { vertical-align: top; }
+  form.inline { display: grid; grid-template-columns: repeat(4, auto); gap: 1rem; align-items: end; }
+  .muted { color: #777; }
+  input.name { width: 15rem; } input.label { width: 12rem; } input.comment { width: 28rem; }
+  .tabs a { margin-right: .8rem; } .tabs a.on { font-weight: bold; }
+  .st-auto { color: #2a7; } .st-review { color: #c80; } .st-approved { color: #27c; } .st-rejected { color: #c33; } .st-pruned { color: #999; }
+  code { background: #f4f4f4; padding: 0 .2rem; } .kind { font-size: .75rem; color: #666; }
+  tr.class td { background: #f7f9fc; }
+  #panel { margin-top: 1rem; }
+  nav.tabbar { display: flex; justify-content: flex-start; align-items: flex-end; gap: .25rem; border-bottom: 2px solid #d0d7e2; margin-bottom: .8rem; padding: 0; }
+  nav.tabbar > a { flex: 0 0 auto; padding: .45rem 1rem; border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0;
+                   color: #555; text-decoration: none; margin-bottom: -2px; background: #f3f5f8; }
+  nav.tabbar > a:hover { background: #e8edf4; color: #222; }
+  nav.tabbar > a.on { background: #fff; color: #0b5cad; font-weight: 600; border-color: #d0d7e2; border-bottom: 2px solid #fff; }
+  nav.tabbar .exports { margin-left: auto; padding-bottom: .4rem; font-size: .85rem; }
+  nav.tabbar .exports a { margin-left: .8rem; }
+  .exports { font-size: .85rem; font-weight: normal; margin-left: 1rem; } .exports a { margin-right: .6rem; }
+  .md { display: grid; grid-template-columns: 240px 1fr; gap: 1.2rem; align-items: start; }
+  #classlist { border-right: 1px solid #e3e8ef; padding-right: .6rem; position: sticky; top: .5rem; max-height: 90vh; overflow-y: auto; }
+  .cl-head { font-weight: 600; margin-bottom: .3rem; } .cl-sep { font-size: .75rem; color: #888; margin: .8rem 0 .2rem; }
+  .cl-item { display: flex; justify-content: space-between; align-items: center; padding: .3rem .5rem; border-radius: 6px; color: #333; text-decoration: none; font-size: .88rem; }
+  .cl-item:hover { background: #eef2f7; } .cl-item.on { background: #0b5cad; color: #fff; }
+  .badge { background: #e8a33d; color: #fff; border-radius: 999px; padding: 0 .45rem; font-size: .75rem; }
+  .ok { color: #2a7; font-size: .8rem; } .cl-item.on .ok { color: #fff; }
+  .cl-toggle { font-size: .8rem; padding: .15rem .6rem; margin: 0 0 0 .8rem; vertical-align: middle; }
+  body.cl-hidden .md { grid-template-columns: 1fr; } body.cl-hidden #classlist { display: none; }
+  body:not(.cl-hidden) .cl-toggle { background: #0b5cad; color: #fff; border-color: #0b5cad; }
+  td.acts { white-space: nowrap; }
+  button.ib { width: 1.9rem; height: 1.9rem; padding: 0; margin: 0 .15rem 0 0; font-size: .95rem; line-height: 1; border-radius: 6px; background: #fff; }
+  button.ib.ok { color: #1f8a4c; border: 1px solid #1f8a4c; } button.ib.ok:hover { background: #1f8a4c; color: #fff; }
+  button.ib.ng { color: #c33; border: 1px solid #c33; } button.ib.ng:hover { background: #c33; color: #fff; }
+  button.ib.undo { color: #666; border: 1px solid #aaa; } button.ib.undo:hover { background: #eee; }
+  .conn-layout { display: grid; grid-template-columns: 260px 1fr; gap: 1.2rem; align-items: start; border: 1px solid #e3e8ef; border-radius: 8px; padding: .8rem; background: #fbfcfe; }
+  #connlist { border-right: 1px solid #e3e8ef; padding-right: .6rem; }
+  #connlist .cl-item small { color: inherit; opacity: .75; }
+  .cf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .2rem .8rem; }
+  .cf-grid label { font-size: .85rem; }
+  .cf-actions { display: flex; gap: .5rem; align-items: center; margin-bottom: .6rem; }
+  .cf-actions button { margin: 0; width: auto; padding: .3rem .9rem; }
+  .draftform { border-top: 1px solid #e3e8ef; padding-top: .7rem; }
+  .tbl-list { max-height: 240px; overflow-y: auto; margin-bottom: .6rem; border: 1px solid #eef1f5; border-radius: 6px; }
+  .tbl-list table { margin: 0; font-size: .82rem; }
+  .good { color: #1f8a4c; } .bad { color: #c33; }
+  .tech { background: #eef1f5; color: #555; border-radius: 4px; padding: 0 .3rem; font-size: .72rem; }
+  button.ib.ask { color: #555; border: 1px solid #bbb; font-size: .8rem; } button.ib.ask:hover { background: #eef2f7; }
+  .askbox { border: 1px solid #dfe5ee; border-radius: 8px; padding: .5rem .7rem; margin-bottom: .7rem; background: #fafcff; }
+  .ask-row { display: flex; gap: .5rem; align-items: center; } .ask-row textarea { flex: 1; margin: 0; min-height: 2.2rem; resize: vertical; }
+  .ask-row button { width: auto; margin: 0; padding: .35rem 1rem; } .ask-about { font-size: .85rem; white-space: nowrap; }
+  .req { border-top: 1px dashed #dfe5ee; margin-top: .5rem; padding-top: .4rem; font-size: .85rem; }
+  .req-head { display: flex; justify-content: space-between; } .req-q { font-style: italic; } .req-st { font-size: .75rem; color: #777; }
+  .req-applied .req-st { color: #1f8a4c; } .req-discarded { opacity: .6; } .req-msg { margin: .2rem 0; }
+  table.diff { font-size: .82rem; margin: .3rem 0; } table.diff td { padding: .2rem .4rem; } td.op { color: #666; white-space: nowrap; }
+  del { color: #b33; } ins { color: #1f7a3c; text-decoration: none; background: #e9f7ee; } .f { color: #888; font-size: .75rem; }
+  .req-actions { display: flex; gap: .4rem; }
+  .detail-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
+  p.chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+  p.chips a { padding: .1rem .55rem; border: 1px solid #d0d7e2; border-radius: 999px; font-size: .8rem; color: #444; text-decoration: none; }
+  p.chips a:hover { background: #eef2f7; }
+  p.chips a.on { background: #0b5cad; border-color: #0b5cad; color: #fff; }
+</style>
+</head>
+<body class="container">
+<h1><a href="/" style="color:inherit;text-decoration:none">coa-open</a></h1>
+<div class="conn-layout">
+{% include "conn_sidebar.html" %}
+{% include "conn_detail.html" %}
+</div>
+{% include "draft_panel.html" %}
+<details style="margin-top:1.5rem"><summary>Previous drafts ({{ drafts|length }})</summary>
+<table>
+<tr><th>Draft</th><th>Status</th><th>LLM</th><th>profile</th><th>Started</th><th>Breakdown</th></tr>
+{% for x in drafts %}
+<tr><td><a href="/ui/drafts/{{ x.id }}" hx-get="/ui/drafts/{{ x.id }}/panel" hx-target="#panel" hx-swap="outerHTML" hx-push-url="/ui/drafts/{{ x.id }}">{{ x.id[:8] }}</a></td><td>{{ x.status }}</td><td>{{ x.provider }}</td><td>{{ x.stats_level }}</td><td>{{ x.created_at }}</td><td class="muted"><small>{{ x.summary or '' }}</small></td></tr>
+{% endfor %}
+</table>
+</details>
+</body>
+</html>
