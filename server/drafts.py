@@ -33,8 +33,8 @@ sys.path.insert(0, str(ROOT / "dm_proto"))
 import dm_proto as dmp  # noqa: E402
 import el_proto as el  # noqa: E402  (dm_proto adds el_proto to sys.path)
 
-DATA_DIR = Path(os.environ.get("COA_DATA_DIR", str(ROOT / "data")))
-DB_PATH = DATA_DIR / "coa.db"
+DATA_DIR = Path(os.environ.get("TABULARY_DATA_DIR", str(ROOT / "data")))
+DB_PATH = DATA_DIR / "tabulary.db"
 ONTOP_HOME = Path(os.environ.get("ONTOP_HOME", "/opt/ontop"))  # directory that contains the `ontop` launcher
 WORK = DATA_DIR / "drafts"
 WORK.mkdir(parents=True, exist_ok=True)
@@ -43,7 +43,7 @@ if not (ONTOP_HOME / "ontop").exists():
 templates = Jinja2Templates(directory=str(ROOT / "server" / "templates"))
 router = APIRouter()
 AUTO_ACCEPT = 0.9
-DEFAULT_CONNINFO = f"host={os.environ.get('DEMO_DB_HOST', 'localhost')} port={os.environ.get('DEMO_DB_PORT', '5433')} dbname=coa user=coa password=coa"
+DEFAULT_CONNINFO = f"host={os.environ.get('DEMO_DB_HOST', 'localhost')} port={os.environ.get('DEMO_DB_PORT', '5433')} dbname=tabulary user=tabulary password=tabulary"
 
 
 def db() -> sqlite3.Connection:
@@ -108,7 +108,7 @@ def run_draft(draft_id: str, conninfo: str, schema: str, provider: str, stats_le
 
         _set_step(draft_id, "2/3 Ontop bootstrap (Direct Mapping)")
         (wd / "jdbc.properties").write_text(_jdbc_props(conninfo))
-        r = subprocess.run(["bash", "./ontop", "bootstrap", "-b", "urn:coa-open:boot:/", "-p", str(wd / "jdbc.properties"), "-m", str(wd / "boot.obda"), "-t", str(wd / "boot.owl")],
+        r = subprocess.run(["bash", "./ontop", "bootstrap", "-b", "urn:tabulary:boot:/", "-p", str(wd / "jdbc.properties"), "-m", str(wd / "boot.obda"), "-t", str(wd / "boot.owl")],
                            cwd=ONTOP_HOME, capture_output=True, text=True, timeout=1800)
         if r.returncode != 0 or not (wd / "boot.obda").exists():
             raise RuntimeError("ontop bootstrap failed: " + (r.stderr or r.stdout)[-2000:])

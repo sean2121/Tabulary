@@ -29,7 +29,7 @@ from rdflib import OWL, RDF, RDFS, Graph, Namespace, URIRef
 
 HERE = Path(__file__).parent
 DATA = HERE / "data"
-CACHE = Path(os.environ.get("COA_CACHE_DIR", str(HERE / "cache")))  # LLM / embedding response cache
+CACHE = Path(os.environ.get("TABULARY_CACHE_DIR", str(HERE / "cache")))  # LLM / embedding response cache
 SCHEMA_ORG = Namespace("https://schema.org/")
 EMBED_MODEL = "text-embedding-3-small"
 

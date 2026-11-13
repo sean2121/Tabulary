@@ -1,4 +1,4 @@
-# coa-open application image: Python app + Ontop CLI (Java) + psql client.
+# tabulary application image: Python app + Ontop CLI (Java) + psql client.
 FROM python:3.12-slim
 
 ARG ONTOP_VERSION=5.5.0
@@ -23,8 +23,8 @@ COPY server ./server
 COPY docker ./docker
 
 ENV ONTOP_HOME=/opt/ontop \
-    COA_DATA_DIR=/app/data \
-    COA_CACHE_DIR=/app/data/cache \
+    TABULARY_DATA_DIR=/app/data \
+    TABULARY_CACHE_DIR=/app/data/cache \
     PYTHONUNBUFFERED=1
 EXPOSE 8000
 CMD ["sh", "-c", "./docker/load_demo.sh && exec uvicorn server.app:app --host 0.0.0.0 --port 8000"]

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="urn:coa-open:boot:/"
-     xml:base="urn:coa-open:boot:/"
+<rdf:RDF xmlns="urn:tabulary:boot:/"
+     xml:base="urn:tabulary:boot:/"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="urn:coa-open:boot:/"/>
+    <owl:Ontology rdf:about="urn:tabulary:boot:/"/>
     
 
 
@@ -22,178 +22,178 @@
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#ref-agreement_identifier -->
+    <!-- urn:tabulary:boot:/agreement_party_role#ref-agreement_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/agreement_party_role#ref-agreement_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/agreement_party_role#ref-agreement_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#ref-party_identifier -->
+    <!-- urn:tabulary:boot:/agreement_party_role#ref-party_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/agreement_party_role#ref-party_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/agreement_party_role#ref-party_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#ref-party_role_code -->
+    <!-- urn:tabulary:boot:/agreement_party_role#ref-party_role_code -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/agreement_party_role#ref-party_role_code"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/agreement_party_role#ref-party_role_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#ref-catastrophe_identifier -->
+    <!-- urn:tabulary:boot:/claim#ref-catastrophe_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim#ref-catastrophe_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim#ref-catastrophe_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#ref-claim_identifier -->
+    <!-- urn:tabulary:boot:/claim#ref-claim_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim#ref-claim_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim#ref-claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#ref-insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/claim#ref-insurable_object_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim#ref-insurable_object_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim#ref-insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#ref-occurrence_identifier -->
+    <!-- urn:tabulary:boot:/claim#ref-occurrence_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim#ref-occurrence_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim#ref-occurrence_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#ref-claim_identifier -->
+    <!-- urn:tabulary:boot:/claim_amount#ref-claim_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim_amount#ref-claim_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim_amount#ref-claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#ref-claim_offer_identifier -->
+    <!-- urn:tabulary:boot:/claim_amount#ref-claim_offer_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim_amount#ref-claim_offer_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim_amount#ref-claim_offer_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage#ref-claim_identifier -->
+    <!-- urn:tabulary:boot:/claim_coverage#ref-claim_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim_coverage#ref-claim_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim_coverage#ref-claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier -->
+    <!-- urn:tabulary:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_payment#ref-claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/expense_payment#ref-claim_amount_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/expense_payment#ref-claim_amount_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/expense_payment#ref-claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_reserve#ref-claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/expense_reserve#ref-claim_amount_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/expense_reserve#ref-claim_amount_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/expense_reserve#ref-claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_payment#ref-claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/loss_payment#ref-claim_amount_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/loss_payment#ref-claim_amount_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/loss_payment#ref-claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_reserve#ref-claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/loss_reserve#ref-claim_amount_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/loss_reserve#ref-claim_amount_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/loss_reserve#ref-claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#ref-geographic_location_identifier -->
+    <!-- urn:tabulary:boot:/policy#ref-geographic_location_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy#ref-geographic_location_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy#ref-geographic_location_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#ref-policy_identifier -->
+    <!-- urn:tabulary:boot:/policy#ref-policy_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy#ref-policy_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy#ref-policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#ref-geographic_location_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#ref-geographic_location_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_amount#ref-geographic_location_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_amount#ref-geographic_location_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#ref-insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#ref-insurable_object_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_amount#ref-insurable_object_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_amount#ref-insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#ref-policy_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#ref-policy_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_amount#ref-policy_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_amount#ref-policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#ref-coverage_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#ref-coverage_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#ref-coverage_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#ref-coverage_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#ref-insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#ref-insurable_object_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#ref-insurable_object_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#ref-insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/premium#ref-policy_amount_identifier -->
+    <!-- urn:tabulary:boot:/premium#ref-policy_amount_identifier -->
 
 
-    <owl:ObjectProperty rdf:about="urn:coa-open:boot:/premium#ref-policy_amount_identifier"/>
+    <owl:ObjectProperty rdf:about="urn:tabulary:boot:/premium#ref-policy_amount_identifier"/>
     
 
 
@@ -209,542 +209,542 @@
     
 
 
-    <!-- urn:coa-open:boot:/agreement#agreement_identifier -->
+    <!-- urn:tabulary:boot:/agreement#agreement_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement#agreement_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement#agreement_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#agreement_identifier -->
+    <!-- urn:tabulary:boot:/agreement_party_role#agreement_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement_party_role#agreement_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement_party_role#agreement_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#effective_date -->
+    <!-- urn:tabulary:boot:/agreement_party_role#effective_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement_party_role#effective_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement_party_role#effective_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#expiration_date -->
+    <!-- urn:tabulary:boot:/agreement_party_role#expiration_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement_party_role#expiration_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement_party_role#expiration_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#party_identifier -->
+    <!-- urn:tabulary:boot:/agreement_party_role#party_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement_party_role#party_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement_party_role#party_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role#party_role_code -->
+    <!-- urn:tabulary:boot:/agreement_party_role#party_role_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/agreement_party_role#party_role_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/agreement_party_role#party_role_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe#catastrophe_identifier -->
+    <!-- urn:tabulary:boot:/catastrophe#catastrophe_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/catastrophe#catastrophe_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/catastrophe#catastrophe_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe#catastrophe_name -->
+    <!-- urn:tabulary:boot:/catastrophe#catastrophe_name -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/catastrophe#catastrophe_name"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/catastrophe#catastrophe_name"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe#catastrophe_type_code -->
+    <!-- urn:tabulary:boot:/catastrophe#catastrophe_type_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/catastrophe#catastrophe_type_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/catastrophe#catastrophe_type_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe#company_catastrophe_code -->
+    <!-- urn:tabulary:boot:/catastrophe#company_catastrophe_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/catastrophe#company_catastrophe_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/catastrophe#company_catastrophe_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe#industry_catastrophe_code -->
+    <!-- urn:tabulary:boot:/catastrophe#industry_catastrophe_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/catastrophe#industry_catastrophe_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/catastrophe#industry_catastrophe_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#catastrophe_identifier -->
+    <!-- urn:tabulary:boot:/claim#catastrophe_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#catastrophe_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#catastrophe_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_close_date -->
+    <!-- urn:tabulary:boot:/claim#claim_close_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_close_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_close_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_description -->
+    <!-- urn:tabulary:boot:/claim#claim_description -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_description"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_description"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_identifier -->
+    <!-- urn:tabulary:boot:/claim#claim_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_open_date -->
+    <!-- urn:tabulary:boot:/claim#claim_open_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_open_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_open_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_reopen_date -->
+    <!-- urn:tabulary:boot:/claim#claim_reopen_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_reopen_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_reopen_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_reported_date -->
+    <!-- urn:tabulary:boot:/claim#claim_reported_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_reported_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_reported_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claim_status_code -->
+    <!-- urn:tabulary:boot:/claim#claim_status_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claim_status_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claim_status_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#claims_made_date -->
+    <!-- urn:tabulary:boot:/claim#claims_made_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#claims_made_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#claims_made_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#company_claim_number -->
+    <!-- urn:tabulary:boot:/claim#company_claim_number -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#company_claim_number"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#company_claim_number"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#company_subclaim_number -->
+    <!-- urn:tabulary:boot:/claim#company_subclaim_number -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#company_subclaim_number"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#company_subclaim_number"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#entry_into_claims_made_program_date -->
+    <!-- urn:tabulary:boot:/claim#entry_into_claims_made_program_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#entry_into_claims_made_program_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#entry_into_claims_made_program_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/claim#insurable_object_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#insurable_object_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim#occurrence_identifier -->
+    <!-- urn:tabulary:boot:/claim#occurrence_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim#occurrence_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim#occurrence_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#amount_type_code -->
+    <!-- urn:tabulary:boot:/claim_amount#amount_type_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#amount_type_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#amount_type_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#claim_amount -->
+    <!-- urn:tabulary:boot:/claim_amount#claim_amount -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#claim_amount"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#claim_amount"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/claim_amount#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#claim_identifier -->
+    <!-- urn:tabulary:boot:/claim_amount#claim_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#claim_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#claim_offer_identifier -->
+    <!-- urn:tabulary:boot:/claim_amount#claim_offer_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#claim_offer_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#claim_offer_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#event_date -->
+    <!-- urn:tabulary:boot:/claim_amount#event_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#event_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#event_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount#insurance_type_code -->
+    <!-- urn:tabulary:boot:/claim_amount#insurance_type_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_amount#insurance_type_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_amount#insurance_type_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage#claim_identifier -->
+    <!-- urn:tabulary:boot:/claim_coverage#claim_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_coverage#claim_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_coverage#claim_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage#effective_date -->
+    <!-- urn:tabulary:boot:/claim_coverage#effective_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_coverage#effective_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_coverage#effective_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage#policy_coverage_detail_identifier -->
+    <!-- urn:tabulary:boot:/claim_coverage#policy_coverage_detail_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_coverage#policy_coverage_detail_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_coverage#policy_coverage_detail_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_offer#claim_offer_identifier -->
+    <!-- urn:tabulary:boot:/claim_offer#claim_offer_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_offer#claim_offer_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_offer#claim_offer_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_payment#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/claim_payment#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_payment#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_payment#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_reserve#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/claim_reserve#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/claim_reserve#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/claim_reserve#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/coverage#coverage_identifier -->
+    <!-- urn:tabulary:boot:/coverage#coverage_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/coverage#coverage_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/coverage#coverage_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_payment#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/expense_payment#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/expense_payment#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/expense_payment#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_reserve#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/expense_reserve#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/expense_reserve#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/expense_reserve#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/geographic_location#geographic_location_identifier -->
+    <!-- urn:tabulary:boot:/geographic_location#geographic_location_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/geographic_location#geographic_location_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/geographic_location#geographic_location_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/insurable_object#insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/insurable_object#insurable_object_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/insurable_object#insurable_object_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/insurable_object#insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_payment#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/loss_payment#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/loss_payment#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/loss_payment#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_reserve#claim_amount_identifier -->
+    <!-- urn:tabulary:boot:/loss_reserve#claim_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/loss_reserve#claim_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/loss_reserve#claim_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/occurrence#occurrence_identifier -->
+    <!-- urn:tabulary:boot:/occurrence#occurrence_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/occurrence#occurrence_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/occurrence#occurrence_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/party#party_identifier -->
+    <!-- urn:tabulary:boot:/party#party_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/party#party_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/party#party_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/party_role#party_role_code -->
+    <!-- urn:tabulary:boot:/party_role#party_role_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/party_role#party_role_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/party_role#party_role_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#effective_date -->
+    <!-- urn:tabulary:boot:/policy#effective_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#effective_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#effective_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#expiration_date -->
+    <!-- urn:tabulary:boot:/policy#expiration_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#expiration_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#expiration_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#geographic_location_identifier -->
+    <!-- urn:tabulary:boot:/policy#geographic_location_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#geographic_location_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#geographic_location_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#policy_identifier -->
+    <!-- urn:tabulary:boot:/policy#policy_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#policy_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#policy_number -->
+    <!-- urn:tabulary:boot:/policy#policy_number -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#policy_number"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#policy_number"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy#status_code -->
+    <!-- urn:tabulary:boot:/policy#status_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy#status_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy#status_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#amount_type_code -->
+    <!-- urn:tabulary:boot:/policy_amount#amount_type_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#amount_type_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#amount_type_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#earning_begin_date -->
+    <!-- urn:tabulary:boot:/policy_amount#earning_begin_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#earning_begin_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#earning_begin_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#earning_end_date -->
+    <!-- urn:tabulary:boot:/policy_amount#earning_end_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#earning_end_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#earning_end_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#effective_date -->
+    <!-- urn:tabulary:boot:/policy_amount#effective_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#effective_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#effective_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#geographic_location_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#geographic_location_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#geographic_location_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#geographic_location_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#insurable_object_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#insurable_object_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#insurance_type_code -->
+    <!-- urn:tabulary:boot:/policy_amount#insurance_type_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#insurance_type_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#insurance_type_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#policy_amount -->
+    <!-- urn:tabulary:boot:/policy_amount#policy_amount -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#policy_amount"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#policy_amount"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#policy_amount_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#policy_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#policy_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#policy_amount_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#policy_coverage_detail_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#policy_coverage_detail_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#policy_coverage_detail_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#policy_coverage_detail_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount#policy_identifier -->
+    <!-- urn:tabulary:boot:/policy_amount#policy_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_amount#policy_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_amount#policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#coverage_description -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#coverage_description -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#coverage_description"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#coverage_description"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#coverage_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#coverage_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#coverage_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#coverage_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#coverage_part_code -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#coverage_part_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#coverage_part_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#coverage_part_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#effective_date -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#effective_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#effective_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#effective_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#expiration_date -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#expiration_date -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#expiration_date"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#expiration_date"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#insurable_object_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#insurable_object_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#insurable_object_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#insurable_object_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#policy_coverage_detail_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#policy_coverage_detail_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#policy_coverage_detail_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#policy_coverage_detail_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail#policy_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail#policy_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_detail#policy_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_detail#policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_part#coverage_part_code -->
+    <!-- urn:tabulary:boot:/policy_coverage_part#coverage_part_code -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_part#coverage_part_code"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_part#coverage_part_code"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_part#policy_identifier -->
+    <!-- urn:tabulary:boot:/policy_coverage_part#policy_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/policy_coverage_part#policy_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/policy_coverage_part#policy_identifier"/>
     
 
 
-    <!-- urn:coa-open:boot:/premium#policy_amount_identifier -->
+    <!-- urn:tabulary:boot:/premium#policy_amount_identifier -->
 
 
-    <owl:DatatypeProperty rdf:about="urn:coa-open:boot:/premium#policy_amount_identifier"/>
+    <owl:DatatypeProperty rdf:about="urn:tabulary:boot:/premium#policy_amount_identifier"/>
     
 
 
@@ -760,171 +760,171 @@
     
 
 
-    <!-- urn:coa-open:boot:/agreement -->
+    <!-- urn:tabulary:boot:/agreement -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/agreement"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/agreement"/>
     
 
 
-    <!-- urn:coa-open:boot:/agreement_party_role -->
+    <!-- urn:tabulary:boot:/agreement_party_role -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/agreement_party_role"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/agreement_party_role"/>
     
 
 
-    <!-- urn:coa-open:boot:/catastrophe -->
+    <!-- urn:tabulary:boot:/catastrophe -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/catastrophe"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/catastrophe"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim -->
+    <!-- urn:tabulary:boot:/claim -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_amount -->
+    <!-- urn:tabulary:boot:/claim_amount -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim_amount"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim_amount"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_coverage -->
+    <!-- urn:tabulary:boot:/claim_coverage -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim_coverage"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim_coverage"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_offer -->
+    <!-- urn:tabulary:boot:/claim_offer -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim_offer"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim_offer"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_payment -->
+    <!-- urn:tabulary:boot:/claim_payment -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim_payment"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim_payment"/>
     
 
 
-    <!-- urn:coa-open:boot:/claim_reserve -->
+    <!-- urn:tabulary:boot:/claim_reserve -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/claim_reserve"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/claim_reserve"/>
     
 
 
-    <!-- urn:coa-open:boot:/coverage -->
+    <!-- urn:tabulary:boot:/coverage -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/coverage"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/coverage"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_payment -->
+    <!-- urn:tabulary:boot:/expense_payment -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/expense_payment"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/expense_payment"/>
     
 
 
-    <!-- urn:coa-open:boot:/expense_reserve -->
+    <!-- urn:tabulary:boot:/expense_reserve -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/expense_reserve"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/expense_reserve"/>
     
 
 
-    <!-- urn:coa-open:boot:/geographic_location -->
+    <!-- urn:tabulary:boot:/geographic_location -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/geographic_location"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/geographic_location"/>
     
 
 
-    <!-- urn:coa-open:boot:/insurable_object -->
+    <!-- urn:tabulary:boot:/insurable_object -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/insurable_object"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/insurable_object"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_payment -->
+    <!-- urn:tabulary:boot:/loss_payment -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/loss_payment"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/loss_payment"/>
     
 
 
-    <!-- urn:coa-open:boot:/loss_reserve -->
+    <!-- urn:tabulary:boot:/loss_reserve -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/loss_reserve"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/loss_reserve"/>
     
 
 
-    <!-- urn:coa-open:boot:/occurrence -->
+    <!-- urn:tabulary:boot:/occurrence -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/occurrence"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/occurrence"/>
     
 
 
-    <!-- urn:coa-open:boot:/party -->
+    <!-- urn:tabulary:boot:/party -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/party"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/party"/>
     
 
 
-    <!-- urn:coa-open:boot:/party_role -->
+    <!-- urn:tabulary:boot:/party_role -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/party_role"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/party_role"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy -->
+    <!-- urn:tabulary:boot:/policy -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/policy"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/policy"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_amount -->
+    <!-- urn:tabulary:boot:/policy_amount -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/policy_amount"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/policy_amount"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_detail -->
+    <!-- urn:tabulary:boot:/policy_coverage_detail -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/policy_coverage_detail"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/policy_coverage_detail"/>
     
 
 
-    <!-- urn:coa-open:boot:/policy_coverage_part -->
+    <!-- urn:tabulary:boot:/policy_coverage_part -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/policy_coverage_part"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/policy_coverage_part"/>
     
 
 
-    <!-- urn:coa-open:boot:/premium -->
+    <!-- urn:tabulary:boot:/premium -->
 
 
-    <owl:Class rdf:about="urn:coa-open:boot:/premium"/>
+    <owl:Class rdf:about="urn:tabulary:boot:/premium"/>
 </rdf:RDF>
 
 

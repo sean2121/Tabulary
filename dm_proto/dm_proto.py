@@ -32,7 +32,7 @@ import el_proto as el  # noqa: E402  (load_schema, words, set_provider, _cache_p
 BOOT_OBDA = ROOT / "bench" / "insurance" / "boot.obda"  # benchmark input (insurance demo on Postgres)
 GOLD = ROOT / "el_proto" / "gold_r2rml.yaml"
 OUT = HERE / "out"  # default output directory
-BOOT_PREFIX = "urn:coa-open:boot:/"
+BOOT_PREFIX = "urn:tabulary:boot:/"
 
 # ──────────────────────────────── 0. Input (catalog JSON or benchmark YAML) ────────────────────────────────
 
@@ -101,7 +101,7 @@ def parse_obda(path: Path, schema: str | None = None) -> list[dict]:
 
 
 def table_of(iri: str) -> str:
-    """urn:coa-open:boot:/CLAIM/... or urn:coa-open:boot:/CLAIM#COL → CLAIM"""
+    """urn:tabulary:boot:/CLAIM/... or urn:tabulary:boot:/CLAIM#COL → CLAIM"""
     rest = iri[len(BOOT_PREFIX):]
     return re.split(r"[/#]", rest, 1)[0]
 
@@ -383,10 +383,10 @@ XSD_FALLBACK = "xsd:string"
 def write_ttl(model: dict, path: Path) -> None:
     ns = model["ns"]
     L = [f"@prefix : <{ns}> .", "@prefix owl: <http://www.w3.org/2002/07/owl#> .", "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .",
-         "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .", "@prefix coa: <urn:coa-open:vocab:> .", "",
+         "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .", "@prefix tabulary: <urn:tabulary:vocab:> .", "",
          f"<{ns.rstrip('#/')}> a owl:Ontology ; rdfs:comment \"Draft v1 generated from the relational schema; pending steward review.\" .",
-         'coa:reviewStatus a owl:AnnotationProperty ; rdfs:comment "Set to \\"unreviewed\\" on terms nobody has confirmed yet." .', ""]
-    unrev = lambda *es: ' ; coa:reviewStatus "unreviewed"' if any(e.get("unreviewed") for e in es) else ""  # noqa: E731
+         'tabulary:reviewStatus a owl:AnnotationProperty ; rdfs:comment "Set to \\"unreviewed\\" on terms nobody has confirmed yet." .', ""]
+    unrev = lambda *es: ' ; tabulary:reviewStatus "unreviewed"' if any(e.get("unreviewed") for e in es) else ""  # noqa: E731
     q = lambda s: json.dumps(s or "", ensure_ascii=False)  # noqa: E731
     cls = model["classes"]
     for tu, c in cls.items():

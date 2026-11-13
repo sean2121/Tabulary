@@ -1,4 +1,6 @@
-# (project name TBD)
+# Tabulary
+
+Tables in, vocabulary out.
 
 Draft a business ontology from a relational database, review it with a human in the loop, and serve it
 as an Ontop virtual knowledge graph (SPARQL over the live database). Cloud-independent: everything runs
@@ -16,7 +18,7 @@ with `docker compose up`.
    `ontop mapping to-r2rml`.
 
 Structure that comes from the database (tables, columns, foreign-key relations) is exported unless
-rejected; unreviewed terms carry `coa:reviewStatus "unreviewed"`. Structure the LLM adds (value
+rejected; unreviewed terms carry `tabulary:reviewStatus "unreviewed"`. Structure the LLM adds (value
 subclasses, superclasses) is exported only after approval.
 
 ## Run
@@ -44,8 +46,8 @@ ONTOP_HOME=/path/to/ontop-cli uvicorn server.app:app --port 8000
 | Variable | Default | Meaning |
 |---|---|---|
 | `ONTOP_HOME` | `/opt/ontop` | directory containing the `ontop` launcher |
-| `COA_DATA_DIR` | `./data` | SQLite state and per-draft work files |
-| `COA_CACHE_DIR` | `el_proto/cache` | LLM response cache |
+| `TABULARY_DATA_DIR` | `./data` | SQLite state and per-draft work files |
+| `TABULARY_CACHE_DIR` | `el_proto/cache` | LLM response cache |
 | `DEMO_DB_HOST` / `DEMO_DB_PORT` | `localhost` / `5433` | where the demo Postgres is reachable |
 | `DEEPSEEK_API_KEY`, `OPENAI_API_KEY`, `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | | LLM providers |
 
@@ -67,6 +69,10 @@ docker/      container helpers
 against the gold set derived from data.world's R2RML (`el_proto/gold_r2rml.yaml`). The gold treats
 every column the R2RML does not touch as "none", so only the lenient scores (identifier columns and
 subtype links may be dropped) are meaningful.
+
+## License
+
+Apache-2.0 (see LICENSE).
 
 ## Third-party material
 

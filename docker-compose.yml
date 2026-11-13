@@ -1,20 +1,20 @@
-# coa-open: cloud-independent stack. `docker compose up --build` starts everything.
+# tabulary: cloud-independent stack. `docker compose up --build` starts everything.
 #   postgres  demo database (stands in for a customer database); the insurance demo is loaded on first start
 #   app       web UI + API (FastAPI), Ontop CLI and psql inside; state is kept in the appdata volume
 services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: coa
-      POSTGRES_USER: coa
-      POSTGRES_PASSWORD: coa
+      POSTGRES_DB: tabulary
+      POSTGRES_USER: tabulary
+      POSTGRES_PASSWORD: tabulary
     ports:
       - "${PG_PORT:-5433}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U coa -d coa"]
+      test: ["CMD-SHELL", "pg_isready -U tabulary -d tabulary"]
       interval: 3s
       retries: 20
 

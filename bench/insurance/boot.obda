@@ -7,199 +7,199 @@ obda:		https://w3id.org/obda/vocabulary#
 
 [MappingDeclaration] @collection [[
 mappingId	MAPPING-ID1
-target		<urn:coa-open:boot:/policy_coverage_part/coverage_part_code={coverage_part_code};policy_identifier={policy_identifier}> a <urn:coa-open:boot:/policy_coverage_part> ; <urn:coa-open:boot:/policy_coverage_part#coverage_part_code> {coverage_part_code}^^xsd:string ; <urn:coa-open:boot:/policy_coverage_part#policy_identifier> {policy_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/policy_coverage_part/coverage_part_code={coverage_part_code};policy_identifier={policy_identifier}> a <urn:tabulary:boot:/policy_coverage_part> ; <urn:tabulary:boot:/policy_coverage_part#coverage_part_code> {coverage_part_code}^^xsd:string ; <urn:tabulary:boot:/policy_coverage_part#policy_identifier> {policy_identifier}^^xsd:integer . 
 source		SELECT * FROM "policy_coverage_part"
 
 mappingId	MAPPING-ID2
-target		<urn:coa-open:boot:/expense_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/expense_payment> ; <urn:coa-open:boot:/expense_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/expense_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/expense_payment> ; <urn:tabulary:boot:/expense_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "expense_payment"
 
 mappingId	MAPPING-ID3
-target		<urn:coa-open:boot:/expense_payment/claim_amount_identifier={expense_payment_claim_amount_identifier}> <urn:coa-open:boot:/expense_payment#ref-claim_amount_identifier> <urn:coa-open:boot:/claim_payment/claim_amount_identifier={claim_payment_claim_amount_identifier}> . 
+target		<urn:tabulary:boot:/expense_payment/claim_amount_identifier={expense_payment_claim_amount_identifier}> <urn:tabulary:boot:/expense_payment#ref-claim_amount_identifier> <urn:tabulary:boot:/claim_payment/claim_amount_identifier={claim_payment_claim_amount_identifier}> . 
 source		SELECT "expense_payment"."claim_amount_identifier" AS "expense_payment_claim_amount_identifier", "claim_payment"."claim_amount_identifier" AS "claim_payment_claim_amount_identifier" FROM "expense_payment", "claim_payment" WHERE "expense_payment"."claim_amount_identifier" = "claim_payment"."claim_amount_identifier"
 
 mappingId	MAPPING-ID4
-target		<urn:coa-open:boot:/claim_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/claim_reserve> ; <urn:coa-open:boot:/claim_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/claim_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/claim_reserve> ; <urn:tabulary:boot:/claim_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "claim_reserve"
 
 mappingId	MAPPING-ID5
-target		<urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_identifier}> a <urn:coa-open:boot:/policy_amount> ; <urn:coa-open:boot:/policy_amount#policy_amount_identifier> {policy_amount_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_amount#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_amount#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_amount#effective_date> {effective_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy_amount#amount_type_code> {amount_type_code}^^xsd:string ; <urn:coa-open:boot:/policy_amount#earning_begin_date> {earning_begin_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy_amount#earning_end_date> {earning_end_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy_amount#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_amount#policy_amount> {policy_amount}^^xsd:decimal ; <urn:coa-open:boot:/policy_amount#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_amount#insurance_type_code> {insurance_type_code}^^xsd:string . 
+target		<urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_identifier}> a <urn:tabulary:boot:/policy_amount> ; <urn:tabulary:boot:/policy_amount#policy_amount_identifier> {policy_amount_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_amount#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_amount#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_amount#effective_date> {effective_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy_amount#amount_type_code> {amount_type_code}^^xsd:string ; <urn:tabulary:boot:/policy_amount#earning_begin_date> {earning_begin_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy_amount#earning_end_date> {earning_end_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy_amount#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_amount#policy_amount> {policy_amount}^^xsd:decimal ; <urn:tabulary:boot:/policy_amount#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_amount#insurance_type_code> {insurance_type_code}^^xsd:string . 
 source		SELECT * FROM "policy_amount"
 
 mappingId	MAPPING-ID6
-target		<urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:coa-open:boot:/policy_amount#ref-geographic_location_identifier> <urn:coa-open:boot:/geographic_location/geographic_location_identifier={geographic_location_geographic_location_identifier}> . 
+target		<urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:tabulary:boot:/policy_amount#ref-geographic_location_identifier> <urn:tabulary:boot:/geographic_location/geographic_location_identifier={geographic_location_geographic_location_identifier}> . 
 source		SELECT "policy_amount"."policy_amount_identifier" AS "policy_amount_policy_amount_identifier", "geographic_location"."geographic_location_identifier" AS "geographic_location_geographic_location_identifier" FROM "policy_amount", "geographic_location" WHERE "policy_amount"."geographic_location_identifier" = "geographic_location"."geographic_location_identifier"
 
 mappingId	MAPPING-ID7
-target		<urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:coa-open:boot:/policy_amount#ref-insurable_object_identifier> <urn:coa-open:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
+target		<urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:tabulary:boot:/policy_amount#ref-insurable_object_identifier> <urn:tabulary:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
 source		SELECT "policy_amount"."policy_amount_identifier" AS "policy_amount_policy_amount_identifier", "insurable_object"."insurable_object_identifier" AS "insurable_object_insurable_object_identifier" FROM "policy_amount", "insurable_object" WHERE "policy_amount"."insurable_object_identifier" = "insurable_object"."insurable_object_identifier"
 
 mappingId	MAPPING-ID8
-target		<urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:coa-open:boot:/policy_amount#ref-policy_identifier> <urn:coa-open:boot:/policy/policy_identifier={policy_policy_identifier}> . 
+target		<urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:tabulary:boot:/policy_amount#ref-policy_identifier> <urn:tabulary:boot:/policy/policy_identifier={policy_policy_identifier}> . 
 source		SELECT "policy_amount"."policy_amount_identifier" AS "policy_amount_policy_amount_identifier", "policy"."policy_identifier" AS "policy_policy_identifier" FROM "policy_amount", "policy" WHERE "policy_amount"."policy_identifier" = "policy"."policy_identifier"
 
 mappingId	MAPPING-ID9
-target		<urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:coa-open:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier> <urn:coa-open:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> . 
+target		<urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> <urn:tabulary:boot:/policy_amount#ref-effective_date;policy_coverage_detail_identifier> <urn:tabulary:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> . 
 source		SELECT "policy_amount"."policy_amount_identifier" AS "policy_amount_policy_amount_identifier", "policy_coverage_detail"."effective_date" AS "policy_coverage_detail_effective_date", "policy_coverage_detail"."policy_coverage_detail_identifier" AS "policy_coverage_detail_policy_coverage_detail_identifier" FROM "policy_amount", "policy_coverage_detail" WHERE "policy_amount"."effective_date" = "policy_coverage_detail"."effective_date" AND "policy_amount"."policy_coverage_detail_identifier" = "policy_coverage_detail"."policy_coverage_detail_identifier"
 
 mappingId	MAPPING-ID10
-target		<urn:coa-open:boot:/occurrence/occurrence_identifier={occurrence_identifier}> a <urn:coa-open:boot:/occurrence> ; <urn:coa-open:boot:/occurrence#occurrence_identifier> {occurrence_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/occurrence/occurrence_identifier={occurrence_identifier}> a <urn:tabulary:boot:/occurrence> ; <urn:tabulary:boot:/occurrence#occurrence_identifier> {occurrence_identifier}^^xsd:integer . 
 source		SELECT * FROM "occurrence"
 
 mappingId	MAPPING-ID11
-target		<urn:coa-open:boot:/policy_coverage_detail/effective_date={effective_date};policy_coverage_detail_identifier={policy_coverage_detail_identifier}> a <urn:coa-open:boot:/policy_coverage_detail> ; <urn:coa-open:boot:/policy_coverage_detail#effective_date> {effective_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy_coverage_detail#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_coverage_detail#coverage_identifier> {coverage_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_coverage_detail#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_coverage_detail#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy_coverage_detail#coverage_part_code> {coverage_part_code}^^xsd:string ; <urn:coa-open:boot:/policy_coverage_detail#coverage_description> {coverage_description}^^xsd:string ; <urn:coa-open:boot:/policy_coverage_detail#expiration_date> {expiration_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code> {coverage_inclusion_exclusion_code}^^xsd:string . 
+target		<urn:tabulary:boot:/policy_coverage_detail/effective_date={effective_date};policy_coverage_detail_identifier={policy_coverage_detail_identifier}> a <urn:tabulary:boot:/policy_coverage_detail> ; <urn:tabulary:boot:/policy_coverage_detail#effective_date> {effective_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy_coverage_detail#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_coverage_detail#coverage_identifier> {coverage_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_coverage_detail#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_coverage_detail#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy_coverage_detail#coverage_part_code> {coverage_part_code}^^xsd:string ; <urn:tabulary:boot:/policy_coverage_detail#coverage_description> {coverage_description}^^xsd:string ; <urn:tabulary:boot:/policy_coverage_detail#expiration_date> {expiration_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy_coverage_detail#coverage_inclusion_exclusion_code> {coverage_inclusion_exclusion_code}^^xsd:string . 
 source		SELECT * FROM "policy_coverage_detail"
 
 mappingId	MAPPING-ID12
-target		<urn:coa-open:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:coa-open:boot:/policy_coverage_detail#ref-coverage_identifier> <urn:coa-open:boot:/coverage/coverage_identifier={coverage_coverage_identifier}> . 
+target		<urn:tabulary:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:tabulary:boot:/policy_coverage_detail#ref-coverage_identifier> <urn:tabulary:boot:/coverage/coverage_identifier={coverage_coverage_identifier}> . 
 source		SELECT "policy_coverage_detail"."effective_date" AS "policy_coverage_detail_effective_date", "policy_coverage_detail"."policy_coverage_detail_identifier" AS "policy_coverage_detail_policy_coverage_detail_identifier", "coverage"."coverage_identifier" AS "coverage_coverage_identifier" FROM "policy_coverage_detail", "coverage" WHERE "policy_coverage_detail"."coverage_identifier" = "coverage"."coverage_identifier"
 
 mappingId	MAPPING-ID13
-target		<urn:coa-open:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:coa-open:boot:/policy_coverage_detail#ref-insurable_object_identifier> <urn:coa-open:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
+target		<urn:tabulary:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:tabulary:boot:/policy_coverage_detail#ref-insurable_object_identifier> <urn:tabulary:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
 source		SELECT "policy_coverage_detail"."effective_date" AS "policy_coverage_detail_effective_date", "policy_coverage_detail"."policy_coverage_detail_identifier" AS "policy_coverage_detail_policy_coverage_detail_identifier", "insurable_object"."insurable_object_identifier" AS "insurable_object_insurable_object_identifier" FROM "policy_coverage_detail", "insurable_object" WHERE "policy_coverage_detail"."insurable_object_identifier" = "insurable_object"."insurable_object_identifier"
 
 mappingId	MAPPING-ID14
-target		<urn:coa-open:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:coa-open:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier> <urn:coa-open:boot:/policy_coverage_part/coverage_part_code={policy_coverage_part_coverage_part_code};policy_identifier={policy_coverage_part_policy_identifier}> . 
+target		<urn:tabulary:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> <urn:tabulary:boot:/policy_coverage_detail#ref-coverage_part_code;policy_identifier> <urn:tabulary:boot:/policy_coverage_part/coverage_part_code={policy_coverage_part_coverage_part_code};policy_identifier={policy_coverage_part_policy_identifier}> . 
 source		SELECT "policy_coverage_detail"."effective_date" AS "policy_coverage_detail_effective_date", "policy_coverage_detail"."policy_coverage_detail_identifier" AS "policy_coverage_detail_policy_coverage_detail_identifier", "policy_coverage_part"."coverage_part_code" AS "policy_coverage_part_coverage_part_code", "policy_coverage_part"."policy_identifier" AS "policy_coverage_part_policy_identifier" FROM "policy_coverage_detail", "policy_coverage_part" WHERE "policy_coverage_detail"."coverage_part_code" = "policy_coverage_part"."coverage_part_code" AND "policy_coverage_detail"."policy_identifier" = "policy_coverage_part"."policy_identifier"
 
 mappingId	MAPPING-ID15
-target		<urn:coa-open:boot:/claim_coverage/claim_identifier={claim_identifier};effective_date={effective_date};policy_coverage_detail_identifier={policy_coverage_detail_identifier}> a <urn:coa-open:boot:/claim_coverage> ; <urn:coa-open:boot:/claim_coverage#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim_coverage#effective_date> {effective_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim_coverage#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/claim_coverage/claim_identifier={claim_identifier};effective_date={effective_date};policy_coverage_detail_identifier={policy_coverage_detail_identifier}> a <urn:tabulary:boot:/claim_coverage> ; <urn:tabulary:boot:/claim_coverage#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim_coverage#effective_date> {effective_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim_coverage#policy_coverage_detail_identifier> {policy_coverage_detail_identifier}^^xsd:integer . 
 source		SELECT * FROM "claim_coverage"
 
 mappingId	MAPPING-ID16
-target		<urn:coa-open:boot:/claim_coverage/claim_identifier={claim_coverage_claim_identifier};effective_date={claim_coverage_effective_date};policy_coverage_detail_identifier={claim_coverage_policy_coverage_detail_identifier}> <urn:coa-open:boot:/claim_coverage#ref-claim_identifier> <urn:coa-open:boot:/claim/claim_identifier={claim_claim_identifier}> . 
+target		<urn:tabulary:boot:/claim_coverage/claim_identifier={claim_coverage_claim_identifier};effective_date={claim_coverage_effective_date};policy_coverage_detail_identifier={claim_coverage_policy_coverage_detail_identifier}> <urn:tabulary:boot:/claim_coverage#ref-claim_identifier> <urn:tabulary:boot:/claim/claim_identifier={claim_claim_identifier}> . 
 source		SELECT "claim_coverage"."claim_identifier" AS "claim_coverage_claim_identifier", "claim_coverage"."effective_date" AS "claim_coverage_effective_date", "claim_coverage"."policy_coverage_detail_identifier" AS "claim_coverage_policy_coverage_detail_identifier", "claim"."claim_identifier" AS "claim_claim_identifier" FROM "claim_coverage", "claim" WHERE "claim_coverage"."claim_identifier" = "claim"."claim_identifier"
 
 mappingId	MAPPING-ID17
-target		<urn:coa-open:boot:/claim_coverage/claim_identifier={claim_coverage_claim_identifier};effective_date={claim_coverage_effective_date};policy_coverage_detail_identifier={claim_coverage_policy_coverage_detail_identifier}> <urn:coa-open:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier> <urn:coa-open:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> . 
+target		<urn:tabulary:boot:/claim_coverage/claim_identifier={claim_coverage_claim_identifier};effective_date={claim_coverage_effective_date};policy_coverage_detail_identifier={claim_coverage_policy_coverage_detail_identifier}> <urn:tabulary:boot:/claim_coverage#ref-effective_date;policy_coverage_detail_identifier> <urn:tabulary:boot:/policy_coverage_detail/effective_date={policy_coverage_detail_effective_date};policy_coverage_detail_identifier={policy_coverage_detail_policy_coverage_detail_identifier}> . 
 source		SELECT "claim_coverage"."claim_identifier" AS "claim_coverage_claim_identifier", "claim_coverage"."effective_date" AS "claim_coverage_effective_date", "claim_coverage"."policy_coverage_detail_identifier" AS "claim_coverage_policy_coverage_detail_identifier", "policy_coverage_detail"."effective_date" AS "policy_coverage_detail_effective_date", "policy_coverage_detail"."policy_coverage_detail_identifier" AS "policy_coverage_detail_policy_coverage_detail_identifier" FROM "claim_coverage", "policy_coverage_detail" WHERE "claim_coverage"."effective_date" = "policy_coverage_detail"."effective_date" AND "claim_coverage"."policy_coverage_detail_identifier" = "policy_coverage_detail"."policy_coverage_detail_identifier"
 
 mappingId	MAPPING-ID18
-target		<urn:coa-open:boot:/premium/policy_amount_identifier={policy_amount_identifier}> a <urn:coa-open:boot:/premium> ; <urn:coa-open:boot:/premium#policy_amount_identifier> {policy_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/premium/policy_amount_identifier={policy_amount_identifier}> a <urn:tabulary:boot:/premium> ; <urn:tabulary:boot:/premium#policy_amount_identifier> {policy_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "premium"
 
 mappingId	MAPPING-ID19
-target		<urn:coa-open:boot:/premium/policy_amount_identifier={premium_policy_amount_identifier}> <urn:coa-open:boot:/premium#ref-policy_amount_identifier> <urn:coa-open:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> . 
+target		<urn:tabulary:boot:/premium/policy_amount_identifier={premium_policy_amount_identifier}> <urn:tabulary:boot:/premium#ref-policy_amount_identifier> <urn:tabulary:boot:/policy_amount/policy_amount_identifier={policy_amount_policy_amount_identifier}> . 
 source		SELECT "premium"."policy_amount_identifier" AS "premium_policy_amount_identifier", "policy_amount"."policy_amount_identifier" AS "policy_amount_policy_amount_identifier" FROM "premium", "policy_amount" WHERE "premium"."policy_amount_identifier" = "policy_amount"."policy_amount_identifier"
 
 mappingId	MAPPING-ID20
-target		<urn:coa-open:boot:/agreement_party_role/agreement_identifier={agreement_identifier};party_identifier={party_identifier};party_role_code={party_role_code};effective_date={effective_date}> a <urn:coa-open:boot:/agreement_party_role> ; <urn:coa-open:boot:/agreement_party_role#agreement_identifier> {agreement_identifier}^^xsd:integer ; <urn:coa-open:boot:/agreement_party_role#party_identifier> {party_identifier}^^xsd:integer ; <urn:coa-open:boot:/agreement_party_role#party_role_code> {party_role_code}^^xsd:string ; <urn:coa-open:boot:/agreement_party_role#effective_date> {effective_date}^^xsd:dateTime ; <urn:coa-open:boot:/agreement_party_role#expiration_date> {expiration_date}^^xsd:dateTime . 
+target		<urn:tabulary:boot:/agreement_party_role/agreement_identifier={agreement_identifier};party_identifier={party_identifier};party_role_code={party_role_code};effective_date={effective_date}> a <urn:tabulary:boot:/agreement_party_role> ; <urn:tabulary:boot:/agreement_party_role#agreement_identifier> {agreement_identifier}^^xsd:integer ; <urn:tabulary:boot:/agreement_party_role#party_identifier> {party_identifier}^^xsd:integer ; <urn:tabulary:boot:/agreement_party_role#party_role_code> {party_role_code}^^xsd:string ; <urn:tabulary:boot:/agreement_party_role#effective_date> {effective_date}^^xsd:dateTime ; <urn:tabulary:boot:/agreement_party_role#expiration_date> {expiration_date}^^xsd:dateTime . 
 source		SELECT * FROM "agreement_party_role"
 
 mappingId	MAPPING-ID21
-target		<urn:coa-open:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:coa-open:boot:/agreement_party_role#ref-agreement_identifier> <urn:coa-open:boot:/agreement/agreement_identifier={agreement_agreement_identifier}> . 
+target		<urn:tabulary:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:tabulary:boot:/agreement_party_role#ref-agreement_identifier> <urn:tabulary:boot:/agreement/agreement_identifier={agreement_agreement_identifier}> . 
 source		SELECT "agreement_party_role"."agreement_identifier" AS "agreement_party_role_agreement_identifier", "agreement_party_role"."party_identifier" AS "agreement_party_role_party_identifier", "agreement_party_role"."party_role_code" AS "agreement_party_role_party_role_code", "agreement_party_role"."effective_date" AS "agreement_party_role_effective_date", "agreement"."agreement_identifier" AS "agreement_agreement_identifier" FROM "agreement_party_role", "agreement" WHERE "agreement_party_role"."agreement_identifier" = "agreement"."agreement_identifier"
 
 mappingId	MAPPING-ID22
-target		<urn:coa-open:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:coa-open:boot:/agreement_party_role#ref-party_identifier> <urn:coa-open:boot:/party/party_identifier={party_party_identifier}> . 
+target		<urn:tabulary:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:tabulary:boot:/agreement_party_role#ref-party_identifier> <urn:tabulary:boot:/party/party_identifier={party_party_identifier}> . 
 source		SELECT "agreement_party_role"."agreement_identifier" AS "agreement_party_role_agreement_identifier", "agreement_party_role"."party_identifier" AS "agreement_party_role_party_identifier", "agreement_party_role"."party_role_code" AS "agreement_party_role_party_role_code", "agreement_party_role"."effective_date" AS "agreement_party_role_effective_date", "party"."party_identifier" AS "party_party_identifier" FROM "agreement_party_role", "party" WHERE "agreement_party_role"."party_identifier" = "party"."party_identifier"
 
 mappingId	MAPPING-ID23
-target		<urn:coa-open:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:coa-open:boot:/agreement_party_role#ref-party_role_code> <urn:coa-open:boot:/party_role/party_role_code={party_role_party_role_code}> . 
+target		<urn:tabulary:boot:/agreement_party_role/agreement_identifier={agreement_party_role_agreement_identifier};party_identifier={agreement_party_role_party_identifier};party_role_code={agreement_party_role_party_role_code};effective_date={agreement_party_role_effective_date}> <urn:tabulary:boot:/agreement_party_role#ref-party_role_code> <urn:tabulary:boot:/party_role/party_role_code={party_role_party_role_code}> . 
 source		SELECT "agreement_party_role"."agreement_identifier" AS "agreement_party_role_agreement_identifier", "agreement_party_role"."party_identifier" AS "agreement_party_role_party_identifier", "agreement_party_role"."party_role_code" AS "agreement_party_role_party_role_code", "agreement_party_role"."effective_date" AS "agreement_party_role_effective_date", "party_role"."party_role_code" AS "party_role_party_role_code" FROM "agreement_party_role", "party_role" WHERE "agreement_party_role"."party_role_code" = "party_role"."party_role_code"
 
 mappingId	MAPPING-ID24
-target		<urn:coa-open:boot:/catastrophe/catastrophe_identifier={catastrophe_identifier}> a <urn:coa-open:boot:/catastrophe> ; <urn:coa-open:boot:/catastrophe#catastrophe_identifier> {catastrophe_identifier}^^xsd:integer ; <urn:coa-open:boot:/catastrophe#catastrophe_type_code> {catastrophe_type_code}^^xsd:string ; <urn:coa-open:boot:/catastrophe#catastrophe_name> {catastrophe_name}^^xsd:string ; <urn:coa-open:boot:/catastrophe#industry_catastrophe_code> {industry_catastrophe_code}^^xsd:string ; <urn:coa-open:boot:/catastrophe#company_catastrophe_code> {company_catastrophe_code}^^xsd:string . 
+target		<urn:tabulary:boot:/catastrophe/catastrophe_identifier={catastrophe_identifier}> a <urn:tabulary:boot:/catastrophe> ; <urn:tabulary:boot:/catastrophe#catastrophe_identifier> {catastrophe_identifier}^^xsd:integer ; <urn:tabulary:boot:/catastrophe#catastrophe_type_code> {catastrophe_type_code}^^xsd:string ; <urn:tabulary:boot:/catastrophe#catastrophe_name> {catastrophe_name}^^xsd:string ; <urn:tabulary:boot:/catastrophe#industry_catastrophe_code> {industry_catastrophe_code}^^xsd:string ; <urn:tabulary:boot:/catastrophe#company_catastrophe_code> {company_catastrophe_code}^^xsd:string . 
 source		SELECT * FROM "catastrophe"
 
 mappingId	MAPPING-ID25
-target		<urn:coa-open:boot:/claim/claim_identifier={claim_identifier}> a <urn:coa-open:boot:/claim> ; <urn:coa-open:boot:/claim#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim#catastrophe_identifier> {catastrophe_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim#claim_description> {claim_description}^^xsd:string ; <urn:coa-open:boot:/claim#claims_made_date> {claims_made_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim#company_claim_number> {company_claim_number}^^xsd:string ; <urn:coa-open:boot:/claim#company_subclaim_number> {company_subclaim_number}^^xsd:string ; <urn:coa-open:boot:/claim#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim#occurrence_identifier> {occurrence_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim#entry_into_claims_made_program_date> {entry_into_claims_made_program_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim#claim_open_date> {claim_open_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim#claim_close_date> {claim_close_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim#claim_reopen_date> {claim_reopen_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim#claim_status_code> {claim_status_code}^^xsd:string ; <urn:coa-open:boot:/claim#claim_reported_date> {claim_reported_date}^^xsd:dateTime . 
+target		<urn:tabulary:boot:/claim/claim_identifier={claim_identifier}> a <urn:tabulary:boot:/claim> ; <urn:tabulary:boot:/claim#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim#catastrophe_identifier> {catastrophe_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim#claim_description> {claim_description}^^xsd:string ; <urn:tabulary:boot:/claim#claims_made_date> {claims_made_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim#company_claim_number> {company_claim_number}^^xsd:string ; <urn:tabulary:boot:/claim#company_subclaim_number> {company_subclaim_number}^^xsd:string ; <urn:tabulary:boot:/claim#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim#occurrence_identifier> {occurrence_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim#entry_into_claims_made_program_date> {entry_into_claims_made_program_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim#claim_open_date> {claim_open_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim#claim_close_date> {claim_close_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim#claim_reopen_date> {claim_reopen_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim#claim_status_code> {claim_status_code}^^xsd:string ; <urn:tabulary:boot:/claim#claim_reported_date> {claim_reported_date}^^xsd:dateTime . 
 source		SELECT * FROM "claim"
 
 mappingId	MAPPING-ID26
-target		<urn:coa-open:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:coa-open:boot:/claim#ref-catastrophe_identifier> <urn:coa-open:boot:/catastrophe/catastrophe_identifier={catastrophe_catastrophe_identifier}> . 
+target		<urn:tabulary:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:tabulary:boot:/claim#ref-catastrophe_identifier> <urn:tabulary:boot:/catastrophe/catastrophe_identifier={catastrophe_catastrophe_identifier}> . 
 source		SELECT "claim"."claim_identifier" AS "claim_claim_identifier", "catastrophe"."catastrophe_identifier" AS "catastrophe_catastrophe_identifier" FROM "claim", "catastrophe" WHERE "claim"."catastrophe_identifier" = "catastrophe"."catastrophe_identifier"
 
 mappingId	MAPPING-ID27
-target		<urn:coa-open:boot:/claim/claim_identifier={claim_FK_claim_identifier}> <urn:coa-open:boot:/claim#ref-claim_identifier> <urn:coa-open:boot:/claim/claim_identifier={claim_FKR_claim_identifier}> . 
+target		<urn:tabulary:boot:/claim/claim_identifier={claim_FK_claim_identifier}> <urn:tabulary:boot:/claim#ref-claim_identifier> <urn:tabulary:boot:/claim/claim_identifier={claim_FKR_claim_identifier}> . 
 source		SELECT "claim_FK"."claim_identifier" AS "claim_FK_claim_identifier", "claim_FKR"."claim_identifier" AS "claim_FKR_claim_identifier" FROM "claim" AS "claim_FK", "claim" AS "claim_FKR" WHERE "claim_FK"."claim_identifier" = "claim_FKR"."claim_identifier"
 
 mappingId	MAPPING-ID28
-target		<urn:coa-open:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:coa-open:boot:/claim#ref-insurable_object_identifier> <urn:coa-open:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
+target		<urn:tabulary:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:tabulary:boot:/claim#ref-insurable_object_identifier> <urn:tabulary:boot:/insurable_object/insurable_object_identifier={insurable_object_insurable_object_identifier}> . 
 source		SELECT "claim"."claim_identifier" AS "claim_claim_identifier", "insurable_object"."insurable_object_identifier" AS "insurable_object_insurable_object_identifier" FROM "claim", "insurable_object" WHERE "claim"."insurable_object_identifier" = "insurable_object"."insurable_object_identifier"
 
 mappingId	MAPPING-ID29
-target		<urn:coa-open:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:coa-open:boot:/claim#ref-occurrence_identifier> <urn:coa-open:boot:/occurrence/occurrence_identifier={occurrence_occurrence_identifier}> . 
+target		<urn:tabulary:boot:/claim/claim_identifier={claim_claim_identifier}> <urn:tabulary:boot:/claim#ref-occurrence_identifier> <urn:tabulary:boot:/occurrence/occurrence_identifier={occurrence_occurrence_identifier}> . 
 source		SELECT "claim"."claim_identifier" AS "claim_claim_identifier", "occurrence"."occurrence_identifier" AS "occurrence_occurrence_identifier" FROM "claim", "occurrence" WHERE "claim"."occurrence_identifier" = "occurrence"."occurrence_identifier"
 
 mappingId	MAPPING-ID30
-target		<urn:coa-open:boot:/policy/policy_identifier={policy_identifier}> a <urn:coa-open:boot:/policy> ; <urn:coa-open:boot:/policy#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:coa-open:boot:/policy#effective_date> {effective_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy#expiration_date> {expiration_date}^^xsd:dateTime ; <urn:coa-open:boot:/policy#policy_number> {policy_number}^^xsd:string ; <urn:coa-open:boot:/policy#status_code> {status_code}^^xsd:string ; <urn:coa-open:boot:/policy#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/policy/policy_identifier={policy_identifier}> a <urn:tabulary:boot:/policy> ; <urn:tabulary:boot:/policy#policy_identifier> {policy_identifier}^^xsd:integer ; <urn:tabulary:boot:/policy#effective_date> {effective_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy#expiration_date> {expiration_date}^^xsd:dateTime ; <urn:tabulary:boot:/policy#policy_number> {policy_number}^^xsd:string ; <urn:tabulary:boot:/policy#status_code> {status_code}^^xsd:string ; <urn:tabulary:boot:/policy#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer . 
 source		SELECT * FROM "policy"
 
 mappingId	MAPPING-ID31
-target		<urn:coa-open:boot:/policy/policy_identifier={policy_policy_identifier}> <urn:coa-open:boot:/policy#ref-policy_identifier> <urn:coa-open:boot:/agreement/agreement_identifier={agreement_agreement_identifier}> . 
+target		<urn:tabulary:boot:/policy/policy_identifier={policy_policy_identifier}> <urn:tabulary:boot:/policy#ref-policy_identifier> <urn:tabulary:boot:/agreement/agreement_identifier={agreement_agreement_identifier}> . 
 source		SELECT "policy"."policy_identifier" AS "policy_policy_identifier", "agreement"."agreement_identifier" AS "agreement_agreement_identifier" FROM "policy", "agreement" WHERE "policy"."policy_identifier" = "agreement"."agreement_identifier"
 
 mappingId	MAPPING-ID32
-target		<urn:coa-open:boot:/policy/policy_identifier={policy_policy_identifier}> <urn:coa-open:boot:/policy#ref-geographic_location_identifier> <urn:coa-open:boot:/geographic_location/geographic_location_identifier={geographic_location_geographic_location_identifier}> . 
+target		<urn:tabulary:boot:/policy/policy_identifier={policy_policy_identifier}> <urn:tabulary:boot:/policy#ref-geographic_location_identifier> <urn:tabulary:boot:/geographic_location/geographic_location_identifier={geographic_location_geographic_location_identifier}> . 
 source		SELECT "policy"."policy_identifier" AS "policy_policy_identifier", "geographic_location"."geographic_location_identifier" AS "geographic_location_geographic_location_identifier" FROM "policy", "geographic_location" WHERE "policy"."geographic_location_identifier" = "geographic_location"."geographic_location_identifier"
 
 mappingId	MAPPING-ID33
-target		<urn:coa-open:boot:/coverage/coverage_identifier={coverage_identifier}> a <urn:coa-open:boot:/coverage> ; <urn:coa-open:boot:/coverage#coverage_identifier> {coverage_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/coverage/coverage_identifier={coverage_identifier}> a <urn:tabulary:boot:/coverage> ; <urn:tabulary:boot:/coverage#coverage_identifier> {coverage_identifier}^^xsd:integer . 
 source		SELECT * FROM "coverage"
 
 mappingId	MAPPING-ID34
-target		<urn:coa-open:boot:/agreement/agreement_identifier={agreement_identifier}> a <urn:coa-open:boot:/agreement> ; <urn:coa-open:boot:/agreement#agreement_identifier> {agreement_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/agreement/agreement_identifier={agreement_identifier}> a <urn:tabulary:boot:/agreement> ; <urn:tabulary:boot:/agreement#agreement_identifier> {agreement_identifier}^^xsd:integer . 
 source		SELECT * FROM "agreement"
 
 mappingId	MAPPING-ID35
-target		<urn:coa-open:boot:/claim_amount/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/claim_amount> ; <urn:coa-open:boot:/claim_amount#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim_amount#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim_amount#claim_offer_identifier> {claim_offer_identifier}^^xsd:integer ; <urn:coa-open:boot:/claim_amount#amount_type_code> {amount_type_code}^^xsd:string ; <urn:coa-open:boot:/claim_amount#event_date> {event_date}^^xsd:dateTime ; <urn:coa-open:boot:/claim_amount#claim_amount> {claim_amount}^^xsd:decimal ; <urn:coa-open:boot:/claim_amount#insurance_type_code> {insurance_type_code}^^xsd:string . 
+target		<urn:tabulary:boot:/claim_amount/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/claim_amount> ; <urn:tabulary:boot:/claim_amount#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim_amount#claim_identifier> {claim_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim_amount#claim_offer_identifier> {claim_offer_identifier}^^xsd:integer ; <urn:tabulary:boot:/claim_amount#amount_type_code> {amount_type_code}^^xsd:string ; <urn:tabulary:boot:/claim_amount#event_date> {event_date}^^xsd:dateTime ; <urn:tabulary:boot:/claim_amount#claim_amount> {claim_amount}^^xsd:decimal ; <urn:tabulary:boot:/claim_amount#insurance_type_code> {insurance_type_code}^^xsd:string . 
 source		SELECT * FROM "claim_amount"
 
 mappingId	MAPPING-ID36
-target		<urn:coa-open:boot:/claim_amount/claim_amount_identifier={claim_amount_claim_amount_identifier}> <urn:coa-open:boot:/claim_amount#ref-claim_identifier> <urn:coa-open:boot:/claim/claim_identifier={claim_claim_identifier}> . 
+target		<urn:tabulary:boot:/claim_amount/claim_amount_identifier={claim_amount_claim_amount_identifier}> <urn:tabulary:boot:/claim_amount#ref-claim_identifier> <urn:tabulary:boot:/claim/claim_identifier={claim_claim_identifier}> . 
 source		SELECT "claim_amount"."claim_amount_identifier" AS "claim_amount_claim_amount_identifier", "claim"."claim_identifier" AS "claim_claim_identifier" FROM "claim_amount", "claim" WHERE "claim_amount"."claim_identifier" = "claim"."claim_identifier"
 
 mappingId	MAPPING-ID37
-target		<urn:coa-open:boot:/claim_amount/claim_amount_identifier={claim_amount_claim_amount_identifier}> <urn:coa-open:boot:/claim_amount#ref-claim_offer_identifier> <urn:coa-open:boot:/claim_offer/claim_offer_identifier={claim_offer_claim_offer_identifier}> . 
+target		<urn:tabulary:boot:/claim_amount/claim_amount_identifier={claim_amount_claim_amount_identifier}> <urn:tabulary:boot:/claim_amount#ref-claim_offer_identifier> <urn:tabulary:boot:/claim_offer/claim_offer_identifier={claim_offer_claim_offer_identifier}> . 
 source		SELECT "claim_amount"."claim_amount_identifier" AS "claim_amount_claim_amount_identifier", "claim_offer"."claim_offer_identifier" AS "claim_offer_claim_offer_identifier" FROM "claim_amount", "claim_offer" WHERE "claim_amount"."claim_offer_identifier" = "claim_offer"."claim_offer_identifier"
 
 mappingId	MAPPING-ID38
-target		<urn:coa-open:boot:/geographic_location/geographic_location_identifier={geographic_location_identifier}> a <urn:coa-open:boot:/geographic_location> ; <urn:coa-open:boot:/geographic_location#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/geographic_location/geographic_location_identifier={geographic_location_identifier}> a <urn:tabulary:boot:/geographic_location> ; <urn:tabulary:boot:/geographic_location#geographic_location_identifier> {geographic_location_identifier}^^xsd:integer . 
 source		SELECT * FROM "geographic_location"
 
 mappingId	MAPPING-ID39
-target		<urn:coa-open:boot:/loss_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/loss_payment> ; <urn:coa-open:boot:/loss_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/loss_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/loss_payment> ; <urn:tabulary:boot:/loss_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "loss_payment"
 
 mappingId	MAPPING-ID40
-target		<urn:coa-open:boot:/loss_payment/claim_amount_identifier={loss_payment_claim_amount_identifier}> <urn:coa-open:boot:/loss_payment#ref-claim_amount_identifier> <urn:coa-open:boot:/claim_payment/claim_amount_identifier={claim_payment_claim_amount_identifier}> . 
+target		<urn:tabulary:boot:/loss_payment/claim_amount_identifier={loss_payment_claim_amount_identifier}> <urn:tabulary:boot:/loss_payment#ref-claim_amount_identifier> <urn:tabulary:boot:/claim_payment/claim_amount_identifier={claim_payment_claim_amount_identifier}> . 
 source		SELECT "loss_payment"."claim_amount_identifier" AS "loss_payment_claim_amount_identifier", "claim_payment"."claim_amount_identifier" AS "claim_payment_claim_amount_identifier" FROM "loss_payment", "claim_payment" WHERE "loss_payment"."claim_amount_identifier" = "claim_payment"."claim_amount_identifier"
 
 mappingId	MAPPING-ID41
-target		<urn:coa-open:boot:/loss_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/loss_reserve> ; <urn:coa-open:boot:/loss_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/loss_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/loss_reserve> ; <urn:tabulary:boot:/loss_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "loss_reserve"
 
 mappingId	MAPPING-ID42
-target		<urn:coa-open:boot:/loss_reserve/claim_amount_identifier={loss_reserve_claim_amount_identifier}> <urn:coa-open:boot:/loss_reserve#ref-claim_amount_identifier> <urn:coa-open:boot:/claim_reserve/claim_amount_identifier={claim_reserve_claim_amount_identifier}> . 
+target		<urn:tabulary:boot:/loss_reserve/claim_amount_identifier={loss_reserve_claim_amount_identifier}> <urn:tabulary:boot:/loss_reserve#ref-claim_amount_identifier> <urn:tabulary:boot:/claim_reserve/claim_amount_identifier={claim_reserve_claim_amount_identifier}> . 
 source		SELECT "loss_reserve"."claim_amount_identifier" AS "loss_reserve_claim_amount_identifier", "claim_reserve"."claim_amount_identifier" AS "claim_reserve_claim_amount_identifier" FROM "loss_reserve", "claim_reserve" WHERE "loss_reserve"."claim_amount_identifier" = "claim_reserve"."claim_amount_identifier"
 
 mappingId	MAPPING-ID43
-target		<urn:coa-open:boot:/claim_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/claim_payment> ; <urn:coa-open:boot:/claim_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/claim_payment/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/claim_payment> ; <urn:tabulary:boot:/claim_payment#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "claim_payment"
 
 mappingId	MAPPING-ID44
-target		<urn:coa-open:boot:/expense_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:coa-open:boot:/expense_reserve> ; <urn:coa-open:boot:/expense_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/expense_reserve/claim_amount_identifier={claim_amount_identifier}> a <urn:tabulary:boot:/expense_reserve> ; <urn:tabulary:boot:/expense_reserve#claim_amount_identifier> {claim_amount_identifier}^^xsd:integer . 
 source		SELECT * FROM "expense_reserve"
 
 mappingId	MAPPING-ID45
-target		<urn:coa-open:boot:/expense_reserve/claim_amount_identifier={expense_reserve_claim_amount_identifier}> <urn:coa-open:boot:/expense_reserve#ref-claim_amount_identifier> <urn:coa-open:boot:/claim_reserve/claim_amount_identifier={claim_reserve_claim_amount_identifier}> . 
+target		<urn:tabulary:boot:/expense_reserve/claim_amount_identifier={expense_reserve_claim_amount_identifier}> <urn:tabulary:boot:/expense_reserve#ref-claim_amount_identifier> <urn:tabulary:boot:/claim_reserve/claim_amount_identifier={claim_reserve_claim_amount_identifier}> . 
 source		SELECT "expense_reserve"."claim_amount_identifier" AS "expense_reserve_claim_amount_identifier", "claim_reserve"."claim_amount_identifier" AS "claim_reserve_claim_amount_identifier" FROM "expense_reserve", "claim_reserve" WHERE "expense_reserve"."claim_amount_identifier" = "claim_reserve"."claim_amount_identifier"
 
 mappingId	MAPPING-ID46
-target		<urn:coa-open:boot:/party_role/party_role_code={party_role_code}> a <urn:coa-open:boot:/party_role> ; <urn:coa-open:boot:/party_role#party_role_code> {party_role_code}^^xsd:string . 
+target		<urn:tabulary:boot:/party_role/party_role_code={party_role_code}> a <urn:tabulary:boot:/party_role> ; <urn:tabulary:boot:/party_role#party_role_code> {party_role_code}^^xsd:string . 
 source		SELECT * FROM "party_role"
 
 mappingId	MAPPING-ID47
-target		<urn:coa-open:boot:/party/party_identifier={party_identifier}> a <urn:coa-open:boot:/party> ; <urn:coa-open:boot:/party#party_identifier> {party_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/party/party_identifier={party_identifier}> a <urn:tabulary:boot:/party> ; <urn:tabulary:boot:/party#party_identifier> {party_identifier}^^xsd:integer . 
 source		SELECT * FROM "party"
 
 mappingId	MAPPING-ID48
-target		<urn:coa-open:boot:/claim_offer/claim_offer_identifier={claim_offer_identifier}> a <urn:coa-open:boot:/claim_offer> ; <urn:coa-open:boot:/claim_offer#claim_offer_identifier> {claim_offer_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/claim_offer/claim_offer_identifier={claim_offer_identifier}> a <urn:tabulary:boot:/claim_offer> ; <urn:tabulary:boot:/claim_offer#claim_offer_identifier> {claim_offer_identifier}^^xsd:integer . 
 source		SELECT * FROM "claim_offer"
 
 mappingId	MAPPING-ID49
-target		<urn:coa-open:boot:/insurable_object/insurable_object_identifier={insurable_object_identifier}> a <urn:coa-open:boot:/insurable_object> ; <urn:coa-open:boot:/insurable_object#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer . 
+target		<urn:tabulary:boot:/insurable_object/insurable_object_identifier={insurable_object_identifier}> a <urn:tabulary:boot:/insurable_object> ; <urn:tabulary:boot:/insurable_object#insurable_object_identifier> {insurable_object_identifier}^^xsd:integer . 
 source		SELECT * FROM "insurable_object"
 ]]
 

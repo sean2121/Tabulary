@@ -1,9 +1,9 @@
-"""coa-open minimal server: submit a linking job -> list mappings -> approve / reject -> export.
+"""tabulary minimal server: submit a linking job -> list mappings -> approve / reject -> export.
 
 Run:  docker compose up --build        (everything: Postgres demo database + this app)
       or locally: pip install -r requirements.txt; ONTOP_HOME=/path/to/ontop-cli uvicorn server.app:app --port 8000
 UI:   http://localhost:8000/
-State lives in SQLite under COA_DATA_DIR (default ./data). Jobs run serially in a background thread.
+State lives in SQLite under TABULARY_DATA_DIR (default ./data). Jobs run serially in a background thread.
 """
 from __future__ import annotations
 
@@ -27,10 +27,10 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "el_proto"))
 import el_proto as el  # noqa: E402
 
-DB_PATH = Path(os.environ.get("COA_DATA_DIR", str(ROOT / "data"))) / "coa.db"
+DB_PATH = Path(os.environ.get("TABULARY_DATA_DIR", str(ROOT / "data"))) / "tabulary.db"
 DB_PATH.parent.mkdir(exist_ok=True)
 templates = Jinja2Templates(directory=str(ROOT / "server" / "templates"))
-app = FastAPI(title="coa-open")
+app = FastAPI(title="Tabulary")
 app.mount("/static", StaticFiles(directory=str(ROOT / "server" / "static")), name="static")  # vendored CSS/JS, no CDN
 from server import drafts as _drafts  # noqa: E402  (ontology drafts: database -> LLM proposals -> review -> v1)
 app.include_router(_drafts.router)
@@ -210,11 +210,11 @@ def export_ttl(job_id: str) -> str:
     """Export accepted (auto + approved) mappings as Turtle. table -> class, column -> datatype property, FK -> object property."""
     with db() as c:
         rows = c.execute("SELECT * FROM mappings WHERE job_id=? AND status IN ('auto','approved') ORDER BY table_name, kind", (job_id,)).fetchall()
-    base = "urn:coa-open:schema:"
+    base = "urn:tabulary:schema:"
     lines = [
         "@prefix owl: <http://www.w3.org/2002/07/owl#> .",
         "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .",
-        "@prefix coa: <urn:coa-open:vocab:> .",
+        "@prefix tabulary: <urn:tabulary:vocab:> .",
         "",
     ]
     for r in rows:
@@ -222,10 +222,10 @@ def export_ttl(job_id: str) -> str:
         if not uris:
             continue
         subj = f"<{base}{r['source'].replace(' ', '')}>"
-        pred = {"table": "coa:mapsToClass", "column": "coa:mapsToProperty", "fk": "coa:mapsToObjectProperty"}[r["kind"]]
+        pred = {"table": "tabulary:mapsToClass", "column": "tabulary:mapsToProperty", "fk": "tabulary:mapsToObjectProperty"}[r["kind"]]
         for u in uris:
             lines.append(f"{subj} {pred} <{u}> ;")
-            lines.append(f"    coa:confidence {r['confidence']:.2f} ; coa:status \"{r['status']}\"" + (" ; coa:inverse true" if r["inverse"] else "") + " .")
+            lines.append(f"    tabulary:confidence {r['confidence']:.2f} ; tabulary:status \"{r['status']}\"" + (" ; tabulary:inverse true" if r["inverse"] else "") + " .")
     return "\n".join(lines) + "\n"
 
 
@@ -258,7 +258,7 @@ def export_obda(job_id: str) -> str:
 
     out = [
         "[PrefixDeclaration]",
-        ":\t\turn:coa-open:data:",
+        ":\t\turn:tabulary:data:",
         "in:\t\thttp://data.world/schema/insurance/",
         "schema:\thttps://schema.org/",
         "xsd:\t\thttp://www.w3.org/2001/XMLSchema#",

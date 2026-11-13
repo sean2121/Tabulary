@@ -19,15 +19,15 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 ROOT = Path(__file__).resolve().parent.parent
-DB_PATH = Path(os.environ.get("COA_DATA_DIR", str(ROOT / "data"))) / "coa.db"
+DB_PATH = Path(os.environ.get("TABULARY_DATA_DIR", str(ROOT / "data"))) / "tabulary.db"
 templates = Jinja2Templates(directory=str(ROOT / "server" / "templates"))
 router = APIRouter()
 
 KINDS = [("postgresql", "PostgreSQL", True), ("mysql", "MySQL (not yet)", False), ("sqlserver", "SQL Server (not yet)", False), ("oracle", "Oracle (not yet)", False)]
 _DEMO_HOST, _DEMO_PORT = os.environ.get("DEMO_DB_HOST", "localhost"), int(os.environ.get("DEMO_DB_PORT", "5433"))
 SEED = [  # demo databases from docker-compose.yml, registered on first start
-    {"name": "Insurance demo", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "coa", "user": "coa", "password": "coa"},
-    {"name": "University demo (Ontop tutorial)", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "uni", "user": "coa", "password": "coa"},
+    {"name": "Insurance demo", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "tabulary", "user": "tabulary", "password": "tabulary"},
+    {"name": "University demo (Ontop tutorial)", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "uni", "user": "tabulary", "password": "tabulary"},
 ]
 
 
