@@ -1,0 +1,33 @@
+# Dirty retail demo (db/init/02_retail.sql): abbreviated names, undocumented codes, logical deletes, no foreign keys.
+# Business terms are used deliberately; the codes behind them (kbn 2 = corporate, stat 20 = shipped, del_flg 1 = deleted,
+# hoho_kbn 2 = bank transfer) are documented nowhere in the database. Gold answers from hand-written SQL (bench/dirty/gold.sql).
+- id: Q1
+  q: How many corporate customers are there?
+  gold: "13"
+- id: Q2
+  q: What were the total sales in 2026? (Sales means the value of shipped orders, quantity times unit price.)
+  gold: "27200682"
+- id: Q3
+  q: What were the total sales to corporate customers in 2026?
+  gold: "16084431"
+- id: Q4
+  q: Which customer (give the customer id) had the highest sales in 2026?
+  gold: "127"
+- id: Q5
+  q: How many orders placed in 2026 were cancelled?
+  gold: "15"
+- id: Q6
+  q: What is the total amount of payments received by bank transfer in 2026?
+  gold: "13708308"
+- id: Q7
+  q: Which sales representative (give the staff code) had the highest sales in 2026?
+  gold: "T01"
+- id: Q8
+  q: How many orders are still open, that is ordered but not yet shipped and not cancelled?
+  gold: "41"
+- id: Q9
+  q: What is the outstanding balance of customer 103, that is the value of its shipped orders minus the payments received for them?
+  gold: "898400"
+- id: Q10
+  q: How many order lines were sold below the product's list price?
+  gold: "286"

@@ -68,8 +68,9 @@ def main() -> None:
     ap.add_argument("--timeout", type=int, default=420)
     ap.add_argument("--out", default=str(ROOT / "bench" / "qa" / "results.json"))
     ap.add_argument("--only", help="comma-separated question ids")
+    ap.add_argument("--questions", default=str(ROOT / "bench" / "qa" / "questions.yaml"))
     a = ap.parse_args()
-    qs = yaml.safe_load((ROOT / "bench" / "qa" / "questions.yaml").read_text())
+    qs = yaml.safe_load(Path(a.questions).read_text())
     if a.only:
         keep = set(a.only.split(","))
         qs = [x for x in qs if x["id"] in keep]

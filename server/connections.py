@@ -31,6 +31,7 @@ _DEMO_HOST, _DEMO_PORT = os.environ.get("DEMO_DB_HOST", "localhost"), int(os.env
 SEED = [  # demo databases from docker-compose.yml, registered on first start
     {"name": "Insurance demo", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "tabulary", "user": "tabulary", "password_env": "DEMO_DB_PASSWORD"},
     {"name": "University demo (Ontop tutorial)", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "uni", "user": "tabulary", "password_env": "DEMO_DB_PASSWORD"},
+    {"name": "Retail demo (abbreviated names, no foreign keys)", "host": _DEMO_HOST, "port": _DEMO_PORT, "dbname": "retail", "user": "tabulary", "password_env": "DEMO_DB_PASSWORD"},
 ]
 os.environ.setdefault("DEMO_DB_PASSWORD", "tabulary")  # the demo Postgres default from docker-compose.yml
 
