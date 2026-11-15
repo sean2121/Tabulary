@@ -1,0 +1,302 @@
+[
+ {
+  "condition": "bare",
+  "id": "Q1",
+  "question": "How many corporate customers are there?",
+  "gold": "13",
+  "answer": "13",
+  "correct": true,
+  "seconds": 13.3,
+  "transcript": "There are 13 corporate customers. The schema doesn't document what the `kbn` codes mean, so I identified them from the data. Every customer with `kbn` = 2 has a company name (for example 株式会社青井商事), and every customer with `kbn` = 1 has a personal name.\n\nOne of the 13 is named \"株式会社青井商事 39\", which looks like a near-duplicate of 株式会社青井商事. I counted it because it is a separate row with a different name.\n\nANSWER: 13\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q2",
+  "question": "What were the total sales in 2026? (Sales means the value of shipped orders, quantity times unit price.)",
+  "gold": "27200682",
+  "answer": "27200682",
+  "correct": true,
+  "seconds": 23.2,
+  "transcript": "Total 2026 sales are 27,200,682. This rests on an assumption about the status codes, because the schema doesn't document them.\n\n- **Shipped status:** I treated `stat = '20'` as shipped. Nothing in the database confirms this. I assumed `10` means ordered and `90` means cancelled, and `20` is the most common status.\n- **Deleted orders:** I excluded rows with `del_flg = '1'`.\n- **Date:** There is no ship date, so I filtered on the order date (`juchu_dt`) falling in 2026.\n- **Calculation:** I summed quantity times unit price (`suryo * tanka`) over the order lines of those orders.\n\nIf `20` isn't the shipped status, this number is wrong.\n\nANSWER: 27200682\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q3",
+  "question": "What were the total sales to corporate customers in 2026?",
+  "gold": "16084431",
+  "answer": "19510781",
+  "correct": false,
+  "seconds": 21.6,
+  "transcript": "Corporate customers are `m_kokyaku.kbn = '2'`. Those are the company names, and `kbn = '1'` holds individuals. I summed quantity × unit price over order lines dated in 2026. I excluded orders with `del_flg = '1'` and orders with `stat = '90'`.\n\nThe schema doesn't document the status codes, so treating `stat = '90'` as cancelled is my assumption. I read 10 as ordered and 20 as shipped, and I kept both.\n\n| stat | total |\n|---|---|\n| 10 | 3,426,350 |\n| 20 | 16,084,431 |\n| 90 (excluded) | 1,792,880 |\n\nIf 90 isn't cancelled, the total including it would be 21,303,661.\n\nANSWER: 19510781\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q4",
+  "question": "Which customer (give the customer id) had the highest sales in 2026?",
+  "gold": "127",
+  "answer": "127",
+  "correct": true,
+  "seconds": 18.5,
+  "transcript": "Customer 127 had the highest 2026 sales, at 3,201,535. That is the sum of quantity × unit price over 2026 order lines. I left out deleted orders (`del_flg` = 1) and orders with status 90, which I assumed means cancelled. The schema doesn't define the status codes, so that is a guess.\n\nThe result depends on those exclusions. With no filters, customer 112 comes out on top at 4,073,701, with 127 second at 4,001,535. With the filters, 112 drops to 3,184,901, just behind 127.\n\nThe data also includes orders dated after today (2026-11-15). I counted the whole calendar year, so those are included.\n\nANSWER: 127\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q5",
+  "question": "How many orders placed in 2026 were cancelled?",
+  "gold": "15",
+  "answer": "15",
+  "correct": true,
+  "seconds": 12.1,
+  "transcript": "Status code 90 appears to mean cancelled. The schema has no lookup table or notes that confirm this, so it's an assumption based on common convention. In 2026 there are 16 orders with status 90. One of them has `del_flg` = 1, meaning it's logically deleted, so I excluded it and counted 15. If you want deleted rows included, the count is 16.\n\nANSWER: 15\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q6",
+  "question": "What is the total amount of payments received by bank transfer in 2026?",
+  "gold": "13708308",
+  "answer": "13708308",
+  "correct": true,
+  "seconds": 13.8,
+  "transcript": "The database doesn't document what the `hoho_kbn` payment method codes mean, so I'm inferring that code 2 is bank transfer. It's the most common method, which fits, but that's an assumption.\n\nSumming `t_nyukin.kingaku` where `hoho_kbn = '2'` and `nyukin_dt` falls in 2026 gives 13,708,308. That includes payments dated after today (2026-11-15). Counting only payments up to today gives 13,582,858.\n\nANSWER: 13708308\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q7",
+  "question": "Which sales representative (give the staff code) had the highest sales in 2026?",
+  "gold": "T01",
+  "answer": "T01",
+  "correct": true,
+  "seconds": 18.1,
+  "transcript": "T01 had the highest 2026 sales. I summed order line amounts (quantity × unit price) per sales rep for orders dated in 2026. I left out orders flagged as deleted (`del_flg` = 1), and also orders with status 90, which I assumed means cancelled.\n\nT01 comes out ahead either way: 8,550,770 without the status-90 orders, and 8,927,615 with them. Without status 90, T03 is next at 7,592,290. With status 90 included, T04 would rank second at 8,664,123, but T01 would still lead.\n\nANSWER: T01\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q8",
+  "question": "How many orders are still open, that is ordered but not yet shipped and not cancelled?",
+  "gold": "41",
+  "answer": "41",
+  "correct": true,
+  "seconds": 986.8,
+  "transcript": "Open orders are those with stat 10 (ordered) and del_flg 0 (not deleted), which gives 41. The schema doesn't document the status codes, so this rests on my reading of them: 10 = ordered, 20 = shipped, 90 = cancelled. I also treated del_flg = 1 as a deleted record and excluded it. If you count those three deleted orders as still open, the figure would be 44.\n\nANSWER: 41\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q9",
+  "question": "What is the outstanding balance of customer 103, that is the value of its shipped orders minus the payments received for them?",
+  "gold": "898400",
+  "answer": "898400",
+  "correct": true,
+  "seconds": 17.3,
+  "transcript": "Customer 103 has five orders with status 20, which I took to mean shipped. The schema has no status-code table, so that mapping is my assumption. Two other orders have status 10 and are excluded.\n\n- **Shipped order value:** 226,350 + 353,600 + 422,400 + 244,800 + 153,900 = 1,401,050\n- **Payments received on those orders:** 226,350 + 122,400 + 153,900 = 502,650\n- **Outstanding balance:** 1,401,050 − 502,650 = 898,400\n\nANSWER: 898400\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q10",
+  "question": "How many order lines were sold below the product's list price?",
+  "gold": "286",
+  "answer": "302",
+  "correct": false,
+  "seconds": 12.9,
+  "transcript": "302 order lines have a unit price (`t_juchu_mei.tanka`) below the product's list price (`m_shohin.tanka_std`).\n\nThis count includes lines on orders flagged as deleted (`del_flg = 1`). If you exclude those orders, the count is 286.\n\nANSWER: 302\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q1",
+  "question": "How many corporate customers are there?",
+  "gold": "13",
+  "answer": "13",
+  "correct": true,
+  "seconds": 13.9,
+  "transcript": "Query run: `select kbn, count(*) from m_kokyaku group by kbn`. Customers with `kbn = '2'` (corporate) number 13. The 27 others are individuals (`kbn = '1'`).\n\nANSWER: 13\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q2",
+  "question": "What were the total sales in 2026? (Sales means the value of shipped orders, quantity times unit price.)",
+  "gold": "27200682",
+  "answer": "27200682",
+  "correct": true,
+  "seconds": 21.5,
+  "transcript": "Total 2026 sales come to 27,200,682. That is quantity times unit price, summed over order lines of shipped orders (status 20) that aren't logically deleted (`del_flg` is not 1). I counted orders by order date (`juchu_dt`) falling in 2026.\n\n```sql\nselect sum(m.suryo*m.tanka)\nfrom t_juchu j join t_juchu_mei m on m.juchu_no=j.juchu_no\nwhere j.stat='20' and (j.del_flg is null or j.del_flg<>'1')\n  and j.juchu_dt>='2026-01-01' and j.juchu_dt<'2027-01-01'\n```\n\nANSWER: 27200682\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q3",
+  "question": "What were the total sales to corporate customers in 2026?",
+  "gold": "16084431",
+  "answer": "16084431",
+  "correct": true,
+  "seconds": 17.7,
+  "transcript": "Query run:\n\n```sql\nSELECT SUM(m.suryo*m.tanka)\nFROM t_juchu j\nJOIN t_juchu_mei m ON m.juchu_no=j.juchu_no\nJOIN m_kokyaku k ON k.kokyaku_id=j.kokyaku_cd\nWHERE k.kbn='2' AND j.stat='20' AND j.del_flg='0'\n  AND j.juchu_dt>='2026-01-01' AND j.juchu_dt<'2027-01-01'\n```\n\nThis sums quantity times unit price over order lines. It counts only shipped orders (status 20) that aren't logically deleted, for corporate customers (kbn = '2'), with order dates in 2026.\n\nANSWER: 16084431\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q4",
+  "question": "Which customer (give the customer id) had the highest sales in 2026?",
+  "gold": "127",
+  "answer": "127",
+  "correct": true,
+  "seconds": 19.2,
+  "transcript": "Customer 127 had the highest 2026 sales, at 3,201,535 yen.\n\nI counted only shipped orders (status 20) that aren't logically deleted, with order dates in 2026. Sales per customer are the sum of quantity × unit price over the order lines.\n\nQuery run:\n```sql\nSELECT j.kokyaku_cd, SUM(m.suryo*m.tanka) s\nFROM t_juchu j JOIN t_juchu_mei m ON m.juchu_no=j.juchu_no\nWHERE j.stat='20' AND (j.del_flg IS NULL OR j.del_flg<>'1')\n  AND j.juchu_dt>='2026-01-01' AND j.juchu_dt<'2027-01-01'\nGROUP BY 1 ORDER BY 2 DESC LIMIT 5\n```\n\nCustomer 139 was second at 2,812,250.\n\nANSWER: 127\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q5",
+  "question": "How many orders placed in 2026 were cancelled?",
+  "gold": "15",
+  "answer": "15",
+  "correct": true,
+  "seconds": 18.2,
+  "transcript": "Query run:\n```sql\nSELECT count(*) FILTER (WHERE del_flg IS DISTINCT FROM '1') AS not_deleted, count(*) AS total\nFROM t_juchu WHERE stat='90' AND juchu_dt >= '2026-01-01' AND juchu_dt < '2027-01-01'\n```\nCancelled orders (status 90) placed in 2026 number 16 in total. One of them is logically deleted, and the schema says deleted orders are excluded from all business figures. That leaves 15.\n\nANSWER: 15\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q6",
+  "question": "What is the total amount of payments received by bank transfer in 2026?",
+  "gold": "13708308",
+  "answer": "13708308",
+  "correct": true,
+  "seconds": 25.9,
+  "transcript": "Query run:\n```sql\nSELECT SUM(kingaku) FROM t_nyukin WHERE hoho_kbn='2' AND nyukin_dt >= '2026-01-01' AND nyukin_dt < '2027-01-01'\n```\nBank transfer is code `2` in `hoho_kbn`. I didn't filter out payments on deleted or cancelled orders, because the schema doesn't say to exclude them from payment totals.\n\nANSWER: 13708308\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q7",
+  "question": "Which sales representative (give the staff code) had the highest sales in 2026?",
+  "gold": "T01",
+  "answer": "T01",
+  "correct": true,
+  "seconds": 27.1,
+  "transcript": "Staff code T01 had the highest 2026 sales, at 6,905,155 yen. The next highest was T02 at 5,677,376.\n\nI counted only shipped orders (status 20) that aren't logically deleted. Order dates run from 2026-01-01 to 2026-12-31, and each order's sales value is the sum of quantity times unit price over its lines.\n\nQuery I ran:\n```sql\nSELECT j.tanto_cd, SUM(m.suryo*m.tanka) s\nFROM t_juchu j JOIN t_juchu_mei m ON m.juchu_no=j.juchu_no\nWHERE j.stat='20' AND (j.del_flg IS NULL OR j.del_flg<>'1')\n  AND j.juchu_dt>='2026-01-01' AND j.juchu_dt<'2027-01-01'\nGROUP BY 1 ORDER BY 2 DESC LIMIT 5\n```\n\nANSWER: T01\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q8",
+  "question": "How many orders are still open, that is ordered but not yet shipped and not cancelled?",
+  "gold": "41",
+  "answer": "41",
+  "correct": true,
+  "seconds": 26.0,
+  "transcript": "Open orders are those with status 10 that aren't logically deleted (del_flg = 0):\n\n```sql\nSELECT count(*) FROM t_juchu WHERE stat = '10' AND del_flg = '0'\n```\n\nThe status/delete-flag breakdown shows 41 rows with stat = 10 and del_flg = 0. I read the count off that breakdown rather than running the query above. The 3 deleted status-10 rows are excluded, since the schema says deleted orders are left out of all business figures.\n\nANSWER: 41\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q9",
+  "question": "What is the outstanding balance of customer 103, that is the value of its shipped orders minus the payments received for them?",
+  "gold": "898400",
+  "answer": "898400",
+  "correct": true,
+  "seconds": 18.3,
+  "transcript": "Query run (shipped orders, status 20, not deleted, for customer 103):\n\n```sql\nselect (select sum(m.suryo*m.tanka) from t_juchu j join t_juchu_mei m on m.juchu_no=j.juchu_no where j.kokyaku_cd='103' and j.stat='20' and coalesce(j.del_flg,'0')<>'1') as sales,\n(select sum(n.kingaku) from t_juchu j join t_nyukin n on n.juchu_no=j.juchu_no where j.kokyaku_cd='103' and j.stat='20' and coalesce(j.del_flg,'0')<>'1') as paid\n```\n\nShipped order value is 1,401,050 and payments received for those orders are 502,650. The outstanding balance is 1,401,050 − 502,650 = 898,400.\n\nANSWER: 898400\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q10",
+  "question": "How many order lines were sold below the product's list price?",
+  "gold": "286",
+  "answer": "226",
+  "correct": false,
+  "seconds": 18.8,
+  "transcript": "Of the order lines with a unit price below the product's list price, 226 are on shipped orders (status 20) that aren't logically deleted. Counting every order line regardless of order status gives 302.\n\nI used the schema's definition of a sale: shipped, not deleted. If you want every line regardless of order status, the answer is 302.\n\nQuery run:\n```sql\nselect count(*) all_lines,\n       count(*) filter (where j.stat='20' and coalesce(j.del_flg,'0')<>'1') valid\nfrom t_juchu_mei m\njoin m_shohin s on s.shohin_cd = m.shohin_cd\njoin t_juchu j on j.juchu_no = m.juchu_no\nwhere m.tanka < s.tanka_std\n```\n\nANSWER: 226\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q1",
+  "question": "How many corporate customers are there?",
+  "gold": "13",
+  "answer": "13",
+  "correct": true,
+  "seconds": 26.9,
+  "transcript": "Query run:\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT (COUNT(DISTINCT ?c) AS ?n) WHERE { ?c a :CorporateCustomer }\n```\n\nThere are 13 corporate customers.\n\nANSWER: 13\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q2",
+  "question": "What were the total sales in 2026? (Sales means the value of shipped orders, quantity times unit price.)",
+  "gold": "27200682",
+  "answer": "27200682",
+  "correct": true,
+  "seconds": 48.1,
+  "transcript": "Query run: sum of quantity × unitPrice over order lines whose order has status \"20\", deletedFlag \"0\", and an order date in 2026.\n\nTotal 2026 sales: 27,200,682 yen.\n\nANSWER: 27200682\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q3",
+  "question": "What were the total sales to corporate customers in 2026?",
+  "gold": "16084431",
+  "answer": "16084431",
+  "correct": true,
+  "seconds": 84.9,
+  "transcript": "Total sales to corporate customers in 2026 were 16,084,431 yen. This counts only shipped orders (status 20) that aren't logically deleted, and uses order date to place an order in 2026. Each order's value is the sum of quantity × unit price over its lines.\n\nQuery run:\n```sparql\nSELECT (SUM(?q*?p) AS ?total) WHERE {\n  ?l a :OrderLine; :quantity ?q; :unitPrice ?p; :lineOf ?o .\n  ?o :orderStatus \"20\"; :deletedFlag \"0\"; :orderDate ?d; :placedBy ?c .\n  ?c a :CorporateCustomer .\n  FILTER(?d >= \"2026-01-01\"^^xsd:date && ?d < \"2027-01-01\"^^xsd:date)\n}\n```\n\nANSWER: 16084431\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q4",
+  "question": "Which customer (give the customer id) had the highest sales in 2026?",
+  "gold": "127",
+  "answer": "127",
+  "correct": true,
+  "seconds": 42.8,
+  "transcript": "Customer 127 had the highest 2026 sales, at 3,201,535 yen. That is the sum of quantity times unit price over order lines, counting only shipped orders (status 20) that are not logically deleted.\n\nQuery run:\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT ?c (SUM(?q*?p) AS ?s) WHERE {\n?o a :SalesOrder; :orderStatus ?st; :deletedFlag ?d; :orderDate ?dt; :placedBy ?cu.\n?l :lineOf ?o; :quantity ?q; :unitPrice ?p.\n?cu :customerName ?n.\nBIND(STR(?cu) AS ?c)\nFILTER(?st=\"20\" && YEAR(?dt)=2026 && (!BOUND(?d) || ?d=\"0\"))\n} GROUP BY ?c ORDER BY DESC(?s) LIMIT 5\n```\n\nI assumed \"0\" is the not-deleted value of the deleted flag and did not check the column's actual values. Customer 139 was second at 2,812,250.\n\nANSWER: 127\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q5",
+  "question": "How many orders placed in 2026 were cancelled?",
+  "gold": "15",
+  "answer": "15",
+  "correct": true,
+  "seconds": 31.5,
+  "transcript": "Of the 16 cancelled orders dated 2026, one is flagged as logically deleted. The schema says deleted records are excluded from all business figures, so I left it out. That leaves 15.\n\nQuery run (the first count, 16, before checking the deleted flag):\n```sparql\nSELECT ?f ?s (COUNT(?o) AS ?n) WHERE { ?o a :CancelledOrder ; :orderDate ?d ; :deletedFlag ?f ; :orderStatus ?s . FILTER(?d >= \"2026-01-01\"^^xsd:date && ?d < \"2027-01-01\"^^xsd:date) } GROUP BY ?f ?s\n```\nIt returned 15 orders with deleted flag 0 and 1 with deleted flag 1, all with status 90.\n\nANSWER: 15\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q6",
+  "question": "What is the total amount of payments received by bank transfer in 2026?",
+  "gold": "13708308",
+  "answer": "13708308",
+  "correct": true,
+  "seconds": 72.3,
+  "transcript": "Query run (SPARQL):\n\n```\nSELECT (SUM(?a) AS ?t) (COUNT(*) AS ?n) WHERE { ?p a :BankTransferPayment ; :paymentAmount ?a ; :paymentDate ?d . FILTER(?d >= \"2026-01-01\"^^xsd:date && ?d < \"2027-01-01\"^^xsd:date) }\n```\n\nThe 56 bank transfer payments dated in 2026 total 13,708,308.\n\nANSWER: 13708308\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q7",
+  "question": "Which sales representative (give the staff code) had the highest sales in 2026?",
+  "gold": "T01",
+  "answer": "T01",
+  "correct": true,
+  "seconds": 48.3,
+  "transcript": "T01 (岡本 直樹) had the highest sales in 2026, at 6,905,155 yen. That's about 1.2 million ahead of T02, the next highest at 5,677,376.\n\nI summed quantity × unit price over the order lines. I counted only shipped orders dated in 2026 and left out logically deleted orders (flag 1). I ran a SPARQL query over the schema's classes for this. I then checked the raw flag values (0 and 1) to confirm the delete filter was right. The staff code comes from the representative's identifier in the database, which holds it as `tanto_cd`.\n\nANSWER: T01\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q8",
+  "question": "How many orders are still open, that is ordered but not yet shipped and not cancelled?",
+  "gold": "41",
+  "answer": "41",
+  "correct": true,
+  "seconds": 30.6,
+  "transcript": "Open orders are those with status 10 (ordered, not shipped) that aren't logically deleted. Status 20 is shipped and 90 is cancelled.\n\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT ?s ?d (COUNT(*) AS ?n) WHERE { ?o a :SalesOrder ; :orderStatus ?s ; :deletedFlag ?d } GROUP BY ?s ?d\n```\n\nStatus 10 has 44 orders in total. Of those, 3 are flagged deleted and 41 are not. The schema says deleted orders are excluded from all business figures, so I left them out. The `:OpenOrder` class alone also returns 44, because it includes the 3 deleted ones.\n\nANSWER: 41\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q9",
+  "question": "What is the outstanding balance of customer 103, that is the value of its shipped orders minus the payments received for them?",
+  "gold": "898400",
+  "answer": "898400",
+  "correct": true,
+  "seconds": 33.1,
+  "transcript": "Customer 103 is 株式会社青井商事. I matched it by name through the SPARQL vocabulary, since the customer ID isn't exposed as a property. I ran two queries: one summing quantity × unit price per order, and one listing the payments received against those orders.\n\n- **Shipped orders** (status 20, not deleted): J000010 (226,350), J000013 (353,600), J000038 (422,400), J000129 (244,800) and J000248 (153,900). These total 1,401,050. Orders J000279 and J000307 are status 10 (not shipped), so I excluded them.\n- **Payments received** against those orders: 226,350 for J000010, 122,400 for J000129 and 153,900 for J000248. These total 502,650.\n\nOutstanding balance = 1,401,050 − 502,650 = 898,400.\n\nANSWER: 898400\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q10",
+  "question": "How many order lines were sold below the product's list price?",
+  "gold": "286",
+  "answer": "226",
+  "correct": false,
+  "seconds": 46.4,
+  "transcript": "Of the 302 order lines with a unit price below the product's list price, 226 are on shipped orders (status 20) that aren't logically deleted. I counted those 226, because the schema says sales count only for shipped, non-deleted orders. Counting every order line regardless of status or deletion would give 302.\n\nI compared each line's `:unitPrice` with its product's `:standardUnitPrice`, and filtered on `:orderStatus` and `:deletedFlag` (in the last query I grouped by them instead).\n\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT ?s ?d (COUNT(*) AS ?n) WHERE { ?l a :OrderLine; :unitPrice ?u; :ofProduct ?p; :lineOf ?o. ?p :standardUnitPrice ?sp. ?o :orderStatus ?s; :deletedFlag ?d. FILTER(?u < ?sp) } GROUP BY ?s ?d\n```\n\nANSWER: 226\n"
+ }
+]
