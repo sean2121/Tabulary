@@ -217,7 +217,8 @@ def _final_model(draft_id: str) -> tuple[dict, dict]:
         return it["status"] in ("auto", "approved", "review")
 
     def mark(entry: dict, it: dict) -> dict:
-        return {**entry, "unreviewed": it["status"] == "review"}
+        detail = json.loads(it["detail"]) if it.get("detail") else {}
+        return {**entry, "unreviewed": it["status"] == "review", "technical": detail.get("technical")}
 
     classes = {}
     for it in items:

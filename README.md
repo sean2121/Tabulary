@@ -16,6 +16,8 @@ with `docker compose up`.
    change things ("position: 1 = full professor, 2 = ..."). Decisions are stored in SQLite.
 5. **Export** – `v1.ttl` (OWL) and `v1.obda` (Ontop mapping); the latter converts to R2RML with
    `ontop mapping to-r2rml`.
+6. **Serve** – an MCP server (`serve/`) that gives an LLM client the reviewed vocabulary as context and
+   a read-only SQL tool, so it can answer business questions over the database (see below).
 
 Structure that comes from the database (tables, columns, foreign-key relations) is exported unless
 rejected; unreviewed terms carry `tabulary:reviewStatus "unreviewed"`. Structure the LLM adds (value
@@ -51,10 +53,34 @@ ONTOP_HOME=/path/to/ontop-cli uvicorn server.app:app --port 8000
 | `DEMO_DB_HOST` / `DEMO_DB_PORT` | `localhost` / `5433` | where the demo Postgres is reachable |
 | `DEEPSEEK_API_KEY`, `OPENAI_API_KEY`, `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | | LLM providers |
 
+## Serve the result to an LLM (MCP)
+
+`serve/mcp_server.py` is a Model Context Protocol server over stdio (plain JSON-RPC, no SDK). It exposes
+one finished draft as three tools:
+
+| tool | what it does |
+|---|---|
+| `describe_schema` | the reviewed vocabulary: classes, attributes and relations, each with the SQL table, column and JOIN condition behind it; unreviewed items are marked |
+| `query` | one read-only `SELECT` against the source database: statement check, `READ ONLY` transaction, statement timeout, row cap |
+| `distinct_values` | values of one column with counts, for decoding codes |
+
+Drafts do not store database passwords, so the connection is passed separately (a connection saved in
+the UI, a libpq string, or `TABULARY_CONNINFO`). Register it with Claude Code, for example:
+
+```sh
+claude mcp add tabulary -- python3 /path/to/tabulary/serve/mcp_server.py \
+  --draft <draft id> --connection <saved connection id>
+```
+
+Then ask: "Which policyholders have claims, and what is the total claim amount per policyholder?"
+The client calls `describe_schema`, writes SQL in the names it returns and runs it through `query`.
+Without `--draft` the latest finished draft is used.
+
 ## Layout
 
 ```
 server/      FastAPI app: connections, drafts, review UI, "ask the LLM" edits
+serve/       MCP server: reviewed vocabulary as context + read-only SQL for LLM clients
 scan/        PostgreSQL catalog extraction (information_schema + profiles)
 dm_proto/    draft pipeline: direct mapping -> LLM pruning/naming -> OWL + OBDA
 el_proto/    earlier prototype: linking a schema to an existing ontology (shared helpers live here)
