@@ -9,9 +9,11 @@ Exposes an approved Tabulary draft to an LLM client (Claude Code, Claude Desktop
 The protocol is JSON-RPC 2.0, one message per line on stdin/stdout (MCP stdio transport); no SDK is needed.
 
 Usage:
-  python3 -m serve.mcp_server [--draft ID] (--connection SAVED_CONNECTION_ID | --conninfo "host=... dbname=...")
+  python3 -m serve.mcp_server [--draft ID] (--connection SAVED_CONNECTION_ID | --conninfo "host=... dbname=... user=...")
   Without --draft the latest finished draft is used. Drafts do not store passwords, so the connection is passed
-  separately; TABULARY_CONNINFO is used when neither flag is given.
+  separately; TABULARY_CONNINFO is used when neither flag is given. The password comes from the environment: a
+  saved connection names its variable (password_env); for --conninfo use PGPASSWORD. .env in the project root is
+  read at start-up, so nothing secret has to be put on the command line that the LLM client stores in its config.
 """
 from __future__ import annotations
 
@@ -24,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from serve import context, sql  # noqa: E402
+from server import env as E  # noqa: E402  (loads .env)
 
 VERSION = "0.1"
 PROTOCOL = "2025-06-18"
@@ -34,10 +37,10 @@ def log(msg: str) -> None:
 
 
 class Server:
-    def __init__(self, draft_id: str, conninfo: str) -> None:
+    def __init__(self, draft_id: str, conninfo: str, env: dict) -> None:
         self.info = context.draft_info(draft_id)
         self.model, self.dm = context.load(draft_id)
-        self.conninfo = conninfo
+        self.conninfo, self.env = conninfo, env
         self.schema = self.info.get("schema_name") or "public"
         self.tables = context.known_tables(self.dm)
         log(f"draft {draft_id} ({len(self.model['classes'])} classes, schema {self.schema})")
@@ -72,7 +75,7 @@ class Server:
             return context.describe(self.model, self.dm, self.info, args.get("detail") or "full")
         if name == "query":
             limit = int(args.get("limit") or 100)
-            res = sql.run(self.conninfo, args["sql"], self.schema, limit)
+            res = sql.run(self.conninfo, args["sql"], self.schema, limit, env=self.env)
             return sql.to_markdown(res, limit)
         if name == "distinct_values":
             table, column = args["table"].strip().strip('"'), args["column"].strip().strip('"')
@@ -85,7 +88,7 @@ class Server:
                 raise ValueError(f"unknown column {column!r} in {table}; columns: {', '.join(cols)}")
             limit = int(args.get("limit") or 30)
             q = f'SELECT "{col}" AS value, count(*) AS rows FROM {self.dm[tu]["sql_name"]} GROUP BY 1 ORDER BY 2 DESC, 1'
-            return sql.to_markdown(sql.run(self.conninfo, q, self.schema, limit), limit)
+            return sql.to_markdown(sql.run(self.conninfo, q, self.schema, limit, env=self.env), limit)
         raise ValueError(f"unknown tool {name}")
 
     # ---- JSON-RPC ----
@@ -137,18 +140,23 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--draft", help="draft id (default: latest finished draft)")
     ap.add_argument("--connection", help="id of a connection saved in the Tabulary UI")
-    ap.add_argument("--conninfo", help='libpq connection string, e.g. "host=localhost port=5433 dbname=tabulary user=tabulary password=..."')
+    ap.add_argument("--conninfo", help='libpq connection string without password, e.g. "host=localhost port=5433 dbname=tabulary user=tabulary"; set PGPASSWORD')
     a = ap.parse_args()
     draft_id = a.draft or context.latest_done_draft_id()
     if not draft_id:
         sys.exit("no finished draft found")
-    conninfo = a.conninfo or os.environ.get("TABULARY_CONNINFO")
+    conninfo, pw = E.split_password(a.conninfo or os.environ.get("TABULARY_CONNINFO") or "")
+    env = E.pg_env(pw)
     if a.connection:
         from server import connections as C
-        conninfo = C.conninfo(C.get(a.connection))
+        c = C.get(a.connection)
+        try:
+            conninfo, env = C.conninfo(c), C.pg_env(c)
+        except RuntimeError as e:
+            sys.exit(str(e))
     if not conninfo:
         sys.exit("give --connection, --conninfo or TABULARY_CONNINFO")
-    Server(draft_id, conninfo).serve()
+    Server(draft_id, conninfo, env).serve()
 
 
 if __name__ == "__main__":

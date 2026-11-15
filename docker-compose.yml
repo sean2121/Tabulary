@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: tabulary
       POSTGRES_USER: tabulary
-      POSTGRES_PASSWORD: tabulary
+      POSTGRES_PASSWORD: ${DEMO_DB_PASSWORD:-tabulary}
     ports:
       - "${PG_PORT:-5433}:5432"
     volumes:
@@ -28,6 +28,7 @@ services:
     environment:
       DEMO_DB_HOST: postgres
       DEMO_DB_PORT: "5432"
+      DEMO_DB_PASSWORD: ${DEMO_DB_PASSWORD:-tabulary}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434/v1}

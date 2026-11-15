@@ -3,7 +3,8 @@
 
 Extracts: tables, columns (type / nullable), primary keys, foreign keys (composite, order preserved), column profiles (rows / non-null / distinct / top values / min / max).
 Calls psql via subprocess (no Python database driver needed). Swapping in psycopg later keeps the same catalog format.
-Usage: python3 extract_pg.py "host=HOST port=PORT dbname=DB user=USER password=PASS" [--schema public] [--top 10] [--no-values] -o catalog.json
+Usage: PGPASSWORD=... python3 extract_pg.py "host=HOST port=PORT dbname=DB user=USER" [--schema public] [--top 10] [--no-values] -o catalog.json
+(libpq reads the password from PGPASSWORD or ~/.pgpass; keep it off the command line)
   --no-values: skip top values / min / max (for deployments that must not show data values to an external LLM; counts are kept)
 """
 from __future__ import annotations

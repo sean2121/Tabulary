@@ -51,6 +51,8 @@ ONTOP_HOME=/path/to/ontop-cli uvicorn server.app:app --port 8000
 | `TABULARY_DATA_DIR` | `./data` | SQLite state and per-draft work files |
 | `TABULARY_CACHE_DIR` | `el_proto/cache` | LLM response cache |
 | `DEMO_DB_HOST` / `DEMO_DB_PORT` | `localhost` / `5433` | where the demo Postgres is reachable |
+| `DEMO_DB_PASSWORD` | `tabulary` | password of the demo Postgres |
+| `TABULARY_PW_*` (any name) | | passwords of your own databases; a saved connection stores the variable name, `.env` the value |
 | `DEEPSEEK_API_KEY`, `OPENAI_API_KEY`, `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | | LLM providers |
 
 ## Serve the result to an LLM (MCP)
@@ -65,7 +67,9 @@ one finished draft as three tools:
 | `distinct_values` | values of one column with counts, for decoding codes |
 
 Drafts do not store database passwords, so the connection is passed separately (a connection saved in
-the UI, a libpq string, or `TABULARY_CONNINFO`). Register it with Claude Code, for example:
+the UI, a libpq string, or `TABULARY_CONNINFO`). Passwords never go on the command line: a saved connection
+names an environment variable, the server reads `.env` at start-up, and psql gets the value as `PGPASSWORD`.
+Register it with Claude Code, for example:
 
 ```sh
 claude mcp add tabulary -- python3 /path/to/tabulary/serve/mcp_server.py \

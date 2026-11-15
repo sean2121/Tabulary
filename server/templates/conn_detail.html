@@ -8,7 +8,8 @@
     <label>Port <input name="port" value="{{ conn.port if conn else 5432 }}" inputmode="numeric"></label>
     <label>Database <input name="dbname" value="{{ conn.dbname if conn else '' }}"></label>
     <label>User <input name="user" value="{{ conn.user if conn else '' }}"></label>
-    <label>Password <input name="password" type="password" value="" placeholder="{{ '(unchanged)' if conn else '' }}"></label>
+    <label>Password env var <input name="password_env" value="{{ conn.password_env or '' if conn else '' }}" placeholder="e.g. TABULARY_PW_CRM" spellcheck="false">
+      <small>{% if conn and conn.password_env %}{{ '✓ set in the server environment' if pw_set else '✕ not set: add it to .env and restart' }}{% else %}name of the variable in .env that holds the password{% endif %}</small></label>
   </div>
   <div class="cf-actions">
     <button type="button" class="outline secondary" hx-post="/ui/connections/test" hx-include="#connform" hx-target="#testresult" hx-swap="outerHTML">Test connection</button>

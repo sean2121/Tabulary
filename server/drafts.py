@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "dm_proto"))
 import dm_proto as dmp  # noqa: E402
 import el_proto as el  # noqa: E402  (dm_proto adds el_proto to sys.path)
+from server import env as E  # noqa: E402  (.env loading, PGPASSWORD handling)
 
 DATA_DIR = Path(os.environ.get("TABULARY_DATA_DIR", str(ROOT / "data")))
 DB_PATH = DATA_DIR / "tabulary.db"
@@ -43,7 +44,7 @@ if not (ONTOP_HOME / "ontop").exists():
 templates = Jinja2Templates(directory=str(ROOT / "server" / "templates"))
 router = APIRouter()
 AUTO_ACCEPT = 0.9
-DEFAULT_CONNINFO = f"host={os.environ.get('DEMO_DB_HOST', 'localhost')} port={os.environ.get('DEMO_DB_PORT', '5433')} dbname=tabulary user=tabulary password=tabulary"
+DEFAULT_CONNINFO = f"host={os.environ.get('DEMO_DB_HOST', 'localhost')} port={os.environ.get('DEMO_DB_PORT', '5433')} dbname=tabulary user=tabulary"  # password: PGPASSWORD / DEMO_DB_PASSWORD
 
 
 def db() -> sqlite3.Connection:
@@ -83,10 +84,10 @@ def _mask(conninfo: str) -> str:
     return re.sub(r"(password=)\S+", r"\1***", conninfo)
 
 
-def _jdbc_props(conninfo: str) -> str:
+def _jdbc_props(conninfo: str, password: str | None) -> str:
     kv = dict(p.split("=", 1) for p in shlex.split(conninfo) if "=" in p)
     url = f"jdbc:postgresql://{kv.get('host', 'localhost')}:{kv.get('port', '5432')}/{kv.get('dbname', kv.get('user', ''))}"
-    return f"jdbc.url={url}\njdbc.user={kv.get('user', '')}\njdbc.password={kv.get('password', '')}\njdbc.driver=org.postgresql.Driver\n"
+    return f"jdbc.url={url}\njdbc.user={kv.get('user', '')}\njdbc.password={password or ''}\njdbc.driver=org.postgresql.Driver\n"
 
 
 def _set_step(draft_id: str, step: str, done: int | None = None, total: int | None = None) -> None:
@@ -94,22 +95,28 @@ def _set_step(draft_id: str, step: str, done: int | None = None, total: int | No
         c.execute("UPDATE drafts SET step=?, progress_done=?, progress_total=? WHERE id=?", (step, done, total, draft_id))
 
 
-def run_draft(draft_id: str, conninfo: str, schema: str, provider: str, stats_level: str, domain: str | None, ns: str) -> None:
+def run_draft(draft_id: str, conninfo: str, password: str | None, schema: str, provider: str, stats_level: str, domain: str | None, ns: str) -> None:
+    """conninfo carries no password; it goes to psql as PGPASSWORD and to Ontop in a 0600 properties file that is deleted right after bootstrap."""
     wd = WORK / draft_id
     wd.mkdir(exist_ok=True)
+    jdbc = wd / "jdbc.properties"
     try:
         _set_step(draft_id, "1/3 catalog extraction (information_schema + profile)")
         cmd = [sys.executable, str(ROOT / "scan" / "extract_pg.py"), conninfo, "--schema", schema, "-o", str(wd / "catalog.json")]
         if stats_level != "values":
             cmd.append("--no-values")
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=1800, env=E.pg_env(password))
         if r.returncode != 0:
             raise RuntimeError("extract_pg failed: " + r.stderr[-2000:])
 
         _set_step(draft_id, "2/3 Ontop bootstrap (Direct Mapping)")
-        (wd / "jdbc.properties").write_text(_jdbc_props(conninfo))
-        r = subprocess.run(["bash", "./ontop", "bootstrap", "-b", "urn:tabulary:boot:/", "-p", str(wd / "jdbc.properties"), "-m", str(wd / "boot.obda"), "-t", str(wd / "boot.owl")],
-                           cwd=ONTOP_HOME, capture_output=True, text=True, timeout=1800)
+        jdbc.touch(mode=0o600)
+        jdbc.write_text(_jdbc_props(conninfo, password))
+        try:
+            r = subprocess.run(["bash", "./ontop", "bootstrap", "-b", "urn:tabulary:boot:/", "-p", str(jdbc), "-m", str(wd / "boot.obda"), "-t", str(wd / "boot.owl")],
+                               cwd=ONTOP_HOME, capture_output=True, text=True, timeout=1800)
+        finally:
+            jdbc.unlink(missing_ok=True)
         if r.returncode != 0 or not (wd / "boot.obda").exists():
             raise RuntimeError("ontop bootstrap failed: " + (r.stderr or r.stdout)[-2000:])
 
@@ -297,15 +304,22 @@ class DraftIn(BaseModel):
 @router.post("/api/drafts")
 def create_draft(body: DraftIn) -> dict:
     did = str(uuid.uuid4())
-    ci, shown = body.conninfo, _mask(body.conninfo)
+    ci, pw = E.split_password(body.conninfo)  # a password given inline is moved to the environment, never shown or stored
+    if pw is None:
+        pw = os.environ.get("PGPASSWORD") or os.environ.get("DEMO_DB_PASSWORD")
+    shown = ci
     if body.connection_id:
         from server import connections as _conns
         saved = _conns.get(body.connection_id)
         ci, shown = _conns.conninfo(saved), f"{saved['name']} ({saved['user']}@{saved['host']}:{saved['port']}/{saved['dbname']})"
+        try:
+            pw = E.password_from_env(saved.get("password_env"))
+        except RuntimeError as e:
+            raise HTTPException(400, str(e))
     with db() as c:
         c.execute("INSERT INTO drafts (id,status,created_at,step,conninfo,schema_name,provider,stats_level,domain,ns) VALUES (?,?,?,?,?,?,?,?,?,?)",
                   (did, "running", now(), "queued", shown, body.schema_name, body.provider, body.stats_level, body.domain, body.ns))
-    threading.Thread(target=run_draft, args=(did, ci, body.schema_name, body.provider, body.stats_level, body.domain, body.ns), daemon=True).start()
+    threading.Thread(target=run_draft, args=(did, ci, pw, body.schema_name, body.provider, body.stats_level, body.domain, body.ns), daemon=True).start()
     return {"id": did, "status": "running"}
 
 

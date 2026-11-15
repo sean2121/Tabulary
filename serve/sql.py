@@ -41,8 +41,9 @@ def check(sql: str) -> str:
     return s
 
 
-def run(conninfo: str, sql: str, schema: str = "public", limit: int = 100, timeout_s: int = 15) -> dict:
-    """Execute a checked SELECT and return {"columns": [...], "rows": [[...]], "truncated": bool}."""
+def run(conninfo: str, sql: str, schema: str = "public", limit: int = 100, timeout_s: int = 15, env: dict | None = None) -> dict:
+    """Execute a checked SELECT and return {"columns": [...], "rows": [[...]], "truncated": bool}.
+    conninfo carries no password; env (with PGPASSWORD) is the child-process environment."""
     s = check(sql)
     limit = max(1, min(int(limit), 1000))
     wrapped = f"SELECT * FROM ({s}) AS tabulary_q LIMIT {limit + 1}"
@@ -51,7 +52,7 @@ def run(conninfo: str, sql: str, schema: str = "public", limit: int = 100, timeo
            "-c", f"SET LOCAL statement_timeout = '{int(timeout_s) * 1000}ms'",
            "-c", f'SET LOCAL search_path TO "{schema}", public',
            "-c", wrapped]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s + 10)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s + 10, env=env)
     if r.returncode != 0:
         raise ValueError(r.stderr.strip() or "query failed")
     rows = list(csv.reader(io.StringIO(r.stdout)))
