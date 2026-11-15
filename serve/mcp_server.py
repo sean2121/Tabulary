@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Tabulary MCP server (stdio).
 
-Exposes an approved Tabulary draft to an LLM client (Claude Code, Claude Desktop, ...) as three tools:
-  describe_schema   business vocabulary with the SQL tables, columns and JOIN conditions behind it
-  query             read-only SQL against the database the draft was made from
+Exposes an approved Tabulary draft to an LLM client (Claude Code, Claude Desktop, ...) as four tools:
+  describe_schema   the vocabulary: in SPARQL terms by default, or with the SQL tables/columns/JOINs behind it (mode=sql)
+  sparql            SPARQL over the draft; Ontop translates it to SQL using the reviewed mapping (primary path)
+  query_sql         read-only SQL for what SPARQL cannot express (window functions, DB-specific functions)
   distinct_values   values of one column with counts (for decoding codes)
 
 The protocol is JSON-RPC 2.0, one message per line on stdin/stdout (MCP stdio transport); no SDK is needed.
@@ -25,7 +26,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from serve import context, sql  # noqa: E402
+from serve import context, ontop, sql  # noqa: E402
+from server import drafts as D  # noqa: E402
 from server import env as E  # noqa: E402  (loads .env)
 
 VERSION = "0.1"
@@ -39,26 +41,43 @@ def log(msg: str) -> None:
 class Server:
     def __init__(self, draft_id: str, conninfo: str | None, env: dict | None) -> None:
         """conninfo None = no database reachable: describe_schema works, query / distinct_values explain why they do not."""
+        self.draft_id = draft_id
         self.info = context.draft_info(draft_id)
         self.model, self.dm = context.load(draft_id)
         self.conninfo, self.env = conninfo, env
         self.schema = self.info.get("schema_name") or "public"
         self.tables = context.known_tables(self.dm)
+        self._exports: tuple[str, str] | None = None
         log(f"draft {draft_id} ({len(self.model['classes'])} classes, schema {self.schema})")
+
+    def exports(self) -> tuple[str, str]:
+        if self._exports is None:
+            self._exports = (D.export(self.draft_id, "v1.ttl"), D.export(self.draft_id, "v1.obda"))
+        return self._exports
 
     # ---- tools ----
     def tools(self) -> list[dict]:
         return [
             {"name": "describe_schema",
-             "description": "Business vocabulary of this database as reviewed by its data stewards: classes, attributes "
-                            "and relations, each with the SQL table/column and JOIN condition behind it. Call this first "
-                            "before writing any SQL.",
+             "description": "Business vocabulary of this database as reviewed by its data stewards. Default mode "
+                            "'ontology' gives classes and properties with the prefixes to use in SPARQL. Mode 'sql' adds "
+                            "the SQL table, column and JOIN condition behind each term, for query_sql. Call this first.",
              "inputSchema": {"type": "object", "properties": {
                  "detail": {"type": "string", "enum": ["summary", "full"], "default": "full",
-                            "description": "summary = class list only; full = attributes, relations, join conditions"}}}},
-            {"name": "query",
-             "description": "Run one read-only SQL SELECT against the database (PostgreSQL). Use the table and column "
-                            "names from describe_schema. Results are capped by limit.",
+                            "description": "summary = class list only; full = properties and relations"},
+                 "mode": {"type": "string", "enum": ["ontology", "sql"], "default": "ontology"}}}},
+            {"name": "sparql",
+             "description": "Run a SPARQL 1.1 SELECT or ASK query over the reviewed vocabulary. Ontop translates it to SQL "
+                            "against the live database using the stewards' mapping, so only mapped classes and properties "
+                            "can be reached. Preferred way to answer questions. The first call after a change may take "
+                            "20-30 s while the endpoint starts.",
+             "inputSchema": {"type": "object", "required": ["query"], "properties": {
+                 "query": {"type": "string", "description": "SPARQL query using the prefixes from describe_schema"},
+                 "limit": {"type": "integer", "default": 100, "minimum": 1, "maximum": 1000}}}},
+            {"name": "query_sql",
+             "description": "Fallback: run one read-only SQL SELECT against the database (PostgreSQL) for computations "
+                            "SPARQL cannot express (window functions, date arithmetic, DB-specific functions). Use the "
+                            "table and column names from describe_schema with mode='sql'.",
              "inputSchema": {"type": "object", "required": ["sql"], "properties": {
                  "sql": {"type": "string", "description": "A single SELECT or WITH ... SELECT statement"},
                  "limit": {"type": "integer", "default": 100, "minimum": 1, "maximum": 1000}}}},
@@ -73,11 +92,21 @@ class Server:
 
     def call(self, name: str, args: dict) -> str:
         if name == "describe_schema":
-            return context.describe(self.model, self.dm, self.info, args.get("detail") or "full")
-        if name in ("query", "distinct_values") and not self.conninfo:
+            detail = args.get("detail") or "full"
+            if (args.get("mode") or "ontology") == "sql":
+                return context.describe(self.model, self.dm, self.info, detail)
+            return context.describe_ontology(self.model, self.dm, self.info, detail)
+        if name in ("sparql", "query_sql", "distinct_values") and not self.conninfo:
             raise ValueError("no database connection for this draft (it was created from a raw connection string; "
                              "create the draft from a saved connection, or start the stdio server with --connection)")
-        if name == "query":
+        if name == "sparql":
+            limit = int(args.get("limit") or 100)
+            ttl, obda = self.exports()
+            url = ontop.ensure(self.draft_id, context.draft_stamp(self.draft_id), self.conninfo,
+                               (self.env or {}).get("PGPASSWORD"), ttl, obda)
+            res = ontop.run(url, args["query"], limit)
+            return ontop.to_markdown(res, limit, context.prefixes(self.model))
+        if name == "query_sql":
             limit = int(args.get("limit") or 100)
             res = sql.run(self.conninfo, args["sql"], self.schema, limit, env=self.env)
             return sql.to_markdown(res, limit)
@@ -103,7 +132,9 @@ class Server:
                                  "capabilities": {"tools": {}},
                                  "serverInfo": {"name": "tabulary", "version": VERSION},
                                  "instructions": "Answer business questions over this database. Call describe_schema first, "
-                                                 "then write SQL with the table/column names it gives and run it with query."})
+                                                 "write SPARQL with the prefixes and terms it gives and run it with sparql. "
+                                                 "Use query_sql (with describe_schema mode='sql') only for computations "
+                                                 "SPARQL cannot express. Always show the query you ran."})
         if method in ("notifications/initialized", "notifications/cancelled") or mid is None:
             return None
         if method == "ping":

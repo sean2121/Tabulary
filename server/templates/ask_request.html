@@ -13,7 +13,11 @@
     {% elif op.op == 'reject' %}
     <tr><td class="op">reject</td><td><code>{{ op.db }}</code></td><td><del>{{ op.before.name }}</del> <span class="muted">{{ op.reason }}</span></td></tr>
     {% else %}
+    {% if op.op == 'add_relation' %}
+    <tr><td class="op">add relation</td><td><code>{{ op.columns|join(', ') }} → {{ op.ref_table }}({{ op.ref_columns|join(', ') }})</code></td><td><ins>{{ op.property_name }}</ins> <span class="muted">{{ op.label }} — {{ op.comment }}</span></td></tr>
+    {% else %}
     <tr><td class="op">add subclass</td><td><code>WHERE {{ op.column }} = '{{ op.value }}'</code></td><td><ins>{{ op.class_name }}</ins> <span class="muted">{{ op.label }} — {{ op.comment }}</span></td></tr>
+    {% endif %}
     {% endif %}
     {% endfor %}
   </table>

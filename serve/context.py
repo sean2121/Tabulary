@@ -172,3 +172,81 @@ def known_tables(dm: dict) -> dict[str, str]:
 
 def known_columns(dm: dict, tu: str) -> list[str]:
     return [c["name"] for c in dm[tu]["cols"].values()]
+
+
+def draft_stamp(draft_id: str) -> str:
+    """Changes whenever a review decision or an applied request touches the draft; used to invalidate caches and restart the endpoint."""
+    with D.db() as c:
+        r = c.execute("SELECT count(*), max(decided_at) FROM draft_items WHERE draft_id=?", (draft_id,)).fetchone()
+    return f"{r[0]}:{r[1]}"
+
+
+def prefixes(model: dict) -> dict[str, str]:
+    ns = model["ns"]
+    return {"": ns, "data": ns.rsplit("/", 2)[0] + "/data/", "xsd": "http://www.w3.org/2001/XMLSchema#"}
+
+
+def describe_ontology(model: dict, dm: dict, info: dict, detail: str = "full") -> str:
+    """The vocabulary in SPARQL terms: classes and properties with their prefixed names, no table or column names.
+    This is what a client gets when it is expected to write SPARQL; the mapping to SQL stays inside Ontop."""
+    classes: dict[str, dict] = model["classes"]
+    pfx = prefixes(model)
+    dt_by_class: dict[str, list[dict]] = defaultdict(list)
+    for p in model["dtprops"]:
+        dt_by_class[p.get("domain_class") or p["table"]].append(p)
+    rel_by_class: dict[str, list[dict]] = defaultdict(list)
+    for p in model["objprops"]:
+        rel_by_class[p["domain_t"]].append(p)
+    subs_by_parent: dict[str, list[dict]] = defaultdict(list)
+    for k, c in classes.items():
+        if c.get("filter"):
+            subs_by_parent[c["parent"]].append(c)
+
+    def cname(key: str) -> str:
+        return ":" + (classes[key]["name"] if key in classes else key)
+
+    def unrev(x: dict) -> str:
+        return " (unreviewed)" if x.get("unreviewed") else ""
+
+    L = [f"# Vocabulary: {info.get('domain') or info.get('schema_name') or ''} (Tabulary draft {info['id'][:8]})", "",
+         "Write SPARQL 1.1 SELECT queries with these prefixes:", "```",
+         f"PREFIX : <{pfx['']}>", f"PREFIX xsd: <{pfx['xsd']}>", "```",
+         "Individuals have opaque IRIs built from database keys; to show something readable, select a data property "
+         "(for example a number, name or code) instead of the IRI. Subclass membership is inferred: an individual of a "
+         "subclass is also found through its superclass. A property may be used by several classes.", ""]
+    if detail == "summary":
+        L.append("## Classes")
+        for k, c in classes.items():
+            parent = f" ⊂ {cname(c['parent'])}" if c.get("parent") and c["parent"] in classes else ""
+            L.append(f"- {cname(k)}{parent}: {c.get('comment') or ''}{unrev(c)}")
+        return "\n".join(L) + "\n"
+    L.append("## Classes")
+    for k, c in classes.items():
+        if c.get("filter"):
+            continue  # listed under the parent
+        head = f"### {cname(k)}"
+        parents = []
+        if c.get("parent") and c["parent"] in classes:
+            parents.append(cname(c["parent"]))
+        parents += [cname(ep) for ep in c.get("extra_parents") or []]
+        if parents:
+            head += "  ⊂ " + ", ".join(parents)
+        if k.startswith(SHARED):
+            head += "  (abstract)"
+        L += ["", head + unrev(c), c.get("comment") or ""]
+        seen = set()
+        dps = [p for p in dt_by_class.get(k, []) if not p.get("technical") and not (p["name"] in seen or seen.add(p["name"]))]
+        if dps:
+            L.append("Data properties:")
+            for p in dps:
+                L.append(f"- :{p['name']} ({p.get('xsd') or 'literal'}): {p.get('comment') or ''}{unrev(p)}")
+        rels = rel_by_class.get(k, [])
+        if rels:
+            L.append("Object properties:")
+            for p in rels:
+                L.append(f"- :{p['name']} → {cname(p['range_t'])}: {p.get('comment') or ''}{unrev(p)}")
+        if subs_by_parent.get(k):
+            L.append("Subclasses (by a code value in the data):")
+            for sc in subs_by_parent[k]:
+                L.append(f"- :{sc['name']}: {sc.get('comment') or ''}{unrev(sc)}")
+    return "\n".join(x for x in L if x is not None) + "\n"

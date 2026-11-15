@@ -39,23 +39,31 @@ Allowed operations:
 - reject: take an existing item out of the ontology.
 - add_value_subclass: add a subclass of this table's class, selected by the value of one of the table's columns
   (value exactly as stored in the database). Use this when the steward explains what code values mean.
+- add_relation: add an object property from this table's class to another table's class when the database has no
+  foreign key for it (an implicit join). Give this table's columns and the matching primary-key columns of the other
+  table, in the same order; the other tables and their primary keys are listed. Property name is a lowerCamelCase
+  verb phrase (isPartOfPolicy, belongsToCustomer).
 Refer to existing items only by the ids given (i1, i2, ...). Never invent columns or items. If the request cannot be done
 with these operations, return no operations and say why in "message".
 Output raw JSON only:
 {"message": "<one or two sentences for the steward>",
  "operations": [{"op": "update", "item": "i3", "name": "...", "label": "...", "comment": "..."},
                 {"op": "reject", "item": "i4", "reason": "..."},
-                {"op": "add_value_subclass", "column": "...", "value": "...", "class_name": "...", "label": "...", "comment": "..."}]}"""
+                {"op": "add_value_subclass", "column": "...", "value": "...", "class_name": "...", "label": "...", "comment": "..."},
+                {"op": "add_relation", "columns": ["..."], "ref_table": "...", "ref_columns": ["..."], "property_name": "...", "label": "...", "comment": "..."}]}"""
 
 NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
 
 
-def _table_columns(draft_id: str, table: str) -> list[dict]:
+def _catalog(draft_id: str) -> list[dict]:
     try:
-        cat = json.loads((D.WORK / draft_id / "catalog.json").read_text())
+        return json.loads((D.WORK / draft_id / "catalog.json").read_text())["tables"]
     except OSError:
         return []
-    t = next((x for x in cat["tables"] if x["name"].upper() == table.upper()), None)
+
+
+def _table_columns(draft_id: str, table: str) -> list[dict]:
+    t = next((x for x in _catalog(draft_id) if x["name"].upper() == table.upper()), None)
     return t["columns"] if t else []
 
 
@@ -76,11 +84,13 @@ def _run(req_id: str) -> None:
                                     ensure_ascii=False))
         cols = [f"  - {c['name']} {c['type']}{' PK' if c['pk'] else ''}{' FK' if c['fk'] else ''}" for c in _table_columns(r["draft_id"], r["table_name"])]
         target = next((sid for sid, it in short.items() if it["id"] == r["item_id"]), None)
-        prompt = "\n".join([f"Table: {r['table_name'].lower()}", "Columns:", *cols, "", "Draft items:", *lines, "",
+        cat = _catalog(r["draft_id"])
+        others = [f"  - {t['name']} ({', '.join(t['pk']) or 'no primary key'})" for t in cat if t["name"].upper() != r["table_name"].upper()]
+        prompt = "\n".join([f"Table: {r['table_name'].lower()}", "Columns:", *cols, "", "Other tables (primary key columns):", *others, "", "Draft items:", *lines, "",
                             f"The request is about item {target}." if target else "The request is about this table.",
                             "Steward's request:", r["comment"]])
         out = dmp.llm_json(SYSTEM, prompt)
-        ops = _validate(out.get("operations") or [], short, cols_of=[c["name"] for c in _table_columns(r["draft_id"], r["table_name"])])
+        ops = _validate(out.get("operations") or [], short, cols_of=[c["name"] for c in _table_columns(r["draft_id"], r["table_name"])], catalog=cat)
         with D.db() as c:
             c.execute("UPDATE draft_requests SET status='proposed', message=?, operations=? WHERE id=?",
                       (out.get("message", ""), json.dumps(ops, ensure_ascii=False), req_id))
@@ -89,9 +99,10 @@ def _run(req_id: str) -> None:
             c.execute("UPDATE draft_requests SET status='failed', error=? WHERE id=?", (traceback.format_exc()[-2000:], req_id))
 
 
-def _validate(ops: list[dict], short: dict, cols_of: list[str]) -> list[dict]:
+def _validate(ops: list[dict], short: dict, cols_of: list[str], catalog: list[dict] | None = None) -> list[dict]:
     """Keep only well-formed operations; attach the before state so the reviewer sees a diff."""
     good = []
+    by_name = {t["name"].upper(): t for t in (catalog or [])}
     for op in ops:
         kind = op.get("op")
         if kind in ("update", "reject"):
@@ -116,6 +127,17 @@ def _validate(ops: list[dict], short: dict, cols_of: list[str]) -> list[dict]:
             if not col or op.get("value") in (None, "") or not NAME_RE.match(str(op.get("class_name", ""))):
                 continue
             good.append({"op": kind, "column": col, "value": str(op["value"]), "class_name": op["class_name"], "label": op.get("label", ""), "comment": op.get("comment", "")})
+        elif kind == "add_relation":
+            ref = by_name.get(str(op.get("ref_table", "")).upper())
+            cols = [next((c for c in cols_of if c.lower() == str(x).lower()), None) for x in (op.get("columns") or [])]
+            if not ref or not cols or None in cols or not NAME_RE.match(str(op.get("property_name", ""))):
+                continue
+            ref_cols_known = [c["name"] for c in ref["columns"]]
+            rcols = [next((c for c in ref_cols_known if c.lower() == str(x).lower()), None) for x in (op.get("ref_columns") or ref["pk"])]
+            if None in rcols or len(rcols) != len(cols):
+                continue
+            good.append({"op": kind, "columns": cols, "ref_table": ref["name"], "ref_columns": rcols, "property_name": op["property_name"],
+                         "label": op.get("label", ""), "comment": op.get("comment", "")})
     return good
 
 
@@ -145,6 +167,26 @@ def _apply(req: dict) -> None:
                 else:
                     c.execute("INSERT INTO draft_items VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                               (str(uuid.uuid4()), req["draft_id"], "subclass", table, key, json.dumps({"class": key}), op["class_name"], op["label"], op["comment"],
+                               None, detail, "approved", None, None, None, D.now()))
+            elif op["op"] == "add_relation":
+                # an object property the database has no foreign key for; write_obda builds the target IRI from these columns
+                ref_t = op["ref_table"].upper()
+                key = f"{table}.{','.join(c.upper() for c in op['columns'])} -> {ref_t}"
+                model["objprops"].append({"table": table, "cols": [c.upper() for c in op["columns"]], "name": op["property_name"], "label": op["label"],
+                                          "comment": op["comment"], "domain_t": table, "range_t": ref_t, "join": None,
+                                          "manual": {"ref_cols": [c.upper() for c in op["ref_columns"]]}, "confidence": None})
+                idx = len(model["objprops"]) - 1
+                dom_name = model["classes"].get(table, {}).get("name", table)
+                rng_name = model["classes"].get(ref_t, {}).get("name", ref_t)
+                detail = json.dumps({"domain": dom_name, "range": rng_name, "join": False, "source": "steward request (no foreign key in the database)",
+                                     "on": " AND ".join(f"{table.lower()}.{a} = {op['ref_table']}.{b}" for a, b in zip(op["columns"], op["ref_columns"]))})
+                existing = c.execute("SELECT id FROM draft_items WHERE draft_id=? AND key=?", (req["draft_id"], key)).fetchone()
+                if existing:
+                    c.execute("UPDATE draft_items SET ref=?, name=?, label=?, comment=?, detail=?, status='approved', decided_name=NULL, decided_label=NULL, decided_comment=NULL, decided_at=? WHERE id=?",
+                              (json.dumps({"objprop": idx}), op["property_name"], op["label"], op["comment"], detail, D.now(), existing["id"]))
+                else:
+                    c.execute("INSERT INTO draft_items VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                              (str(uuid.uuid4()), req["draft_id"], "objprop", table, key, json.dumps({"objprop": idx}), op["property_name"], op["label"], op["comment"],
                                None, detail, "approved", None, None, None, D.now()))
         c.execute("UPDATE drafts SET model=? WHERE id=?", (json.dumps(model, ensure_ascii=False), req["draft_id"]))
         c.execute("UPDATE draft_requests SET status='applied', decided_at=? WHERE id=?", (D.now(), req["id"]))

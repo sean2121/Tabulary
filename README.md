@@ -13,7 +13,9 @@ with `docker compose up`.
 3. **Draft** – an LLM prunes and names the result: business names, labels, descriptions, relations,
    value-dependent subclasses (`dm_proto/dm_proto.py`).
 4. **Review** – a web UI (`server/`) where a data steward approves, edits, rejects, or asks the LLM to
-   change things ("position: 1 = full professor, 2 = ..."). Decisions are stored in SQLite.
+   change things ("position: 1 = full professor, 2 = ...", "this column refers to the policy, add the
+   relation"): renames, value subclasses, and relations the database has no foreign key for. Decisions
+   are stored in SQLite.
 5. **Export** – `v1.ttl` (OWL) and `v1.obda` (Ontop mapping); the latter converts to R2RML with
    `ontop mapping to-r2rml`.
 6. **Serve** – an MCP server (`serve/`) that gives an LLM client the reviewed vocabulary as context and
@@ -62,8 +64,9 @@ one finished draft as three tools:
 
 | tool | what it does |
 |---|---|
-| `describe_schema` | the reviewed vocabulary: classes, attributes and relations, each with the SQL table, column and JOIN condition behind it; unreviewed items are marked |
-| `query` | one read-only `SELECT` against the source database: statement check, `READ ONLY` transaction, statement timeout, row cap |
+| `describe_schema` | the reviewed vocabulary. Default: classes and properties with the prefixes to use in SPARQL. `mode=sql`: the SQL table, column and JOIN condition behind each term; unreviewed items are marked |
+| `sparql` | SPARQL SELECT/ASK over the vocabulary. An `ontop endpoint` child process translates it to SQL with the reviewed mapping, so only mapped terms are reachable; starts on first use (20-30 s) and restarts when review decisions change |
+| `query_sql` | fallback: one read-only `SELECT` for what SPARQL cannot express (window functions, DB-specific functions): statement check, `READ ONLY` transaction, timeout, row cap |
 | `distinct_values` | values of one column with counts, for decoding codes |
 
 Drafts do not store database passwords, so the connection is passed separately (a connection saved in
@@ -83,7 +86,7 @@ claude mcp add tabulary -- python3 /path/to/tabulary/serve/mcp_server.py \
 Over HTTP the database is the saved connection the draft was created from. Neither the web UI nor the MCP
 endpoint has authentication; put an authenticating reverse proxy in front before exposing them beyond a trusted
 network. Then ask: "Which policyholders have claims, and what is the total claim amount per policyholder?"
-The client calls `describe_schema`, writes SQL in the names it returns and runs it through `query`.
+The client calls `describe_schema`, writes SPARQL with the terms it returns and runs it through `sparql`; Ontop turns that into SQL. For computations SPARQL lacks, it falls back to `query_sql`.
 Without `--draft` the latest finished draft is used.
 
 ## Layout

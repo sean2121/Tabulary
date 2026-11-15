@@ -477,6 +477,10 @@ def write_obda(model: dict, dm: dict[str, dict], path: Path, data_ns: str) -> No
                 ph = {rc.upper(): "{" + (dm[p["table"]]["cols"].get(fc.upper()) or {"name": fc})["name"] + "}" for rc, fc in zip(fk["ref_columns"], fk["columns"])}
                 return subj(ru, ph)
             L += [f"mappingId\tM{n}", f"target\t\t{term(tmpl(p['join']['dom_fk']))} :{p['name']} {term(tmpl(p['join']['rng_fk']))} .", f"source\t\tSELECT * FROM {dm[p['table']]['sql_name']}", ""]
+        elif p.get("manual"):
+            # steward-added relation with no foreign key in the database: object IRI built from this table's columns
+            ph = {rc.upper(): "{" + (dm[p["table"]]["cols"].get(c.upper()) or {"name": c})["name"] + "}" for c, rc in zip(p["cols"], p["manual"]["ref_cols"])}
+            L += [f"mappingId\tM{n}", f"target\t\t{term(subj(p['table']))} :{p['name']} {term(subj(p['range_t'], ph))} .", f"source\t\tSELECT * FROM {dm[p['table']]['sql_name']}", ""]
         else:
             fk = next(f for f in dm[p["table"]]["fks"] if f["cols"] == [c.upper() for c in p["cols"]])
             m = fk["map"]
