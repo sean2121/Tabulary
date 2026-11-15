@@ -1,0 +1,302 @@
+[
+ {
+  "condition": "bare",
+  "id": "Q1",
+  "question": "How many policies are there?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 31.9,
+  "transcript": "There are 2 rows in the `policy` table.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q2",
+  "question": "Which party (give the party identifier) is the policyholder of policy number 31003000336?",
+  "gold": "1",
+  "answer": "1",
+  "correct": true,
+  "seconds": 28.6,
+  "transcript": "Party 1 holds the policyholder role (PH) on policy 31003000336. Party 2 is the agent (AG).\n\nANSWER: 1\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q3",
+  "question": "Which party (give the party identifier) is the agent on policy number 31003000337?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 20.0,
+  "transcript": "The agent on policy 31003000337 is party 2. That party holds the role code AG on the policy, and party 1 holds PH. I read AG as agent from the code alone, since I didn't look up the `party_role` table.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q4",
+  "question": "What is the total of all claim amounts?",
+  "gold": "13600",
+  "answer": "13600",
+  "correct": true,
+  "seconds": 20.0,
+  "transcript": "The `claim_amount` table has 8 rows, and the sum of their `claim_amount` values is 13600.00.\n\nANSWER: 13600\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q5",
+  "question": "What is the total amount of loss payments?",
+  "gold": "3500",
+  "answer": "3500",
+  "correct": true,
+  "seconds": 18.0,
+  "transcript": "The loss_payment table has 2 rows. Joined to claim_amount, their amounts sum to 3500.00.\n\nANSWER: 3500\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q6",
+  "question": "What is the total amount of expense reserves?",
+  "gold": "3300",
+  "answer": "3300",
+  "correct": true,
+  "seconds": 15.6,
+  "transcript": "The total expense reserve amount is 3300. That sums `claim_amount` over the two rows in `expense_reserve`, joined to `claim_amount` on `claim_amount_identifier`.\n\nANSWER: 3300\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q7",
+  "question": "What is the total premium charged over all years for policy number 31003000336?",
+  "gold": "86000",
+  "answer": "86000",
+  "correct": true,
+  "seconds": 25.2,
+  "transcript": "Policy 31003000336 has five yearly premium records: 15000, 16000, 17000, 18000 and 20000. I counted only rows that appear in the `premium` table. The other five rows are 1,000,000 amounts (probably coverage limits, not premiums), so I left them out. The premiums sum to 86000.\n\nANSWER: 86000\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q8",
+  "question": "How many claims were filed under policy number 31003000336?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 20.9,
+  "transcript": "Two claims were filed under policy number 31003000336. I found them by joining policy to policy_coverage_detail to claim_coverage and counting distinct claim identifiers.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q9",
+  "question": "How many claims does the policyholder with party identifier 1 have across all policies?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 16.3,
+  "transcript": "Party 1 has the policyholder role (PH) on two agreements. Only one of those policies has claims, and across it there are 2 distinct claims. I reached them by joining the party's agreements to policy coverage details and then to claim coverage.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "bare",
+  "id": "Q10",
+  "question": "How many distinct parties act as underwriter on any agreement?",
+  "gold": "0",
+  "answer": "0",
+  "correct": true,
+  "seconds": 15.6,
+  "transcript": "No party has the underwriter role on any agreement. The only role codes are AG, PH and UW, and I took UW to be underwriter. The schema has no description column, so that mapping is a guess. A join of `party_role` to `agreement_party_role` shows 0 distinct parties with UW. AG and PH have 1 party each.\n\nANSWER: 0\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q1",
+  "question": "How many policies are there?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 16.1,
+  "transcript": "Query run: `SELECT COUNT(*) FROM policy`. It returned 2.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q2",
+  "question": "Which party (give the party identifier) is the policyholder of policy number 31003000336?",
+  "gold": "1",
+  "answer": "1",
+  "correct": true,
+  "seconds": 14.7,
+  "transcript": "Query run:\n```sql\nselect apr.party_identifier, apr.effective_date, apr.expiration_date\nfrom policy p join agreement_party_role apr on apr.agreement_identifier=p.policy_identifier\nwhere p.policy_number='31003000336' and apr.party_role_code='PH'\n```\nIt returned one policyholder row, party 1.\n\nANSWER: 1\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q3",
+  "question": "Which party (give the party identifier) is the agent on policy number 31003000337?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 16.8,
+  "transcript": "Query run:\n\n```sql\nselect apr.party_identifier, apr.effective_date, apr.expiration_date\nfrom policy p\njoin agreement_party_role apr on apr.agreement_identifier = p.policy_identifier\nwhere p.policy_number = '31003000337' and apr.party_role_code = 'AG'\n```\n\nIt returned one row: party 2 is the agent on policy 31003000337.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q4",
+  "question": "What is the total of all claim amounts?",
+  "gold": "13600",
+  "answer": "13600",
+  "correct": true,
+  "seconds": 13.5,
+  "transcript": "Query run: `SELECT SUM(claim_amount) FROM claim_amount`\n\nANSWER: 13600\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q5",
+  "question": "What is the total amount of loss payments?",
+  "gold": "3500",
+  "answer": "3500",
+  "correct": true,
+  "seconds": 14.7,
+  "transcript": "Query run:\n```sql\nSELECT SUM(ca.claim_amount), COUNT(*) FROM loss_payment lp JOIN claim_amount ca ON ca.claim_amount_identifier = lp.claim_amount_identifier\n```\nThe total is 3500.00, across 2 loss payments.\n\nANSWER: 3500\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q6",
+  "question": "What is the total amount of expense reserves?",
+  "gold": "3300",
+  "answer": "3300",
+  "correct": true,
+  "seconds": 13.9,
+  "transcript": "Query run:\n```sql\nselect sum(ca.claim_amount), count(*) from expense_reserve e join claim_amount ca on ca.claim_amount_identifier=e.claim_amount_identifier\n```\nThe total expense reserve amount is 3300.00, summed over 2 expense reserve records.\n\nANSWER: 3300\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q7",
+  "question": "What is the total premium charged over all years for policy number 31003000336?",
+  "gold": "86000",
+  "answer": "86000",
+  "correct": true,
+  "seconds": 15.1,
+  "transcript": "Query run:\n```sql\nselect count(*), sum(pa.policy_amount)\nfrom policy p\njoin policy_amount pa on pa.policy_identifier=p.policy_identifier\njoin premium pr on pr.policy_amount_identifier=pa.policy_amount_identifier\nwhere p.policy_number='31003000336'\n```\nThe policy has 5 premium records, and they sum to 86000.00.\n\nANSWER: 86000\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q8",
+  "question": "How many claims were filed under policy number 31003000336?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 13.9,
+  "transcript": "Two claims were filed under policy number 31003000336. I joined `policy` to `policy_coverage_detail` to `claim_coverage` and counted distinct claims.\n\n```sql\nSELECT count(DISTINCT cc.claim_identifier)\nFROM policy p\nJOIN policy_coverage_detail d ON d.policy_identifier = p.policy_identifier\nJOIN claim_coverage cc ON cc.policy_coverage_detail_identifier = d.policy_coverage_detail_identifier\n                      AND cc.effective_date = d.effective_date\nWHERE p.policy_number = '31003000336'\n```\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q9",
+  "question": "How many claims does the policyholder with party identifier 1 have across all policies?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 14.7,
+  "transcript": "Party 1 has 2 claims across all the policies where they are the policyholder. I linked claims to policies through the coverage details they were filed under.\n\nQuery run:\n```sql\nSELECT COUNT(DISTINCT cc.claim_identifier) AS n, COUNT(*) AS rows\nFROM agreement_party_role apr\nJOIN policy_coverage_detail pcd ON pcd.policy_identifier = apr.agreement_identifier\nJOIN claim_coverage cc ON cc.policy_coverage_detail_identifier = pcd.policy_coverage_detail_identifier\n                      AND cc.effective_date = pcd.effective_date\nWHERE apr.party_identifier = 1 AND apr.party_role_code = 'PH'\n```\n\nBoth the distinct claim count and the raw row count came back as 2, so no claim was counted twice.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sql",
+  "id": "Q10",
+  "question": "How many distinct parties act as underwriter on any agreement?",
+  "gold": "0",
+  "answer": "0",
+  "correct": true,
+  "seconds": 15.2,
+  "transcript": "No party acts as underwriter on any agreement. The `UW` role exists in `party_role`, but `agreement_party_role` has no rows with that code.\n\n```sql\nselect count(distinct party_identifier) from agreement_party_role where party_role_code='UW'\n```\n\nA second query that left-joined `party_role` to `agreement_party_role` gave the same result: 1 distinct party each for `AG` and `PH`, and 0 for `UW`.\n\nANSWER: 0\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q1",
+  "question": "How many policies are there?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 29.0,
+  "transcript": "Query run:\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT (COUNT(DISTINCT ?p) AS ?n) WHERE { ?p a :Policy }\n```\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q2",
+  "question": "Which party (give the party identifier) is the policyholder of policy number 31003000336?",
+  "gold": "1",
+  "answer": "1",
+  "correct": true,
+  "seconds": 25.8,
+  "transcript": "Query run: SPARQL over `:Policy` with `:policyNumber \"31003000336\"`, joined to a `:Policyholder` `:AgreementPartyRole` through `:isForAgreement` and `:isForParty`. It returned one party, with IRI `data:party/party_identifier=1`.\n\nANSWER: 1\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q3",
+  "question": "Which party (give the party identifier) is the agent on policy number 31003000337?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 34.9,
+  "transcript": "The agent on policy 31003000337 is party 2. I found it by querying for the policy's party role of type `:Agent`, which returned one result: `party_identifier=2`.\n\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT ?party ?role WHERE { ?p a :Policy ; :policyNumber \"31003000337\" . ?r a :Agent ; :isForAgreement ?p ; :isForParty ?party . BIND(STR(?party) AS ?role) }\n```\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q4",
+  "question": "What is the total of all claim amounts?",
+  "gold": "13600",
+  "answer": "13600",
+  "correct": true,
+  "seconds": 30.7,
+  "transcript": "Query run:\n```sparql\nSELECT (SUM(?a) AS ?total) (COUNT(?a) AS ?n) WHERE { ?c a :ClaimAmount ; :claimAmount ?a }\n```\nThe sum covers 8 claim amount records.\n\nANSWER: 13600\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q5",
+  "question": "What is the total amount of loss payments?",
+  "gold": "3500",
+  "answer": "3500",
+  "correct": true,
+  "seconds": 45.1,
+  "transcript": "Loss payments are claim_amount ids 3 and 7, worth 1200 and 2300, so the total is 3500.\n\nThe loss-payment class has no amount property of its own, and SPARQL doesn't link it to the claim amounts. I matched them by shared identifier instead. These are the queries I ran:\n\n1. `SELECT ?p ?a WHERE { ?p a :LossPayment . OPTIONAL { ?p :claimAmount ?a } }` returned two loss payments, identifiers 3 and 7, with no amounts.\n2. `SELECT ?p ?a WHERE { ?p a :ClaimAmount ; :claimAmount ?a } ORDER BY ?p` returned the eight claim amounts. Identifier 3 is 1200.00 and identifier 7 is 2300.00.\n\nThe match rests on the schema's SQL mode, which says `loss_payment.claim_amount_identifier` is the same key as `claim_amount.claim_amount_identifier`.\n\nANSWER: 3500\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q6",
+  "question": "What is the total amount of expense reserves?",
+  "gold": "3300",
+  "answer": "3300",
+  "correct": true,
+  "seconds": 44.3,
+  "transcript": "The expense reserves are claim amounts 2 and 6, worth 1100.00 and 2200.00. The two sets of records don't share an IRI, so I joined them on `claimAmountIdentifier`. Their total is 1100 + 2200 = 3300.\n\nQuery that returned the amounts:\n```sparql\nSELECT ?id ?a WHERE { ?r a :ExpenseReserve ; :claimAmountIdentifier ?id . ?c a :ClaimAmount ; :claimAmountIdentifier ?id ; :claimAmount ?a }\n```\n\nANSWER: 3300\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q7",
+  "question": "What is the total premium charged over all years for policy number 31003000336?",
+  "gold": "86000",
+  "answer": "86000",
+  "correct": true,
+  "seconds": 35.5,
+  "transcript": "Query run:\n```sparql\nSELECT (SUM(?a) AS ?t) (COUNT(?a) AS ?n) WHERE { ?p a :Policy; :policyNumber \"31003000336\". ?m a :Premium; :belongsToPolicy ?p; :policyAmount ?a. }\n```\nThe query summed 5 premium records for policy 31003000336, and the total is 86000.00.\n\nANSWER: 86000\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q8",
+  "question": "How many claims were filed under policy number 31003000336?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 31.9,
+  "transcript": "Query run (SPARQL): counted distinct claims linked via claim → policy coverage detail → coverage part → policy with `policyNumber \"31003000336\"`.\n\n```sparql\nPREFIX : <http://example.org/ontology/v1/>\nSELECT (COUNT(DISTINCT ?c) AS ?n) WHERE {\n?p a :Policy ; :policyNumber \"31003000336\" .\n?cp :isPartOfPolicy ?p .\n?d :isPartOfPolicyCoveragePart ?cp .\n?c :isFiledUnderCoverageDetail ?d . }\n```\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q9",
+  "question": "How many claims does the policyholder with party identifier 1 have across all policies?",
+  "gold": "2",
+  "answer": "2",
+  "correct": true,
+  "seconds": 31.1,
+  "transcript": "Query run (SPARQL): counted distinct claims reached through policyholder role → policy → coverage part → coverage detail → claim, grouped by party.\n\nParty `party_identifier=1` has 2 claims across all their policies. This is the only party the query returned.\n\nANSWER: 2\n"
+ },
+ {
+  "condition": "sparql",
+  "id": "Q10",
+  "question": "How many distinct parties act as underwriter on any agreement?",
+  "gold": "0",
+  "answer": "0",
+  "correct": true,
+  "seconds": 31.0,
+  "transcript": "No party acts as underwriter on any agreement. The vocabulary defines an underwriter role (code `UW`), but none of the agreement-party links use it.\n\nI ran this query:\n\n```sparql\nSELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {\n  ?apr :isForParty ?p ; :hasPartyRole ?r ; :isForAgreement ?a .\n  ?r :partyRoleCode \"UW\" }\n```\n\nIt returned 0. A second query grouped the role codes used by agreement-party links and found only `AG` (2) and `PH` (2), with no `UW`.\n\nANSWER: 0\n"
+ }
+]

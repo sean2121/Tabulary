@@ -1,0 +1,32 @@
+# Question-answering comparison on the insurance demo database (db/init/01_insurance.sql).
+# Gold answers computed with hand-written SQL (see run.py --show-gold-sql for the statements).
+- id: Q1
+  q: How many policies are there?
+  gold: "2"
+- id: Q2
+  q: Which party (give the party identifier) is the policyholder of policy number 31003000336?
+  gold: "1"
+- id: Q3
+  q: Which party (give the party identifier) is the agent on policy number 31003000337?
+  gold: "2"
+- id: Q4
+  q: What is the total of all claim amounts?
+  gold: "13600"
+- id: Q5
+  q: What is the total amount of loss payments?
+  gold: "3500"
+- id: Q6
+  q: What is the total amount of expense reserves?
+  gold: "3300"
+- id: Q7
+  q: What is the total premium charged over all years for policy number 31003000336?
+  gold: "86000"
+- id: Q8
+  q: How many claims were filed under policy number 31003000336?
+  gold: "2"
+- id: Q9
+  q: How many claims does the policyholder with party identifier 1 have across all policies?
+  gold: "2"
+- id: Q10
+  q: How many distinct parties act as underwriter on any agreement?
+  gold: "0"

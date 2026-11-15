@@ -56,7 +56,12 @@ class Server:
         return self._exports
 
     # ---- tools ----
+    only: tuple[str, ...] | None = None  # restrict the exposed tools (used by the benchmark harness)
+
     def tools(self) -> list[dict]:
+        return [t for t in self._all_tools() if not self.only or t["name"] in self.only]
+
+    def _all_tools(self) -> list[dict]:
         return [
             {"name": "describe_schema",
              "description": "Business vocabulary of this database as reviewed by its data stewards. Default mode "
@@ -128,13 +133,19 @@ class Server:
     def handle(self, msg: dict) -> dict | None:
         method, mid, params = msg.get("method"), msg.get("id"), msg.get("params") or {}
         if method == "initialize":
+            names = {t["name"] for t in self.tools()}
+            if "sparql" in names:
+                instr = ("Answer business questions over this database. Call describe_schema first, write SPARQL with the "
+                         "prefixes and terms it gives and run it with sparql." +
+                         (" Use query_sql (with describe_schema mode='sql') only for computations SPARQL cannot express." if "query_sql" in names else "") +
+                         " Always show the query you ran.")
+            else:
+                instr = ("Answer business questions over this database. Call describe_schema with mode 'sql' first, then write "
+                         "SQL with the table and column names and JOIN conditions it gives and run it with query_sql. Always show the query you ran.")
             return self.ok(mid, {"protocolVersion": params.get("protocolVersion") or PROTOCOL,
                                  "capabilities": {"tools": {}},
                                  "serverInfo": {"name": "tabulary", "version": VERSION},
-                                 "instructions": "Answer business questions over this database. Call describe_schema first, "
-                                                 "write SPARQL with the prefixes and terms it gives and run it with sparql. "
-                                                 "Use query_sql (with describe_schema mode='sql') only for computations "
-                                                 "SPARQL cannot express. Always show the query you ran."})
+                                 "instructions": instr})
         if method in ("notifications/initialized", "notifications/cancelled") or mid is None:
             return None
         if method == "ping":
@@ -176,6 +187,7 @@ def main() -> None:
     ap.add_argument("--draft", help="draft id (default: latest finished draft)")
     ap.add_argument("--connection", help="id of a connection saved in the Tabulary UI")
     ap.add_argument("--conninfo", help='libpq connection string without password, e.g. "host=localhost port=5433 dbname=tabulary user=tabulary"; set PGPASSWORD')
+    ap.add_argument("--tools", help="comma-separated subset of tools to expose (benchmarking)")
     a = ap.parse_args()
     draft_id = a.draft or context.latest_done_draft_id()
     if not draft_id:
@@ -191,7 +203,10 @@ def main() -> None:
             sys.exit(str(e))
     if not conninfo:
         sys.exit("give --connection, --conninfo or TABULARY_CONNINFO")
-    Server(draft_id, conninfo, env).serve()
+    srv = Server(draft_id, conninfo, env)
+    if a.tools:
+        srv.only = tuple(x.strip() for x in a.tools.split(","))
+    srv.serve()
 
 
 if __name__ == "__main__":

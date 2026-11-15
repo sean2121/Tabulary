@@ -29,6 +29,7 @@ services:
       - path: .env
         required: false   # TABULARY_PW_* passwords for your own databases reach the container this way
     environment:
+      ONTOP_HOME: /opt/ontop   # pinned: a host-side ONTOP_HOME in .env must not leak in through env_file
       DEMO_DB_HOST: postgres
       DEMO_DB_PORT: "5432"
       DEMO_DB_PASSWORD: ${DEMO_DB_PASSWORD:-tabulary}
