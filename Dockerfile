@@ -20,6 +20,7 @@ COPY el_proto ./el_proto
 COPY dm_proto ./dm_proto
 COPY scan ./scan
 COPY server ./server
+COPY serve ./serve
 COPY docker ./docker
 
 ENV ONTOP_HOME=/opt/ontop \

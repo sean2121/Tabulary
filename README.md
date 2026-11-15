@@ -72,11 +72,17 @@ names an environment variable, the server reads `.env` at start-up, and psql get
 Register it with Claude Code, for example:
 
 ```sh
+# the running stack (Docker or uvicorn) serves MCP over HTTP: latest finished draft, or /mcp/<draft id>
+claude mcp add --transport http tabulary http://localhost:8000/mcp
+
+# or run it as a stdio process without the web app
 claude mcp add tabulary -- python3 /path/to/tabulary/serve/mcp_server.py \
   --draft <draft id> --connection <saved connection id>
 ```
 
-Then ask: "Which policyholders have claims, and what is the total claim amount per policyholder?"
+Over HTTP the database is the saved connection the draft was created from. Neither the web UI nor the MCP
+endpoint has authentication; put an authenticating reverse proxy in front before exposing them beyond a trusted
+network. Then ask: "Which policyholders have claims, and what is the total claim amount per policyholder?"
 The client calls `describe_schema`, writes SQL in the names it returns and runs it through `query`.
 Without `--draft` the latest finished draft is used.
 

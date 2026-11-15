@@ -38,6 +38,8 @@ from server import connections as _conns  # noqa: E402  (saved database connecti
 app.include_router(_conns.router)
 from server import requests as _reqs  # noqa: E402  (ask the LLM to edit a draft)
 app.include_router(_reqs.router)
+from serve import http as _mcp  # noqa: E402  (MCP over HTTP: the reviewed vocabulary + read-only SQL for LLM clients)
+app.include_router(_mcp.router)
 
 AUTO_ACCEPT = 0.9  # at or above: accepted automatically
 REVIEW_MIN = 0.5  # from here up to AUTO_ACCEPT: human review. Below: novel (treated as no mapping)

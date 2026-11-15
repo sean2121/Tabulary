@@ -26,7 +26,7 @@ def latest_done_draft_id() -> str | None:
 
 def draft_info(draft_id: str) -> dict:
     with D.db() as c:
-        r = c.execute("SELECT id, schema_name, conninfo, domain, created_at FROM drafts WHERE id=?", (draft_id,)).fetchone()
+        r = c.execute("SELECT id, schema_name, conninfo, connection_id, domain, created_at FROM drafts WHERE id=?", (draft_id,)).fetchone()
     if not r:
         raise ValueError(f"draft not found: {draft_id}")
     return dict(r)

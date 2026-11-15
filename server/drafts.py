@@ -70,11 +70,17 @@ with db() as _c:
           status TEXT, decided_name TEXT, decided_label TEXT, decided_comment TEXT, decided_at TEXT);
         """
     )
-    for _col in ("progress_done INTEGER", "progress_total INTEGER"):
+    for _col in ("progress_done INTEGER", "progress_total INTEGER", "connection_id TEXT"):
         try:
             _c.execute(f"ALTER TABLE drafts ADD COLUMN {_col}")
         except sqlite3.OperationalError:
             pass  # column already exists
+    # drafts made before connection_id existed show "Name (user@host:port/db)"; recover the saved connection from that
+    try:
+        _c.execute("""UPDATE drafts SET connection_id = (SELECT id FROM connections WHERE drafts.conninfo LIKE connections.name || ' (%')
+                      WHERE connection_id IS NULL AND EXISTS (SELECT 1 FROM connections WHERE drafts.conninfo LIKE connections.name || ' (%')""")
+    except sqlite3.OperationalError:
+        pass  # fresh database: no connections table yet, nothing to recover
 
 
 # ──────────────────────────────── Run ────────────────────────────────
@@ -317,8 +323,8 @@ def create_draft(body: DraftIn) -> dict:
         except RuntimeError as e:
             raise HTTPException(400, str(e))
     with db() as c:
-        c.execute("INSERT INTO drafts (id,status,created_at,step,conninfo,schema_name,provider,stats_level,domain,ns) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                  (did, "running", now(), "queued", shown, body.schema_name, body.provider, body.stats_level, body.domain, body.ns))
+        c.execute("INSERT INTO drafts (id,status,created_at,step,conninfo,connection_id,schema_name,provider,stats_level,domain,ns) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                  (did, "running", now(), "queued", shown, body.connection_id, body.schema_name, body.provider, body.stats_level, body.domain, body.ns))
     threading.Thread(target=run_draft, args=(did, ci, pw, body.schema_name, body.provider, body.stats_level, body.domain, body.ns), daemon=True).start()
     return {"id": did, "status": "running"}
 

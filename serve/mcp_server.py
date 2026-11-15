@@ -37,7 +37,8 @@ def log(msg: str) -> None:
 
 
 class Server:
-    def __init__(self, draft_id: str, conninfo: str, env: dict) -> None:
+    def __init__(self, draft_id: str, conninfo: str | None, env: dict | None) -> None:
+        """conninfo None = no database reachable: describe_schema works, query / distinct_values explain why they do not."""
         self.info = context.draft_info(draft_id)
         self.model, self.dm = context.load(draft_id)
         self.conninfo, self.env = conninfo, env
@@ -73,6 +74,9 @@ class Server:
     def call(self, name: str, args: dict) -> str:
         if name == "describe_schema":
             return context.describe(self.model, self.dm, self.info, args.get("detail") or "full")
+        if name in ("query", "distinct_values") and not self.conninfo:
+            raise ValueError("no database connection for this draft (it was created from a raw connection string; "
+                             "create the draft from a saved connection, or start the stdio server with --connection)")
         if name == "query":
             limit = int(args.get("limit") or 100)
             res = sql.run(self.conninfo, args["sql"], self.schema, limit, env=self.env)
